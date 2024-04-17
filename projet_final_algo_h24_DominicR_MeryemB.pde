@@ -2,7 +2,13 @@
 // général //
 
 // couleurs //
-
+color noir = color(49, 1, 11);
+color rouge = color(239, 60, 92);
+color jaune = color(234, 234, 40);
+color vert = color(34, 216, 100);
+color vert_foncee = color(68, 123, 28);
+color bleu = color(42, 135, 223);
+color bleu_pale = color(236, 248, 252);
 
 // joueur //
 // position
