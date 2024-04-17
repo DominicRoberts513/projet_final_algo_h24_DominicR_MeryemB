@@ -1,13 +1,30 @@
 // // variables // //
 // général //
+
 // couleurs //
+
+
 // joueur //
+// position
 float pX; // déclare une variable pour la position en x du joueur
 float pY; // déclare une variable pour la position en y du joueur
 float pS = 10; // déclare une variable pour la vitesse de déplacement du joueur
 
-// objets //
+// objet
 Joueur joueur; // déclare l'objet joueur
+
+// plantes //
+// position
+int planteX; // déclare une variable pour la position en x de la plante
+int planteY; // déclare une variable pour la position en y de la plante
+
+// image
+PImage plante_01; // déclare une variable pour y storer une image
+PImage plante_02; // déclare une variable pour y storer une image
+PImage plante_03; // déclare une variable pour y storer une image
+
+// objet
+Plante[] plantes; // déclare un tableau d'objet pour les plantes
 
 // // fonctions // //
 // set up //
@@ -16,13 +33,18 @@ void setup() {
     size(500, 500); // donne la grosseur à la fenêtre
 
     // joueur
+    // // position
     pX = width/2; // donne une valeur initial à la variable pX
     pY = height/8 * 7; // donne une valeur initial à la variable pY
 
-    // objets
-    // // joueur
-    joueur = new Joueur(pX, pY, pS); // cré un instence de l'objet joueur
+    // // objet
+    joueur = new Joueur(pX, pY, pS); // cré un instence de l'objet joueurà
 
+    // plantes
+    // // images
+    plante_01 = loadImage("img/plantes/plante_01.png"); // charge l'image plante_01 dans la variable éponyme
+    plante_02 = loadImage("img/plantes/plante_02.png"); // charge l'image plante_02 dans la variable éponyme
+    plante_03 = loadImage("img/plantes/plante_03.png"); // charge l'image plante_03 dans la variable éponyme
 }
 
 // draw // 
