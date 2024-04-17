@@ -4,6 +4,8 @@ import processing.data.*;
 import processing.event.*;
 import processing.opengl.*;
 
+import processing.sound.*;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.io.File;
@@ -15,17 +17,25 @@ import java.io.IOException;
 
 public class projet_final_algo_h24_DominicR_MeryemB extends PApplet {
 
+
+
 // // variables // //
 // général //
 
 // couleurs //
-
+int noir = color(49, 1, 11);
+int rouge = color(239, 60, 92);
+int jaune = color(234, 234, 40);
+int vert = color(34, 216, 100);
+int vert_foncee = color(68, 123, 28);
+int bleu = color(42, 135, 223);
+int bleu_pale = color(236, 248, 252);
 
 // joueur //
 // position
 float pX; // déclare une variable pour la position en x du joueur
 float pY; // déclare une variable pour la position en y du joueur
-float pS = 10; // déclare une variable pour la vitesse de déplacement du joueur
+float pS = 5; // déclare une variable pour la vitesse de déplacement du joueur
 
 // objet
 Joueur joueur; // déclare l'objet joueur
@@ -43,6 +53,9 @@ PImage plante_03; // déclare une variable pour y storer une image
 // objet
 Plante[] plantes; // déclare un tableau d'objet pour les plantes
 
+// son
+SoundFile test;
+
 // // fonctions // //
 // set up //
 public void setup() {
@@ -59,16 +72,20 @@ public void setup() {
 
     // plantes
     // // images
-    plante_01 = loadImage("img/plantes/plante_01.png");
+    plante_01 = loadImage("img/plantes/plante_01.png"); // charge l'image plante_01 dans la variable éponyme
+    plante_02 = loadImage("img/plantes/plante_02.png"); // charge l'image plante_02 dans la variable éponyme
+    plante_03 = loadImage("img/plantes/plante_03.png"); // charge l'image plante_03 dans la variable éponyme
+
+    test = new SoundFile(this, "sons/chord_progression_loop.wav");
+    test.play();
+    test.loop();
 }
 
 // draw // 
 public void draw() {
-    
-
     // général
     background(0, 0, 0); // donne une couleur à l'arrière plan
-    image(plante_01, 0, 0);
+
     // joueur
     joueur.display(); // appel la méthode display de l'objet joueur
 }
