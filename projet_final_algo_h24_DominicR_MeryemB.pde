@@ -41,7 +41,7 @@ SoundFile test;
 // set up //
 void setup() {
     // général
-    size(500, 500); // donne la grosseur à la fenêtre
+    size(800, 800); // donne la grosseur à la fenêtre
 
     // joueur
     // // position
@@ -56,7 +56,8 @@ void setup() {
     plante_01 = loadImage("img/plantes/plante_01.png"); // charge l'image plante_01 dans la variable éponyme
     plante_02 = loadImage("img/plantes/plante_02.png"); // charge l'image plante_02 dans la variable éponyme
     plante_03 = loadImage("img/plantes/plante_03.png"); // charge l'image plante_03 dans la variable éponyme
-
+    
+    
     test = new SoundFile(this, "sons/chord_progression_loop.wav");
     test.play();
     test.loop();
@@ -69,4 +70,12 @@ void draw() {
 
     // joueur
     joueur.display(); // appel la méthode display de l'objet joueur
+    
+    for (int y = 0; y < height; y += plante_01.height) {
+    image(plante_01, 0, y); // Dessiner l'image sur le côté gauche de la fenêtre
+    }
+    
+    for (int y = 0; y < height; y += plante_02.height) {
+    image(plante_02, width - plante_02.width, y); // Dessiner l'image sur le côté droit de la fenêtre
+    }
 }
