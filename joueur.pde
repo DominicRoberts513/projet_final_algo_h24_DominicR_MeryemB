@@ -40,12 +40,12 @@ class Joueur {
                     }
                 }
                 if (keyCode == LEFT) { // fait bouger le joueur à gauche 
-                    if (x > 0) {
+                    if (x > width/3) {
                         x = x - xSpeed;
                     }
                 }
                 if (keyCode == RIGHT) { // fait bouger le joueur à droite
-                    if (x < width) {
+                    if (x < width/3 * 2) {
                         x = x + xSpeed;
                     }
                 }
