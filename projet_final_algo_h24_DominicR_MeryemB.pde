@@ -1,3 +1,11 @@
+/*
+**
+** Travail_02
+** par : Dominic & Meryem
+** Présenté à Sofian Audry
+** 
+*/
+
 import processing.sound.*;
 
 // // variables // //
@@ -22,18 +30,18 @@ float pS = 5; // déclare une variable pour la vitesse de déplacement du joueur
 Joueur joueur; // déclare l'objet joueur
 
 // plantes //
+// quantité
+int planteQte = 5;
+
 // position
 int planteX; // déclare une variable pour la position en x de la plante
 int planteY; // déclare une variable pour la position en y de la plante
 
-// image
-PImage[] plantesImage = new PImage[3]; // déclare une variable pour y storer une image
-
 // objet
-Plante[] plantes; // déclare un tableau d'objet pour les plantes
+Plante[] plantes = new Plante[planteQte]; // déclare un tableau d'objet pour les plantes
 
 // son
-SoundFile test;
+SoundFile backgroundSon01;
 
 // // fonctions // //
 // set up //
@@ -51,27 +59,41 @@ void setup() {
 
     // plantes
     // // images
-    // plantes[i] = loadImage("img/plantes/" + i + ".png"); // charge l'image plante_01 dans la variable éponyme
+    plantes = new Plante[planteQte];
+
+    for (int i = 0; i < planteQte; i++) {
+        int planteIndex = int(random(3));
+        plantes[i] = new Plante(planteIndex);
+    }
     
-    
-    test = new SoundFile(this, "sons/chord_progression_loop.wav");
-    test.play();
-    test.loop();
+    backgroundSon01 = new SoundFile(this, "sons/chord_progression_loop.wav");
+    backgroundSon01.play();
+    backgroundSon01.loop();
 }
 
 // draw // 
 void draw() {
     // général
-    background(0, 0, 0); // donne une couleur à l'arrière plan
+    background(noir); // donne une couleur à l'arrière plan
 
     // joueur
     joueur.display(); // appel la méthode display de l'objet joueur
     
-    for (int y = 0; y < height; y += plante_01.height) {
-    image(plante_01, 0, y); // Dessiner l'image sur le côté gauche de la fenêtre
+    // plantes
+    for (int y = 0; y < height; y += height/planteQte) {
+        println(y);
+        for ( int x = 0; x < width; x += width/planteQte) {
+            for (int i = 0; i < planteQte; i++) {
+                plantes[i].display(x, y);
+            }
+        }
     }
     
-    for (int y = 0; y < height; y += plante_02.height) {
-    image(plante_02, width - plante_02.width, y); // Dessiner l'image sur le côté droit de la fenêtre
-    }
+    // for (int y = 0; y < height; y += plante_01.height) {
+    // image(plante_01, 0, y); // Dessiner l'image sur le côté gauche de la fenêtre
+    // }
+    
+    // for (int y = 0; y < height; y += plante_02.height) {
+    // image(plante_02, width - plante_02.width, y); // Dessiner l'image sur le côté droit de la fenêtre
+    // }
 }
