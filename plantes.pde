@@ -2,18 +2,18 @@ class Plante {
     // int x;
     // int y;
     int planteIndex;
-    int offsetValue = 100;
+    int offsetValue;
     int offset; 
     // image
     PImage[] plantesImage = new PImage[3]; // déclare une variable pour y storer une image
 
 
-    Plante(int planteI) {
+    Plante(int planteI, int offsetValue) {
         // this.x = x;
         // this.y = y;
 
         this.planteIndex = planteI;
-
+        offsetValue = this.offsetValue;
         offset = int(random(offsetValue * -1, offsetValue));
 
         // image

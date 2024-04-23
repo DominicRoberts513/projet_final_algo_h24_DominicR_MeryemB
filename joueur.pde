@@ -27,15 +27,17 @@ class Joueur {
     }
 
     void move() { //sert à faire bouger le joueur
+
+        // fait bouger le joueur
         if (keyPressed == true) {
             if (key == CODED) {
                 if (keyCode == UP) { // fait bouger le joueur par en haut
-                    if (y > 0) {
+                    if (y > height/5) {
                         y = y - ySpeed;
                     } 
                 }
                 if (keyCode == DOWN) { // fait bouger le joueur par en bas
-                    if (y < height) {
+                    if (y < height/5 * 4) {
                         y = y + ySpeed;
                     }
                 }
@@ -51,5 +53,26 @@ class Joueur {
                 }
             }
         }
+
+        // intéragit avec le défilement
+        if (y <= height/5) {
+            pTop = true;
+        } else {
+            pTop = false;
+        }
+
+        if (y >= height/5 * 4) {
+            pBot = true;
+        } else {
+            pBot = false;
+        }
+    }
+
+    void interact() {
+        /*
+        ** si le joueur est proche dune technologie. un signal visuel et sonore? apparait
+        ** calcul la disstance entre le joueur et les technologie
+        ** sous une certaine distance le signal apparait
+        */
     }
 }

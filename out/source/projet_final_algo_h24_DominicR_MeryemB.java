@@ -25,10 +25,16 @@ public class projet_final_algo_h24_DominicR_MeryemB extends PApplet {
 ** 
 */
 
+// // librairie // //
+// sound //
 
 
 // // variables // //
 // général //
+int jardinLenght; // déclare une variable pour storer la longueur du jardin
+int jardinY; // déclare une variable pour enregistrer la coordonée y du jardin
+int jardinYSubDiv = 8; // sous division en y du jardin
+int jardinXSubDiv = 7; // sous division en x du jardin
 
 // couleurs //
 int noir = color(49, 1, 11);
@@ -45,12 +51,17 @@ float pX; // déclare une variable pour la position en x du joueur
 float pY; // déclare une variable pour la position en y du joueur
 float pS = 5; // déclare une variable pour la vitesse de déplacement du joueur
 
+// défilement
+boolean pTop = false;
+boolean pBot = false;
+
 // objet
 Joueur joueur; // déclare l'objet joueur
 
 // plantes //
 // quantité
 int planteQte = 5;
+int planteOffset = 100;
 
 // position
 int planteX; // déclare une variable pour la position en x de la plante
@@ -68,10 +79,14 @@ public void setup() {
     // général
     /* size commented out by preprocessor */; // donne la grosseur à la fenêtre
 
+    // jardin
+    jardinLenght = height * 2; // calcul la valeur pour la longueur du jardin
+    jardinY = height - jardinLenght; // calcul la valeur y du jardin
+
     // joueur
     // // position
     pX = width/2; // donne une valeur initial à la variable pX
-    pY = height/8 * 7; // donne une valeur initial à la variable pY
+    pY = height/4 * 3; // donne une valeur initial à la variable pY
 
     // // objet
     joueur = new Joueur(pX, pY, pS); // cré un instence de l'objet joueurà
@@ -82,12 +97,14 @@ public void setup() {
 
     for (int i = 0; i < planteQte; i++) {
         int planteIndex = PApplet.parseInt(random(3));
-        plantes[i] = new Plante(planteIndex);
+        plantes[i] = new Plante(planteIndex, planteOffset);
     }
     
-    backgroundSon01 = new SoundFile(this, "sons/main_bs_02.wav");
-    backgroundSon01.play();
-    backgroundSon01.loop();
+    // music
+    // // musique de fond
+    backgroundSon01 = new SoundFile(this, "sons/main_bs_02.wav"); // charge le son dans la variable
+    backgroundSon01.play(); // fait jouer le son
+    backgroundSon01.loop(); // fait rejouer le son une fois que ce oson a terminer de jouer
 }
 
 // draw // 
@@ -99,22 +116,38 @@ public void draw() {
     joueur.display(); // appel la méthode display de l'objet joueur
     
     // plantes
-    for (int y = 0; y < height; y += height/planteQte) {
-        println(y);
-        for ( int x = 0; x < width; x += width/planteQte) {
-            for (int i = 0; i < planteQte; i++) {
-                plantes[i].display(x, y);
+    // // défilement
+
+    
+    if (pTop == true) {
+        if (jardinY != -height) {
+            jardinY = jardinY + PApplet.parseInt(pS);
+        }
+    }
+
+    if (pBot == true) {
+        if (jardinY != -height) {
+            jardinY = jardinY - PApplet.parseInt(pS);
+        }
+    }
+
+    // // bande de droite
+    for (int y = jardinY; y < jardinLenght; y += height/jardinYSubDiv) { // boucle en y
+        for ( int x = 0; x < width/3; x += (width/3)/jardinXSubDiv) { // boucle en x
+            for (int i = 0; i < planteQte; i++) { // fait apparaitre plusieurs objet en mm temps
+                plantes[i].display(x, y); // appel la methode display des objets plantes
             }
         }
     }
-    
-    // for (int y = 0; y < height; y += plante_01.height) {
-    // image(plante_01, 0, y); // Dessiner l'image sur le côté gauche de la fenêtre
-    // }
-    
-    // for (int y = 0; y < height; y += plante_02.height) {
-    // image(plante_02, width - plante_02.width, y); // Dessiner l'image sur le côté droit de la fenêtre
-    // }
+
+    // // bande de gauche
+    for (int y = jardinY; y < jardinLenght; y += height/jardinYSubDiv) { // boucle en y
+        for ( int x = width/3 * 2; x < width; x += (width/3)/jardinXSubDiv) { // boucle en x
+            for (int i = 0; i < planteQte; i++) { // fait apparaitre plusieurs objet en mm temps
+                plantes[i].display(x, y); // appel la methode display des objets plantes
+            }
+        }
+    }
 }
 class Joueur {
     // variables
@@ -145,15 +178,17 @@ class Joueur {
     }
 
     public void move() { //sert à faire bouger le joueur
+
+        // fait bouger le joueur
         if (keyPressed == true) {
             if (key == CODED) {
                 if (keyCode == UP) { // fait bouger le joueur par en haut
-                    if (y > 0) {
+                    if (y > height/5) {
                         y = y - ySpeed;
                     } 
                 }
                 if (keyCode == DOWN) { // fait bouger le joueur par en bas
-                    if (y < height) {
+                    if (y < height/5 * 4) {
                         y = y + ySpeed;
                     }
                 }
@@ -169,24 +204,45 @@ class Joueur {
                 }
             }
         }
+
+        // intéragit avec le défilement
+        if (y <= height/5) {
+            pTop = true;
+        } else {
+            pTop = false;
+        }
+
+        if (y >= height/5 * 4) {
+            pBot = true;
+        } else {
+            pBot = false;
+        }
+    }
+
+    public void interact() {
+        /*
+        ** si le joueur est proche dune technologie. un signal visuel et sonore? apparait
+        ** calcul la disstance entre le joueur et les technologie
+        ** sous une certaine distance le signal apparait
+        */
     }
 }
 class Plante {
     // int x;
     // int y;
     int planteIndex;
-    int offsetValue = 100;
+    int offsetValue;
     int offset; 
     // image
     PImage[] plantesImage = new PImage[3]; // déclare une variable pour y storer une image
 
 
-    Plante(int planteI) {
+    Plante(int planteI, int offsetValue) {
         // this.x = x;
         // this.y = y;
 
         this.planteIndex = planteI;
-
+        offsetValue = this.offsetValue;
         offset = PApplet.parseInt(random(offsetValue * -1, offsetValue));
 
         // image
@@ -203,6 +259,27 @@ class Plante {
     public int posOffset(int a) {    
         a = a + offset;
         return a;
+    }
+}
+
+
+class UI {
+
+    // constructor
+    UI() {
+
+    }
+
+    public void display() {
+
+    }
+
+    public void move() {
+
+    }
+
+    public void interact() {
+        
     }
 }
 
