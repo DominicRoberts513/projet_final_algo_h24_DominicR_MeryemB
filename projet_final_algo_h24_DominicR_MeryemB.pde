@@ -66,7 +66,8 @@ void setup() {
         plantes[i] = new Plante(planteIndex);
     }
     
-    backgroundSon01 = new SoundFile(this, "sons/chord_progression_loop.wav");
+    backgroundSon01 = new SoundFile(this, "sons/main_bs_02.wav");
+    
     backgroundSon01.play();
     backgroundSon01.loop();
 }
