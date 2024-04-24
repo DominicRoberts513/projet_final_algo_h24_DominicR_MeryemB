@@ -88,24 +88,26 @@ class Joueur {
     void interact() {
         /*
         ** si le joueur est proche dune technologie. un signal visuel et sonore? apparait
-            -- jai mis un zoom mais un signal sonore serait cool
+            -- jai mis un zoom mais un signal sonore serait cool 
+            -- coeur
         ** calcul la disstance entre le joueur et les technologie
         ** sous une certaine distance le signal apparait
         */
 
-        for( int i = 1; i <= technologies.length; i++) {
-            distTechJoueur = dist(x, y, technologies[i - 1].posX, technologies[i - 1].posY);
-            if (distTechJoueur < 200) {
-                isTechClose = true;
+        
+        for( int i = 1; i <= technologies.length; i++) { // boucle sur tout les technologies
+            distTechJoueur = dist(x, y, technologies[i - 1].posX, technologies[i - 1].posY); // calcul la distance entre les technologies
+            if (distTechJoueur < 200) { // si le joueur est a moins de 200px
+                isTechClose = true; // 
                 if (keyPressed == true) {
                     if (key == ' ') {
-                        // interagit
                         spaceKeyPressed = true;
-                    } else {
-                        spaceKeyPressed = false;
                     }
-                    println(spaceKeyPressed);
+                    
+                } else {
+                    spaceKeyPressed = false;
                 }
+                println(spaceKeyPressed);
             } else {
                 isTechClose = false;
             }
@@ -113,6 +115,5 @@ class Joueur {
                 break;
             }
         }
-
     }
 }

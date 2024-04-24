@@ -3,23 +3,21 @@ class Ui {
     int moveKeyX;
     int moveKeyY;
 
-
-
     // constructor
-    Ui() {
+    Ui() { 
         this.moveKeyX = width/6 * 5;
         this.moveKeyY = height/6 * 5;
     }
 
-    void display() {
+    void display() { // sert à faire apparaitre le
         move();
         interact();
     }
 
-    void move() {
+    void move() { // gere les touche de déplacement
         // up
         if (upKeyPressed == true) {
-            image(upKey[1], moveKeyX, moveKeyY - width/12);
+            image(upKey[1], moveKeyX, moveKeyY - width/12); 
         } else {
             image(upKey[0], moveKeyX, moveKeyY - width/12);
         }
@@ -46,7 +44,7 @@ class Ui {
         }
     }
 
-    void interact() {
+    void interact() { // gere la barre despacement pour l'interaction
         if (joueur.isTechClose == true) {
             if (spaceKeyPressed == true) {
                 image(spaceKey[1], width/2 - 150, moveKeyY);
