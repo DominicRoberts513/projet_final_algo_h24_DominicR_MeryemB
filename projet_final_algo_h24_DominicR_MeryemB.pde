@@ -18,6 +18,7 @@ int jardinYSubDiv = 8; // sous division en y du jardin
 int jardinXSubDiv = 7; // sous division en x du jardin
 int resizer = 100; // déclare une variable pour le redimensionnement des images
 int zoom = 2; // Zoom de l'écran
+
 // couleurs //
 color noir = color(49, 1, 11);
 color rouge = color(239, 60, 92);
@@ -26,6 +27,24 @@ color vert = color(34, 216, 100);
 color vert_foncee = color(68, 123, 28);
 color bleu = color(42, 135, 223);
 color bleu_pale = color(236, 248, 252);
+
+// sons //
+// arriere plan
+SoundFile backgroundSon01;
+
+// ui //
+// images
+// // move
+PImage[] upKey = new PImage[2];
+PImage[] downKey = new PImage[2];
+PImage[] leftKey = new PImage[2];
+PImage[] rightKey = new PImage[2];
+
+// // interact
+PImage[] spaceKey = new PImage[2];
+
+// objet
+Ui ui;
 
 // joueur //
 // position
@@ -38,6 +57,9 @@ boolean upKeyPressed = false;
 boolean downKeyPressed = false;
 boolean leftKeyPressed = false;
 boolean rightKeyPressed = false;
+
+// interaction
+boolean spaceKeyPressed = false;
 
 // défilement
 boolean pTop = false;
@@ -65,20 +87,52 @@ PImage[] radioImages;
 PImage[] walkmanImages;
 PImage[] tvsImages;
 
-
-
 // objet
 Plante[] plantes = new Plante[planteQte]; // déclare un tableau d'objet pour les plantes
 Technologie[] technologies = new Technologie[6]; // déclare un tableau d'objet pour les technologies
 
-// son
-SoundFile backgroundSon01;
+
 
 // // fonctions // //
 // set up //
 void setup() {
     // général
     size(1000, 800); // donne la grosseur à la fenêtre
+
+    // ui
+    // // move
+    // // // up
+    for ( int i = 1; i <= upKey.length; i++) {
+        upKey[i - 1] = loadImage ( "img/ui/up_0" + i + ".png");
+        upKey[i - 1].resize(100, 100);
+    }
+
+    // // // down
+    for ( int i = 1; i <= downKey.length; i++) {
+        downKey[i - 1] = loadImage ( "img/ui/down_0" + i + ".png");
+        downKey[i -1].resize(100, 100);
+    }
+
+    // // // left
+    for ( int i = 1; i <= leftKey.length; i++) {
+        leftKey[i - 1] = loadImage ( "img/ui/left_0" + i + ".png");
+        leftKey[i - 1].resize(100, 100);
+    }
+
+    // // // right
+    for ( int i = 1; i <= rightKey.length; i++) {
+        rightKey[i - 1] = loadImage ( "img/ui/right_0" + i + ".png");
+        rightKey[i - 1].resize(100, 100);
+    }
+
+    // // interact
+    for ( int i = 1; i <= rightKey.length; i++) {
+        spaceKey[i - 1] = loadImage ( "img/ui/space_0" + i + ".png");
+        spaceKey[i - 1].resize(300, 100);
+    }
+
+    // // objet
+    ui = new Ui();
 
     // jardin
     jardinLength = height * 2; // calcul la valeur pour la longueur du jardin
@@ -197,20 +251,26 @@ void draw() {
         }
     }
 
-    // joueur
-    joueur.display(); // appel la méthode display de l'objet joueur
-    
-    // plantes
+    // jardin
+    // // plantes
     displayGarden();
 
     resetMatrix();
 
+    // // technologies
     for (Technologie tech : technologies) {
         tech.display(1); // appel la méthode display de l'objet technologie
     }
 
+    // joueur
+    joueur.display(); // appel la méthode display de l'objet joueur
+
+    // ui
+    ui.display();
 }
 
+// jardin //
+// pour faire apparaitre le jardin
 void displayGarden() {
     scrolling();
 
@@ -235,6 +295,7 @@ void displayGarden() {
     }
 }
 
+// fait le défilement du jardin
 void scrolling() {
     if (jardinY >= height) {
      // rien ne ce passe...........   

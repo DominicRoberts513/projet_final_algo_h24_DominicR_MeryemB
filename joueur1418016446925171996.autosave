@@ -11,6 +11,8 @@ class Joueur {
     float distTechJoueur;
 
     // constructor
+    
+    
     Joueur(float x, float y, float s) {
         // variables
         this.x = x; // correspond la valeur en x qu'on donne en appelant l'objet à celle de l'instence de l'objet
@@ -95,6 +97,7 @@ class Joueur {
 
         for( int i = 1; i <= technologies.length; i++) {
             distTechJoueur = dist(x, y, technologies[i - 1].posX, technologies[i - 1].posY);
+            println(distTechJoueur);
             if (distTechJoueur < 200) {
                 isTechClose = true;
                 if (keyPressed == true) {
@@ -104,13 +107,9 @@ class Joueur {
                     } else {
                         spaceKeyPressed = false;
                     }
-                    println(spaceKeyPressed);
                 }
             } else {
                 isTechClose = false;
-            }
-            if(isTechClose == true) {
-                break;
             }
         }
 
