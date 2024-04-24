@@ -16,7 +16,6 @@ import java.io.OutputStream;
 import java.io.IOException;
 
 public class projet_final_algo_h24_DominicR_MeryemB extends PApplet {
-
 /*
 **
 ** Travail_02

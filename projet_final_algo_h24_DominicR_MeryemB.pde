@@ -57,9 +57,18 @@ int planteY; // déclare une variable pour la position en y de la plante
 
 // images
 PImage[] plantesImage = new PImage[7]; // déclare une variable pour y storer une image
+PImage[] cdPlayerImages; //idem
+PImage[] pagerImages;
+PImage[] phoneImages;
+PImage[] radioImages;
+PImage[] walkmanImages;
+PImage[] tvsImages;
+
+
 
 // objet
 Plante[] plantes = new Plante[planteQte]; // déclare un tableau d'objet pour les plantes
+Technologie[] technologies = new Technologie[6]; // déclare un tableau d'objet pour les technologies
 
 // son
 SoundFile backgroundSon01;
@@ -103,6 +112,61 @@ void setup() {
     backgroundSon01 = new SoundFile(this, "sons/main_bs_02.wav"); // charge le son dans la variable
     backgroundSon01.play(); // fait jouer le son
     backgroundSon01.loop(); // fait rejouer le son une fois que ce oson a terminer de jouer
+
+    //technologies
+    //images
+    //Mettre les images dans des tableaux afin de choisir les images selon l'interaction
+    cdPlayerImages = new PImage[5]; 
+    for (int i = 0; i < cdPlayerImages.length; i++) {
+        cdPlayerImages[i] = loadImage("img/technologies/cdplayer/cdplayer-" + (i+1) + ".png"); 
+        cdPlayerImages[i].resize(100, 100);
+    }
+
+    technologies[0] = new Technologie(cdPlayerImages, 0); // crée un objet technologie
+
+    pagerImages = new PImage[6]; 
+    for (int i = 0; i < pagerImages.length; i++) {
+        pagerImages[i] = loadImage("img/technologies/pager/pager-" + (i+1) + ".png"); 
+        pagerImages[i].resize(100, 100);
+    }
+
+    technologies[1] = new Technologie(pagerImages, 0);
+
+    phoneImages = new PImage[13]; 
+    for (int i = 0; i < phoneImages.length; i++) {
+        phoneImages[i] = loadImage("img/technologies/phone/phone-" + (i+1) + ".png"); 
+        phoneImages[i].resize(100, 100);
+    }
+
+    technologies[2] = new Technologie(phoneImages, 0);
+
+    radioImages = new PImage[8]; 
+    for (int i = 0; i < radioImages.length; i++) {
+        radioImages[i] = loadImage("img/technologies/radio/radio-" + (i+1) + ".png");
+        radioImages[i].resize(100, 100);
+    }
+    
+    technologies[3] = new Technologie(radioImages, 0);
+
+    walkmanImages = new PImage[2]; 
+    for (int i = 0; i < walkmanImages.length; i++) {
+        walkmanImages[i] = loadImage("img/technologies/walkman/walkman-" + (i+1) + ".png");
+        walkmanImages[i].resize(100, 100); 
+    }
+
+    technologies[4] = new Technologie(walkmanImages, 0); 
+
+    tvsImages = new PImage[12]; 
+    for (int i = 0; i < tvsImages.length; i++) {
+        tvsImages[i] = loadImage("img/technologies/tvs/tvs-" + (i+1) + ".png"); 
+        tvsImages[i].resize(100, 100);
+    }
+
+    technologies[5] = new Technologie(tvsImages, 0);
+
+    for (int i = 0; i < technologies.length; i++) {  //TEST : affiche les technologies
+        technologies[i].setPosition(50 + i * 100, 50);
+    }
 }
 
 // draw // 
@@ -115,6 +179,10 @@ void draw() {
     
     // plantes
     displayGarden();
+
+    for (Technologie tech : technologies) {
+        tech.display(); // appel la méthode display de l'objet technologie
+    }
 }
 
 void displayGarden() {
