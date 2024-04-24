@@ -34,24 +34,33 @@ class Joueur {
                 if (keyCode == UP) { // fait bouger le joueur par en haut
                     if (y > height/5) {
                         y = y - ySpeed;
-                    } 
+                    }
+                    upKeyPressed = true;
                 }
                 if (keyCode == DOWN) { // fait bouger le joueur par en bas
                     if (y < height/5 * 4) {
                         y = y + ySpeed;
                     }
+                    downKeyPressed = true;
                 }
                 if (keyCode == LEFT) { // fait bouger le joueur à gauche 
                     if (x > width/3) {
                         x = x - xSpeed;
                     }
+                    leftKeyPressed = true;
                 }
                 if (keyCode == RIGHT) { // fait bouger le joueur à droite
                     if (x < width/3 * 2) {
                         x = x + xSpeed;
                     }
+                    rightKeyPressed = true;
                 }
-            }
+            } 
+        } else {
+            upKeyPressed = false;
+            downKeyPressed = false;
+            leftKeyPressed = false;
+            rightKeyPressed = false;
         }
 
         // intéragit avec le défilement

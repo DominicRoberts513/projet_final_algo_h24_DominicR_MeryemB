@@ -32,6 +32,12 @@ float pX; // déclare une variable pour la position en x du joueur
 float pY; // déclare une variable pour la position en y du joueur
 float pS = 5; // déclare une variable pour la vitesse de déplacement du joueur
 
+// mouvement
+boolean upKeyPressed = false;
+boolean downKeyPressed = false;
+boolean leftKeyPressed = false;
+boolean rightKeyPressed = false;
+
 // défilement
 boolean pTop = false;
 boolean pBot = false;
@@ -41,12 +47,15 @@ Joueur joueur; // déclare l'objet joueur
 
 // plantes //
 // quantité
-int planteQte = 5;
+int planteQte = 3;
 int planteOffset = 100;
 
 // position
 int planteX; // déclare une variable pour la position en x de la plante
 int planteY; // déclare une variable pour la position en y de la plante
+
+// images
+PImage[] plantesImage = new PImage[3]; // déclare une variable pour y storer une image
 
 // objet
 Plante[] plantes = new Plante[planteQte]; // déclare un tableau d'objet pour les plantes
@@ -70,10 +79,15 @@ void setup() {
     pY = height/4 * 3; // donne une valeur initial à la variable pY
 
     // // objet
-    joueur = new Joueur(pX, pY, pS); // cré un instence de l'objet joueurà
+    joueur = new Joueur(pX, pY, pS); // cré un instence de l'objet joueur
 
     // plantes
     // // images
+    for (int i = 1; i <= 7; i++) {
+        plantesImage[i - 1] = loadImage ( "img/plantes/plante-0" + i + ".png" ); // charge les images dans le tableau d'images
+    }
+
+    // // objets
     plantes = new Plante[planteQte];
 
     for (int i = 0; i < planteQte; i++) {
@@ -97,19 +111,12 @@ void draw() {
     joueur.display(); // appel la méthode display de l'objet joueur
     
     // plantes
-    // // défilement
+    displayGarden();
+}
 
-    if (jardinY >= height) {
-        
-    } else {
-        if (pTop == true) {
-            jardinY = jardinY + int(pS);
-        }
-        if (pBot == true) {
-            jardinY = jardinY - int(pS);
-        }
-    }
-    
+void displayGarden() {
+    scrolling();
+
     // // bande de droite
     for (int y = jardinY; y < jardinLenght; y += height/jardinYSubDiv) { // boucle en y
         for ( int x = 0; x < width/3; x += (width/3)/jardinXSubDiv) { // boucle en x
@@ -125,6 +132,19 @@ void draw() {
             for (int i = 0; i < planteQte; i++) { // fait apparaitre plusieurs objet en mm temps
                 plantes[i].display(x, y); // appel la methode display des objets plantes
             }
+        }
+    }
+}
+
+void scrolling() {
+    if (jardinY >= height) {
+        
+    } else {
+        if (pTop == true && upKeyPressed == true) {
+            jardinY = jardinY + int(pS);
+        }
+        if (pBot == true && downKeyPressed == true) {
+            jardinY = jardinY - int(pS);
         }
     }
 }
