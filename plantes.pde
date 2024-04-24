@@ -24,4 +24,6 @@ class Plante {
         posX = posOffset(x);
         posY = posOffset(y);
     }
+
+    
 }

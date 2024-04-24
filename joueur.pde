@@ -4,7 +4,8 @@ class Joueur {
     float y; // déclare une variable correspondant à la position en y de l'objet
     float xSpeed; // déclare une variable correpondant à la vitesse en x de l'objet
     float ySpeed; // déclare une variable correspondant à la vitesse en y de l'objet
-
+    float radius = 20; // déclare une variable correspondant au rayon du joueur
+    
     // constructor
     Joueur(float x, float y, float s) {
         // variables
@@ -23,7 +24,7 @@ class Joueur {
         // dessine le joueur
         fill(255);
         noStroke();
-        circle(x, y, 20);
+        circle(x, y, radius);
     }
 
     void move() { //sert à faire bouger le joueur
