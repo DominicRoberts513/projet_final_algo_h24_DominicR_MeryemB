@@ -45,15 +45,15 @@ class Joueur {
                     downKeyPressed = true;
                 }
                 if (keyCode == LEFT) { // fait bouger le joueur à gauche 
-                    if (x > width/3) {
+                   // if (x > width/3) { //mis en commentaire pour tester les technologies
                         x = x - xSpeed;
-                    }
+                   // }
                     leftKeyPressed = true;
                 }
                 if (keyCode == RIGHT) { // fait bouger le joueur à droite
-                    if (x < width/3 * 2) {
+                    //if (x < width/3 * 2) { //idem
                         x = x + xSpeed;
-                    }
+                    //}
                     rightKeyPressed = true;
                 }
             } 
@@ -81,6 +81,7 @@ class Joueur {
     void interact() {
         /*
         ** si le joueur est proche dune technologie. un signal visuel et sonore? apparait
+            -- jai mis un zoom mais un signal sonore serait cool
         ** calcul la disstance entre le joueur et les technologie
         ** sous une certaine distance le signal apparait
         */

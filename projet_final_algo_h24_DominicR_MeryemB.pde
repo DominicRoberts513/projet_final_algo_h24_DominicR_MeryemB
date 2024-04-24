@@ -167,13 +167,15 @@ void setup() {
 
 
     for (int i = 0; i < technologies.length - 1; i++) {  // Boucle pour placer les technologies aléatoirement sauf la dernière
-        int randomX = int(random(50, width - 50));  // X aléatoire dans le jardin
-        int randomY = int(random(jardinY, jardinY + jardinLength));  // Y aléatoire dans le jardin
-        technologies[i].setPosition(randomX, randomY); 
+        if (i != 5) { // Sans la dernière technologie
+            int randomX = int(random(50, width - 50));  // X aléatoire dans le jardin
+            int randomY = int(random(jardinY, jardinY + jardinLength));  // Y aléatoire dans le jardin
+            technologies[i].setPosition(randomX, randomY); 
+        }
     }
 
     // Met une position fixe pour la dernière technologie
-    technologies[technologies.length - 1].setPosition(50 + (technologies.length - 1) * 100, 50);
+    technologies[5].setPosition(width/2, (-jardinLength) + jardinLength/4 ); // MON IMAGE SE MET PAS A 500 EN X ET JCOMPREND PAS
 }
 
 // draw // 
@@ -190,6 +192,8 @@ void draw() {
             scale(zoom); // Zoom l'écran
             translate(-tech.posX, -tech.posY); // Change l'origine de la technologie
 
+            // Affiche la technologie zoomée
+            tech.display(zoom);
         }
     }
 
@@ -202,7 +206,7 @@ void draw() {
     resetMatrix();
 
     for (Technologie tech : technologies) {
-        tech.display(); // appel la méthode display de l'objet technologie
+        tech.display(1); // appel la méthode display de l'objet technologie
     }
 
 }
