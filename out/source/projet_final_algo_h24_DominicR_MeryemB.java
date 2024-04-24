@@ -118,19 +118,17 @@ public void draw() {
     // plantes
     // // défilement
 
-    
-    if (pTop == true) {
-        if (jardinY != -height) {
+    if (jardinY >= height) {
+        
+    } else {
+        if (pTop == true) {
             jardinY = jardinY + PApplet.parseInt(pS);
         }
-    }
-
-    if (pBot == true) {
-        if (jardinY != -height) {
+        if (pBot == true) {
             jardinY = jardinY - PApplet.parseInt(pS);
         }
     }
-
+    
     // // bande de droite
     for (int y = jardinY; y < jardinLenght; y += height/jardinYSubDiv) { // boucle en y
         for ( int x = 0; x < width/3; x += (width/3)/jardinXSubDiv) { // boucle en x
@@ -284,7 +282,7 @@ class UI {
 }
 
 
-  public void settings() { size(800, 800); }
+  public void settings() { size(1000, 800); }
 
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "projet_final_algo_h24_DominicR_MeryemB" };

@@ -58,7 +58,7 @@ SoundFile backgroundSon01;
 // set up //
 void setup() {
     // général
-    size(800, 800); // donne la grosseur à la fenêtre
+    size(1000, 800); // donne la grosseur à la fenêtre
 
     // jardin
     jardinLenght = height * 2; // calcul la valeur pour la longueur du jardin
@@ -99,19 +99,17 @@ void draw() {
     // plantes
     // // défilement
 
-    
-    if (pTop == true) {
-        if (jardinY != -height) {
+    if (jardinY >= height) {
+        
+    } else {
+        if (pTop == true) {
             jardinY = jardinY + int(pS);
         }
-    }
-
-    if (pBot == true) {
-        if (jardinY != -height) {
+        if (pBot == true) {
             jardinY = jardinY - int(pS);
         }
     }
-
+    
     // // bande de droite
     for (int y = jardinY; y < jardinLenght; y += height/jardinYSubDiv) { // boucle en y
         for ( int x = 0; x < width/3; x += (width/3)/jardinXSubDiv) { // boucle en x
