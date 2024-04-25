@@ -97,7 +97,7 @@ class Joueur {
         
         for( int i = 1; i <= technologies.length; i++) { // boucle sur tout les technologies
             distTechJoueur = dist(x, y, technologies[i - 1].posX, technologies[i - 1].posY); // calcul la distance entre les technologies
-            if (distTechJoueur < 200) { // si le joueur est a moins de 200px
+            if (distTechJoueur < 80) { // si le joueur est a moins de 200px
                 isTechClose = true; // 
                 if (keyPressed == true) {
                     if (key == ' ') {

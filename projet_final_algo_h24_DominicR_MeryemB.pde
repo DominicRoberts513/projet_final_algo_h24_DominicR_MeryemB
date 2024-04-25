@@ -32,6 +32,20 @@ color bleu_pale = color(236, 248, 252);
 // sons //
 // arriere plan
 SoundFile backgroundSon01;
+SoundFile backgroundSon02;
+SoundFile backgroundfin;
+
+// technologies
+SoundFile cd;
+SoundFile pager;
+SoundFile phone;
+SoundFile radio;
+SoundFile walkman;
+
+// q sonore
+SoundFile interaction;
+SoundFile victoire;
+SoundFile echec;
 
 // ui //
 // images
@@ -43,6 +57,7 @@ PImage[] rightKey = new PImage[2];
 
 // // interact
 PImage[] spaceKey = new PImage[2];
+String interactionSouris = "Vous pouvez utiliser la souris pour interagir avec la technologie!";
 
 // objet
 Ui ui;
@@ -81,6 +96,18 @@ int planteY; // déclare une variable pour la position en y de la plante
 
 // images
 PImage[] plantesImage = new PImage[7]; // déclare une variable pour y storer une image
+
+// technologies //
+
+//position des technologies
+int randomXCD, randomYCD;  // Pour le CD 
+int randomX, randomY;  // Pour les autres technologies
+
+// bool
+boolean isCDPickedUp = false; // Vérifie si le CD est ramassé
+boolean isTechZoom = false; // vérifie si la tech est zoom
+
+// images
 PImage[] cdPlayerImages; //idem
 PImage[] pagerImages;
 PImage[] phoneImages;
@@ -107,13 +134,8 @@ Technologie radio;
 Technologie cdPlayer;
 Technologie tvs;
 
-//position des technologies
-int randomXCD, randomYCD;  // Pour le CD 
-int randomX, randomY;  // Pour les autres technologies
+// // // // // // // // // // fonctions // // // // // // // // // //
 
-boolean isCDPickedUp = false; // Vérifie si le CD est ramassé
-
-// // fonctions // //
 // set up //
 void setup() {
     // général
@@ -184,9 +206,19 @@ void setup() {
     
     // music
     // // musique de fond
-    backgroundSon01 = new SoundFile(this, "sons/main_bs_02.wav"); // charge le son dans la variable
+    backgroundSon01 = new SoundFile(this, "sons/bs_02.wav"); // charge le son dans la variable
     backgroundSon01.play(); // fait jouer le son
     backgroundSon01.loop(); // fait rejouer le son une fois que ce oson a terminer de jouer
+
+    // // technologies
+    cd = new SoundFile(this, "sons/cd_01.wav");
+    pager = new SoundFile(this, "sons/pager_01.wav");
+    phone = new SoundFile(this, "sons/phone_01.wav");
+    radio = new SoundFile(this, "sons/radio_01.wav");
+    walkman = new SoundFile(this, "sons/walkman_01.wav");
+
+    // // interaction
+    victoire = new SoundFile(this, "sons/victoire.wav");
 
     //technologies
     //images

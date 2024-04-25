@@ -2,6 +2,7 @@ class Ui {
     // position
     int moveKeyX;
     int moveKeyY;
+    int txtSz = 64;
 
     // constructor
     Ui() { 
@@ -52,6 +53,13 @@ class Ui {
             if (spaceKeyPressed == false) {
                 image(spaceKey[0], width/2 - 150, moveKeyY);
             }
+        }
+
+        if (isTechZoom == true) {
+            textSize(txtSz);
+            fill(blanc);
+            textAlign(CENTER);
+            text(interactionSouris, width/2, height/8);
         }
     }
 }
