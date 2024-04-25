@@ -7,6 +7,14 @@ class Technologie {
     boolean spacePressed = false; // true si la touche espace est pressée
     boolean spaceWasPressed = false; // true si la touche espace était pressée
     boolean highResDisplayed = false; // true si l'image haute résolution est affichée
+    Button[] buttonsPager = { // boutons pour le pager
+        new Button(335, 456, 75, 75, 1), // position x, position y, largeur, hauteur, ordre du bouton
+        new Button(439, 458, 75, 75, 2),
+        new Button(532, 456, 75, 75, 3),
+        new Button(639, 467, 75, 75, 4)
+    };
+    int[] buttonOrderPager = {3, 4, 4, 2, 1, 3, 4, 2, 3, 1, 2}; // ordre des boutons pour le pager
+    int currentOrderPagerIndex = 0; // index de l'ordre actuel
 
     Technologie(PImage[] techImages, PImage[] highResTechImages, int imageIndex) { // constructeur de la classe Technologie
         this.techImages = techImages; // images des technologies
@@ -82,5 +90,45 @@ class Technologie {
         int highResPosY = height / 2 - newHeight / 2; // position y de l'image haute résolution
 
         return x >= highResPosX && x <= highResPosX + newWidth && y >= highResPosY && y <= highResPosY + newHeight; // retourne vrai si la souris est dans l'image haute résolution
+    }
+
+    boolean isButtonClicked(int x, int y) { // vérifie si un bouton est cliqué
+        if (currentOrderPagerIndex == buttonOrderPager.length) { // Si l'ordre complet a été complété
+            return false; // fait rien
+        }
+    
+        for (Button button : buttonsPager) { 
+            if (button.isPointInside(x, y)) { // si le point est à l'intérieur du bouton
+                if (button.order == buttonOrderPager[currentOrderPagerIndex]) { // si l'ordre du bouton est correct
+                    currentOrderPagerIndex++; // incrémente l'index de l'ordre
+                    if (currentOrderPagerIndex == buttonOrderPager.length) { // Si l'ordre complet a été complété
+                        imageIndex = 5; // Change à l'image de la technologie finale
+                    } else {
+                        imageIndex = button.order; // Change à l'image du boutton cliqué
+                    }
+                } else {
+                    currentOrderPagerIndex = 0; // Reset l'ordre
+                    imageIndex = 0; // Reset l'image
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+class Button { // classe pour les boutons
+    int x, y, width, height, order; // position x, position y, largeur, hauteur, ordre du bouton
+
+    Button(int x, int y, int width, int height, int order) { // constructeur de la classe Button
+        this.x = x; // position x du bouton
+        this.y = y; // position y du bouton
+        this.width = width; // largeur du bouton
+        this.height = height; // hauteur du bouton
+        this.order = order; // ordre du bouton
+    }
+
+    boolean isPointInside(int px, int py) { // vérifie si le point est à l'intérieur du bouton
+        return px >= x - width / 2 && px <= x + width / 2 && py >= y - height / 2 && py <= y + height / 2; // retourne vrai si le point est à l'intérieur du bouton
     }
 }

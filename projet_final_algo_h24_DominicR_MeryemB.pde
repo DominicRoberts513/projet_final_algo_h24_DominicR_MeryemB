@@ -370,9 +370,15 @@ void keyReleased() {
 }
 
 void mousePressed() {
+    println("Mouse pressed at: " + mouseX + ", " + mouseY);
+
     Technologie walkman = technologies[4];  // Prendre la technologie Walkman
+    Technologie pager = technologies[1];
 
     if (walkman.isPointInHighResImage(mouseX, mouseY)) {
         walkman.imageIndex = 1;  // Change l'image du Walkman à la deuxième image
     }
+
+    pager.isButtonClicked(mouseX, mouseY); // Vérifie si le bouton de la technologie Pager est cliqué
+       
 }
