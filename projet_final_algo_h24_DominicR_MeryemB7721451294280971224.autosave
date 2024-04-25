@@ -1,4 +1,4 @@
-/*
+ /*
 **
 ** Travail_02
 ** par : Dominic & Meryem
@@ -345,6 +345,7 @@ void draw() {
 
     // ui
     ui.display();
+    println(isCDPickedUp);
 }
 
 // jardin //
@@ -394,7 +395,13 @@ void scrolling() {
     }
 }
 
+boolean isPlayerCollidingWithCD(Joueur joueur, int collisionRadius) {
+    float cdCenterX = randomXCD + cdPlayer.techImages[4].width / 2; // center of the CD
+    float cdCenterY = randomYCD + cdPlayer.techImages[4].height / 2; // center of the CD
+    float distance = dist(joueur.x, joueur.y, cdCenterX, cdCenterY); // distance between the player and the CD
 
+    return distance <= collisionRadius;
+}
 
 void keyPressed() { 
     if (key == ' ') {  // Si la touche espace est pressée
@@ -402,8 +409,8 @@ void keyPressed() {
             tech.spacePressed = true;  // Activer l'interaction
         }
 
-        if (technologies[4].isCollidingWithPlayer(joueur, 500)) { // Si le joueur est en collision avec le CD
-            isCDPickedUp = true; // Ramasser le CD
+        if (isPlayerCollidingWithCD(joueur, 100)) { // Adjust the collision radius as needed
+            isCDPickedUp = true;
         }
     }
 }
@@ -426,4 +433,3 @@ void mousePressed() {
     pager.isButtonClicked(mouseX, mouseY); // Vérifie si le bouton de la technologie Pager est cliqué
        
 }
-
