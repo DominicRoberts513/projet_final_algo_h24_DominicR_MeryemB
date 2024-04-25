@@ -368,3 +368,11 @@ void keyReleased() {
         }
     }
 }
+
+void mousePressed() {
+    Technologie walkman = technologies[4];  // Prendre la technologie Walkman
+
+    if (walkman.isPointInHighResImage(mouseX, mouseY)) {
+        walkman.imageIndex = 1;  // Change l'image du Walkman à la deuxième image
+    }
+}

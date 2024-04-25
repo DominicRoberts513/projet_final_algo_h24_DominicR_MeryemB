@@ -70,4 +70,17 @@ class Technologie {
         float techCenterY = this.posY + techImages[imageIndex].height / 2;
         return dist(techCenterX, techCenterY, joueur.x, joueur.y) <= collisionRadius; // distance entre le centre de la technologie et le joueur
     }
+
+    boolean isPointInHighResImage(int x, int y) { // vérifie si la souris est dans l'image haute résolution
+        if (!highResDisplayed) { // si l'image haute résolution n'est pas affichée
+            return false; // retourne faux
+        }
+
+        int newWidth = highResTechImages[imageIndex].width; // largeur de l'image haute résolution
+        int newHeight = highResTechImages[imageIndex].height; // hauteur de l'image haute résolution
+        int highResPosX = width / 2 - newWidth / 2; // position x    de l'image haute résolution
+        int highResPosY = height / 2 - newHeight / 2; // position y de l'image haute résolution
+
+        return x >= highResPosX && x <= highResPosX + newWidth && y >= highResPosY && y <= highResPosY + newHeight; // retourne vrai si la souris est dans l'image haute résolution
+    }
 }
