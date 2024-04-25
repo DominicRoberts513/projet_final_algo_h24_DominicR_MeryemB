@@ -107,7 +107,7 @@ class Joueur {
                 } else {
                     spaceKeyPressed = false;
                 }
-                println(spaceKeyPressed);
+                //println(spaceKeyPressed);
             } else {
                 isTechClose = false;
             }

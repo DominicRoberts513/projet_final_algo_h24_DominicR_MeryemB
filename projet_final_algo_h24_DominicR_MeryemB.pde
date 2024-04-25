@@ -17,7 +17,8 @@ int jardinY; // déclare une variable pour enregistrer la coordonée y du jardin
 int jardinYSubDiv = 8; // sous division en y du jardin
 int jardinXSubDiv = 7; // sous division en x du jardin
 int resizer = 100; // déclare une variable pour le redimensionnement des images
-int zoom = 2; // Zoom de l'écran
+int resizerHighRes = 600; // déclare une variable pour le redimensionnement des images en haute résolution
+int collisionRadius = 100; // Rayon de collision
 
 // couleurs //
 color noir = color(49, 1, 11);
@@ -35,7 +36,7 @@ SoundFile backgroundSon01;
 // ui //
 // images
 // // move
-PImage[] upKey = new PImage[2];
+PImage[] upKey = new PImage[2]; 
 PImage[] downKey = new PImage[2];
 PImage[] leftKey = new PImage[2];
 PImage[] rightKey = new PImage[2];
@@ -53,7 +54,7 @@ float pY; // déclare une variable pour la position en y du joueur
 float pS = 5; // déclare une variable pour la vitesse de déplacement du joueur
 
 // mouvement
-boolean upKeyPressed = false;
+boolean upKeyPressed = false; 
 boolean downKeyPressed = false;
 boolean leftKeyPressed = false;
 boolean rightKeyPressed = false;
@@ -86,6 +87,14 @@ PImage[] phoneImages;
 PImage[] radioImages;
 PImage[] walkmanImages;
 PImage[] tvsImages;
+
+//images des technologies en high res pour l'affichage en gros des technologies
+PImage[] cdPlayerImagesHighRes;
+PImage[] pagerImagesHighRes;
+PImage[] phoneImagesHighRes;    
+PImage[] radioImagesHighRes;
+PImage[] walkmanImagesHighRes;
+PImage[] tvsImagesHighRes;
 
 // objet
 Plante[] plantes = new Plante[planteQte]; // déclare un tableau d'objet pour les plantes
@@ -171,60 +180,104 @@ void setup() {
     //technologies
     //images
     //Mettre les images dans des tableaux afin de choisir les images selon l'interaction
-    cdPlayerImages = new PImage[5]; 
+    cdPlayerImages = new PImage[5]; // Crée un tableau d'images pour le cdPlayer
+    cdPlayerImagesHighRes = new PImage[5]; // Crée un tableau d'images pour le cdPlayer en haute résolution
     for (int i = 0; i < cdPlayerImages.length; i++) {
-        cdPlayerImages[i] = loadImage("img/technologies/cdplayer/cdplayer-" + (i+1) + ".png"); 
-        cdPlayerImages[i].resize(resizer, resizer);
+        cdPlayerImages[i] = loadImage("img/technologies/cdplayer/cdplayer-" + (i+1) + ".png"); // Charge les images dans le tableau d'images
+        cdPlayerImages[i].resize(resizer, resizer); // Redimensionne les images
+
+        cdPlayerImagesHighRes[i] = loadImage("img/technologies/cdplayer/cdplayer-" + (i+1) + ".png");
+        cdPlayerImagesHighRes[i].resize(resizerHighRes, resizerHighRes); // Redimensionne les images en haute résolution
     }
 
-    technologies[0] = new Technologie(cdPlayerImages, 0); // crée un objet technologie
+    technologies[0] = new Technologie(cdPlayerImages, cdPlayerImagesHighRes, 0); // crée un objet technologie
 
     pagerImages = new PImage[6]; 
+    pagerImagesHighRes = new PImage[6];
     for (int i = 0; i < pagerImages.length; i++) {
         pagerImages[i] = loadImage("img/technologies/pager/pager-" + (i+1) + ".png"); 
         pagerImages[i].resize(resizer, resizer);
+
+        pagerImagesHighRes[i] = loadImage("img/technologies/pager/pager-" + (i+1) + ".png");
+        pagerImagesHighRes[i].resize(resizerHighRes, resizerHighRes);
     }
 
-    technologies[1] = new Technologie(pagerImages, 0);
+    technologies[1] = new Technologie(pagerImages, pagerImagesHighRes, 0);
 
     phoneImages = new PImage[13]; 
+    phoneImagesHighRes = new PImage[13];
     for (int i = 0; i < phoneImages.length; i++) {
         phoneImages[i] = loadImage("img/technologies/phone/phone-" + (i+1) + ".png"); 
         phoneImages[i].resize(resizer, resizer);
+        
+        phoneImagesHighRes[i] = loadImage("img/technologies/phone/phone-" + (i+1) + ".png");
+        phoneImagesHighRes[i].resize(resizerHighRes, resizerHighRes);
     }
 
-    technologies[2] = new Technologie(phoneImages, 0);
+    technologies[2] = new Technologie(phoneImages, phoneImagesHighRes, 0);
 
     radioImages = new PImage[8]; 
+    radioImagesHighRes = new PImage[8];
     for (int i = 0; i < radioImages.length; i++) {
         radioImages[i] = loadImage("img/technologies/radio/radio-" + (i+1) + ".png");
         radioImages[i].resize(resizer, resizer);
+
+        radioImagesHighRes[i] = loadImage("img/technologies/radio/radio-" + (i+1) + ".png");
+        radioImagesHighRes[i].resize(resizerHighRes, resizerHighRes);
     }
     
-    technologies[3] = new Technologie(radioImages, 0);
+    technologies[3] = new Technologie(radioImages, radioImagesHighRes, 0);
 
     walkmanImages = new PImage[2]; 
+    walkmanImagesHighRes = new PImage[2];
     for (int i = 0; i < walkmanImages.length; i++) {
         walkmanImages[i] = loadImage("img/technologies/walkman/walkman-" + (i+1) + ".png");
-        walkmanImages[i].resize(resizer, resizer); 
+        walkmanImages[i].resize(resizer, resizer);
+
+        walkmanImagesHighRes[i] = loadImage("img/technologies/walkman/walkman-" + (i+1) + ".png");
+        walkmanImagesHighRes[i].resize(resizerHighRes, resizerHighRes); 
     }
 
-    technologies[4] = new Technologie(walkmanImages, 0); 
+    technologies[4] = new Technologie(walkmanImages, walkmanImagesHighRes, 0); 
 
     tvsImages = new PImage[12]; 
+    tvsImagesHighRes = new PImage[12];
     for (int i = 0; i < tvsImages.length; i++) {
         tvsImages[i] = loadImage("img/technologies/tvs/tvs-" + (i+1) + ".png"); 
         tvsImages[i].resize(resizer, resizer);
+
+        tvsImagesHighRes[i] = loadImage("img/technologies/tvs/tvs-" + (i+1) + ".png");
+        tvsImagesHighRes[i].resize(resizerHighRes, resizerHighRes);
     }
 
-    technologies[5] = new Technologie(tvsImages, 0);
+    technologies[5] = new Technologie(tvsImages, tvsImagesHighRes, 0);
 
 
-    for (int i = 0; i < technologies.length - 1; i++) {  // Boucle pour placer les technologies aléatoirement sauf la dernière
-        if (i != 5) { // Sans la dernière technologie
-            int randomX = int(random(50, width - 50));  // X aléatoire dans le jardin
-            int randomY = int(random(jardinY, jardinY + jardinLength));  // Y aléatoire dans le jardin
-            technologies[i].setPosition(randomX, randomY); 
+    for (int i = 0; i < technologies.length - 1; i++) {  // Boucle pour les 5 premières technologies
+        if (i != 5) { // Sauf pour la dernière technologie
+            int randomX, randomY;
+            boolean isTooClose;
+
+            do {
+                isTooClose = false;
+
+                // Générer une position aléatoire pour la technologie
+                randomX = int(random(50, width - 50));
+                randomY = int(random(jardinY, jardinY + jardinLength));
+
+                // Calculer la distance entre la technologie et les autres technologies
+                for (int j = 0; j < i; j++) {
+                    float distance = dist(randomX, randomY, technologies[j].posX, technologies[j].posY);
+
+                    if (distance < 500) {  // Si la distance est inférieure à 500 pixels
+                        isTooClose = true;
+                        break;
+                    }
+                }
+            } while (isTooClose); // Répéter la génération de position aléatoire jusqu'à ce que la technologie soit assez éloignée des autres
+
+            // Mettre la position aléatoire à la technologie
+            technologies[i].setPosition(randomX, randomY);
         }
     }
 
@@ -235,31 +288,15 @@ void setup() {
 // draw // 
 void draw() {
     // général
-    int collisionRadius = 50; // Met le rayon de collision à 50 pixels
     background(noir); // donne une couleur à l'arrière plan
-   
-
-    for (Technologie tech : technologies) {
-        if (tech.isCollidingWithPlayer(joueur, collisionRadius)) { // Vérifie si une collision est détectée
-            println("Zoom!");
-            translate(width / 2, height / 2); // Change l'origine de l'écran
-            scale(zoom); // Zoom l'écran
-            translate(-tech.posX, -tech.posY); // Change l'origine de la technologie
-
-            // Affiche la technologie zoomée
-            tech.display(zoom);
-        }
-    }
 
     // jardin
     // // plantes
     displayGarden();
 
-    resetMatrix();
-
-    // // technologies
+    // Afficher les technologies
     for (Technologie tech : technologies) {
-        tech.display(1); // appel la méthode display de l'objet technologie
+        tech.display(joueur, tech.posX, tech.posY);
     }
 
     // joueur
@@ -300,12 +337,13 @@ void scrolling() {
     if (jardinY >= height) {
      // rien ne ce passe...........   
     } else {
-        if (pTop == true && upKeyPressed == true) {
+        if (pTop == true && upKeyPressed == true) { 
             jardinY = jardinY + int(pS);
             for (Technologie tech : technologies) {
                 tech.move(0, int(pS)); // Bouge les technologies vers le bas
             }
         }
+
         if (pBot == true && downKeyPressed == true) {
             jardinY = jardinY - int(pS);
             for (Technologie tech : technologies) {
@@ -315,3 +353,18 @@ void scrolling() {
     }
 }
 
+void keyPressed() { 
+    if (key == ' ') {  // Si la touche espace est pressée
+        for (Technologie tech : technologies) { // Pour chaque technologie
+            tech.spacePressed = true;  // Activer l'interaction
+        }
+    }
+}
+
+void keyReleased() {
+    if (key == ' ') { 
+        for (Technologie tech : technologies) { 
+            tech.spacePressed = false; 
+        }
+    }
+}
