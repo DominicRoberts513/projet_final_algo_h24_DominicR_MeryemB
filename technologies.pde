@@ -15,6 +15,15 @@ class Technologie {
     };
     int[] buttonOrderPager = {3, 4, 4, 2, 1, 3, 4, 2, 3, 1, 2}; // ordre des boutons pour le pager
     int currentOrderPagerIndex = 0; // index de l'ordre actuel
+    Button[] buttonsRadio = { // boutons pour le pager
+        new Button(479, 476, 50, 50, 1), // position x, position y, largeur, hauteur, ordre du bouton
+        new Button(499, 473, 50, 50, 2),
+        new Button(528, 471, 50, 50, 3),
+        new Button(554, 469, 50, 50, 4),
+        new Button(583, 468, 50, 50, 5),
+        new Button(605, 466, 50, 50, 6),
+        new Button(636, 465, 50, 50, 7)
+    };
 
     Technologie(PImage[] techImages, PImage[] highResTechImages, int imageIndex) { // constructeur de la classe Technologie
         this.techImages = techImages; // images des technologies
@@ -98,11 +107,12 @@ class Technologie {
         }
     
         for (Button button : buttonsPager) { 
-            if (button.isPointInside(x, y)) { // si le point est à l'intérieur du bouton
+            if (button.isMouseInside(x, y)) { // si le point est à l'intérieur du bouton
                 if (button.order == buttonOrderPager[currentOrderPagerIndex]) { // si l'ordre du bouton est correct
                     currentOrderPagerIndex++; // incrémente l'index de l'ordre
                     if (currentOrderPagerIndex == buttonOrderPager.length) { // Si l'ordre complet a été complété
                         imageIndex = 5; // Change à l'image de la technologie finale
+                        sonPager.play(); // Joue le son du pager
                     } else {
                         imageIndex = button.order; // Change à l'image du boutton cliqué
                     }
@@ -128,7 +138,7 @@ class Button { // classe pour les boutons
         this.order = order; // ordre du bouton
     }
 
-    boolean isPointInside(int px, int py) { // vérifie si le point est à l'intérieur du bouton
+    boolean isMouseInside(int px, int py) { // vérifie si la souris est à l'intérieur du bouton
         return px >= x - width / 2 && px <= x + width / 2 && py >= y - height / 2 && py <= y + height / 2; // retourne vrai si le point est à l'intérieur du bouton
     }
 }

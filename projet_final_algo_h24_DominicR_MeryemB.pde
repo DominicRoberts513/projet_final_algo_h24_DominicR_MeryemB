@@ -28,7 +28,7 @@ color vert = color(34, 216, 100);
 color vert_foncee = color(68, 123, 28);
 color bleu = color(42, 135, 223);
 color bleu_pale = color(236, 248, 252);
-color blanc = color(0, 0, 0);
+color blanc = color(255, 255, 255);
 
 // sons //
 // arriere plan
@@ -58,7 +58,7 @@ PImage[] rightKey = new PImage[2];
 
 // // interact
 PImage[] spaceKey = new PImage[2];
-String interactionSourisUi = "Vous pouvez utiliser la souris pour interagir avec la technologie!";
+String interactionSourisUi = "Utilisez la souris pour intéragir avec la technologie!";
 
 // objet
 Ui ui;
@@ -369,9 +369,13 @@ void draw() {
     }
 
     if (isCDPickedUp) {
+        if (cdPlayer.techImages[4] != null) {
             image(cdPlayer.techImages[4], 0, 0); // Afficher le CD
+        }
     } else {
+        if (cdPlayer.techImages[4] != null) {
             image(cdPlayer.techImages[4], randomXCD, randomYCD + jardinY); // Afficher le CD
+        }
     }
 
     // joueur
@@ -379,7 +383,6 @@ void draw() {
 
     // ui
     ui.display();
-    println(isCDPickedUp);
 }
 
 // jardin //
@@ -481,12 +484,38 @@ void keyReleased() {
 }
 
 void mousePressed() {
-    println("Mouse pressed at: " + mouseX + ", " + mouseY);
+    println("Mouse pressed at: " + mouseX + ", " + mouseY);`
 
     if (walkman.isPointInHighResImage(mouseX, mouseY)) {
-        walkman.imageIndex = 1;  // Change l'image du Walkman à la deuxième image
+        walkman.imageIndex = 1;  // Change l'image du Walkman à la deuxième image 
+        sonWalkman.play(); // Joue le son du Walkman
+    }
+
+    if (cdPlayer.isPointInHighResImage(mouseX, mouseY) && isCDPickedUp && cdPlayer.imageIndex != 3) { //Si le CD est ramassé et que l'image du Cdplayer n'est pas la 4e image et que la souris est sur l'image du Cdplayer
+        cdPlayer.imageIndex += 1;  // Change l'image du Cdplayer à la prochaine image si le CD est ramassé
+        if (cdPlayer.imageIndex == 1) {
+            cdPlayer.techImages[4] = null; // Enlève l'image du CD
+        }
+
+        if(cdPlayer.imageIndex == 3) {
+            sonCd.play(); // Joue le son du CD
+        }
+    }
+
+    if (phone.isPointInHighResImage(mouseX, mouseY) && phone.imageIndex != 12) {
+        phone.imageIndex += 1;  // Change l'image du Phone à la prochaine image
+        if (phone.imageIndex == 12) {
+            sonPhone.play(); // Joue le son du Phone
+        }
+    }
+
+    if(radio.isPointInHighResImage(mouseX, mouseY) && radio.imageIndex != 7) {
+        radio.imageIndex += 1;  // Change l'image de la Radio à la prochaine image
+        if (radio.imageIndex == 7) {
+            sonRadio.play(); // Joue le son de la Radio
+        }
     }
 
     pager.isButtonClicked(mouseX, mouseY); // Vérifie si le bouton de la technologie Pager est cliqué
-       
+   
 }
