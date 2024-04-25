@@ -345,6 +345,7 @@ void draw() {
 
     // ui
     ui.display();
+    println(isCDPickedUp);
 }
 
 // jardin //
@@ -402,7 +403,7 @@ void keyPressed() {
             tech.spacePressed = true;  // Activer l'interaction
         }
 
-        if (technologies[4].isCollidingWithPlayer(joueur, 500)) { // Si le joueur est en collision avec le CD
+        if (technologies[4].isCollidingWithPlayer(joueur, 1000)) { // Si le joueur est en collision avec le CD
             isCDPickedUp = true; // Ramasser le CD
         }
     }
@@ -426,4 +427,3 @@ void mousePressed() {
     pager.isButtonClicked(mouseX, mouseY); // Vérifie si le bouton de la technologie Pager est cliqué
        
 }
-
