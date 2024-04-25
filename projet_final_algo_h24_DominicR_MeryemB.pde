@@ -14,7 +14,7 @@ import processing.sound.*;
 // général //
 int jardinLength; // déclare une variable pour storer la longueur du jardin
 int jardinY; // déclare une variable pour enregistrer la coordonée y du jardin
-int jardinYSubDiv = 8; // sous division en y du jardin
+int jardinYSubDiv = 5; // sous division en y du jardin
 int jardinXSubDiv = 7; // sous division en x du jardin
 int resizer = 100; // déclare une variable pour le redimensionnement des images
 int resizerHighRes = 600; // déclare une variable pour le redimensionnement des images en haute résolution
@@ -28,24 +28,25 @@ color vert = color(34, 216, 100);
 color vert_foncee = color(68, 123, 28);
 color bleu = color(42, 135, 223);
 color bleu_pale = color(236, 248, 252);
+color blanc = color(0, 0, 0);
 
 // sons //
 // arriere plan
-SoundFile backgroundSon01;
-SoundFile backgroundSon02;
-SoundFile backgroundfin;
+SoundFile sonArriere_01;
+SoundFile sonArriere_02;
+SoundFile sonArriere_03;
 
 // technologies
-SoundFile cd;
-SoundFile pager;
-SoundFile phone;
-SoundFile radio;
-SoundFile walkman;
+SoundFile sonCd;
+SoundFile sonPager;
+SoundFile sonPhone;
+SoundFile sonRadio;
+SoundFile sonWalkman;
 
 // q sonore
-SoundFile interaction;
-SoundFile victoire;
-SoundFile echec;
+SoundFile sonInteraction;
+SoundFile sonVictoire;
+SoundFile sonEchec;
 
 // ui //
 // images
@@ -57,7 +58,7 @@ PImage[] rightKey = new PImage[2];
 
 // // interact
 PImage[] spaceKey = new PImage[2];
-String interactionSouris = "Vous pouvez utiliser la souris pour interagir avec la technologie!";
+String interactionSourisUi = "Vous pouvez utiliser la souris pour interagir avec la technologie!";
 
 // objet
 Ui ui;
@@ -86,9 +87,10 @@ Joueur joueur; // déclare l'objet joueur
 
 // plantes //
 // quantité
-int planteQte = 5;
-int planteOffset = 100;
-int offsetValue;
+int planteQte = 4;
+int planteOffset = 25;
+int[] offsetValue = new int[planteQte];
+int[] planteImageIndex = new int[7];
 
 // position
 int planteX; // déclare une variable pour la position en x de la plante
@@ -198,27 +200,27 @@ void setup() {
     // // objets
     plantes = new Plante[planteQte]; // crée une quantité d'objet plante
 
-    for (int i = 0; i < planteQte; i++) { // appel les constructors
-        int planteIndex = int(random(7));
-        offsetValue = int(random(planteOffset * -1, planteOffset));
-        plantes[i] = new Plante(planteIndex, offsetValue);
+    for (int i = 0; i < planteQte; i++) { // appel les constructors et remplie les tableau de valeurs
+        planteImageIndex[i] = int(random(7));
+        offsetValue[i] = int(random(planteOffset * -1, planteOffset));
+        plantes[i] = new Plante(offsetValue[i]);
     }
     
     // music
     // // musique de fond
-    backgroundSon01 = new SoundFile(this, "sons/bs_02.wav"); // charge le son dans la variable
-    backgroundSon01.play(); // fait jouer le son
-    backgroundSon01.loop(); // fait rejouer le son une fois que ce oson a terminer de jouer
+    sonArriere_01 = new SoundFile(this, "sons/bs_02.wav"); // charge le son dans la variable
+    sonArriere_01.play(); // fait jouer le son
+    sonArriere_01.loop(); // fait rejouer le son une fois que ce oson a terminer de jouer
 
     // // technologies
-    cd = new SoundFile(this, "sons/cd_01.wav");
-    pager = new SoundFile(this, "sons/pager_01.wav");
-    phone = new SoundFile(this, "sons/phone_01.wav");
-    radio = new SoundFile(this, "sons/radio_01.wav");
-    walkman = new SoundFile(this, "sons/walkman_01.wav");
+    sonCd = new SoundFile(this, "sons/cd_01.wav");
+    sonPager = new SoundFile(this, "sons/pager_01.wav");
+    sonPhone = new SoundFile(this, "sons/phone_01.wav");
+    sonRadio = new SoundFile(this, "sons/radio_01.wav");
+    sonWalkman = new SoundFile(this, "sons/walkman_01.wav");
 
     // // interaction
-    victoire = new SoundFile(this, "sons/victoire.wav");
+    sonVictoire = new SoundFile(this, "sons/victoire.wav");
 
     //technologies
     //images
@@ -321,7 +323,7 @@ void setup() {
                         isTooClose = true;
                         break;
                     }
-                }
+                } 
                 
             } while (isTooClose); // Répéter la génération de position aléatoire jusqu'à ce que la technologie soit assez éloignée des autres
 
@@ -385,22 +387,51 @@ void draw() {
 void displayGarden() {
     scrolling();
 
+    int xOffset;
+    int yOffset;
+
     // // bande de droite
+    int indexDroit = 0;
     for (int y = jardinY; y < jardinLength; y += height/jardinYSubDiv) { // boucle en y
-        for ( int x = 0; x < width/3; x += (width/3)/jardinXSubDiv) { // boucle en x
+        for ( int x = -width/5; x < width/3; x += (width/3)/jardinXSubDiv) { // boucle en x
             for (int i = 0; i < planteQte; i++) { // fait apparaitre plusieurs objet en mm temps
-                plantes[i].updatePosition(x, y);
-                plantes[i].display(); // appel la methode display des objets plantes
+                // image index
+                if (indexDroit < planteQte) {
+                    indexDroit++;
+                } else {
+                    indexDroit = 0;
+                }
+                
+                // position
+                xOffset = i * offsetValue[i];
+                yOffset = i * offsetValue[i];
+                plantes[i].updatePosition(x + xOffset, y + yOffset);
+                
+                // display
+                plantes[i].display(planteImageIndex[indexDroit]); // appel la methode display des objets plantes
             }
         }
     }
 
     // // bande de gauche
-    for (int y = jardinY; y < jardinLength; y += height/jardinYSubDiv) { // boucle en y
-        for ( int x = width/3 * 2; x < width; x += (width/3)/jardinXSubDiv) { // boucle en x
+    int indexGauche = 0;
+    for (int y = jardinY; y < jardinLength; y += height/jardinYSubDiv) { // boucle en y;
+        for ( int x = width/3 * 2; x < width + width/5; x += (width/3)/jardinXSubDiv) { // boucle en x
             for (int i = 0; i < planteQte; i++) { // fait apparaitre plusieurs objet en mm temps
-                plantes[i].updatePosition(x, y);
-                plantes[i].display(); // appel la methode display des objets plantes
+                // image index
+                if (indexGauche < planteQte) {
+                    indexGauche++;
+                } else {
+                    indexGauche = 0;
+                }
+                
+                // position
+                xOffset = i * offsetValue[i];
+                yOffset = i * offsetValue[i];
+                plantes[i].updatePosition(x + xOffset, y + yOffset);
+                
+                // display
+                plantes[i].display(planteImageIndex[indexGauche]); // appel la methode display des objets plantes
             }
         }
     }
@@ -408,16 +439,16 @@ void displayGarden() {
 
 // fait le défilement du jardin
 void scrolling() {
-    if (jardinY >= height) {
-     // rien ne ce passe...........   
-    } else {
+    if (jardinY <= height/6 * 5) {
+        
         if (pTop == true && upKeyPressed == true) { 
             jardinY = jardinY + int(pS);
             for (Technologie tech : technologies) {
                 tech.move(0, int(pS)); // Bouge les technologies vers le bas
             }
-        }
-
+        } 
+    }
+    if (jardinY >= height * -1.1) {
         if (pBot == true && downKeyPressed == true) {
             jardinY = jardinY - int(pS);
             for (Technologie tech : technologies) {

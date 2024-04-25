@@ -33,8 +33,8 @@ public class projet_final_algo_h24_DominicR_MeryemB extends PApplet {
 // général //
 int jardinLength; // déclare une variable pour storer la longueur du jardin
 int jardinY; // déclare une variable pour enregistrer la coordonée y du jardin
-int jardinYSubDiv = 8; // sous division en y du jardin
-int jardinXSubDiv = 7; // sous division en x du jardin
+int jardinYSubDiv = 6; // sous division en y du jardin
+int jardinXSubDiv = 4; // sous division en x du jardin
 int resizer = 100; // déclare une variable pour le redimensionnement des images
 int resizerHighRes = 600; // déclare une variable pour le redimensionnement des images en haute résolution
 int collisionRadius = 100; // Rayon de collision
@@ -47,10 +47,25 @@ int vert = color(34, 216, 100);
 int vert_foncee = color(68, 123, 28);
 int bleu = color(42, 135, 223);
 int bleu_pale = color(236, 248, 252);
+int blanc = color(0, 0, 0);
 
 // sons //
 // arriere plan
-SoundFile backgroundSon01;
+SoundFile sonArriere_01;
+SoundFile sonArriere_02;
+SoundFile sonArriere_03;
+
+// technologies
+SoundFile sonCd;
+SoundFile sonPager;
+SoundFile sonPhone;
+SoundFile sonRadio;
+SoundFile sonWalkman;
+
+// q sonore
+SoundFile sonInteraction;
+SoundFile sonVictoire;
+SoundFile sonEchec;
 
 // ui //
 // images
@@ -62,6 +77,7 @@ PImage[] rightKey = new PImage[2];
 
 // // interact
 PImage[] spaceKey = new PImage[2];
+String interactionSourisUi = "Vous pouvez utiliser la souris pour interagir avec la technologie!";
 
 // objet
 Ui ui;
@@ -91,8 +107,9 @@ Joueur joueur; // déclare l'objet joueur
 // plantes //
 // quantité
 int planteQte = 5;
-int planteOffset = 100;
+int planteOffset = 50;
 int offsetValue;
+int[] planteImageIndex = new int[7];
 
 // position
 int planteX; // déclare une variable pour la position en x de la plante
@@ -100,6 +117,18 @@ int planteY; // déclare une variable pour la position en y de la plante
 
 // images
 PImage[] plantesImage = new PImage[7]; // déclare une variable pour y storer une image
+
+// technologies //
+
+//position des technologies
+int randomXCD, randomYCD;  // Pour le CD 
+int randomX, randomY;  // Pour les autres technologies
+
+// bool
+boolean isCDPickedUp = false; // Vérifie si le CD est ramassé
+boolean isTechZoom = false; // vérifie si la tech est zoom
+
+// images
 PImage[] cdPlayerImages; //idem
 PImage[] pagerImages;
 PImage[] phoneImages;
@@ -125,14 +154,6 @@ Technologie phone;
 Technologie radio;
 Technologie cdPlayer;
 Technologie tvs;
-
-//position des technologies
-int randomXCD, randomYCD;  // Pour le CD 
-int randomX, randomY;  // Pour les autres technologies
-
-boolean isCDPickedUp = false; // Vérifie si le CD est ramassé
-
-
 
 // // // // // // // // // // fonctions // // // // // // // // // //
 
@@ -199,16 +220,27 @@ public void setup() {
     plantes = new Plante[planteQte]; // crée une quantité d'objet plante
 
     for (int i = 0; i < planteQte; i++) { // appel les constructors
-        int planteIndex = PApplet.parseInt(random(7));
+        planteImageIndex[i] = PApplet.parseInt(random(7));
+        
         offsetValue = PApplet.parseInt(random(planteOffset * -1, planteOffset));
-        plantes[i] = new Plante(planteIndex, offsetValue);
+        plantes[i] = new Plante(offsetValue);
     }
     
     // music
     // // musique de fond
-    backgroundSon01 = new SoundFile(this, "sons/bs_02.wav"); // charge le son dans la variable
-    backgroundSon01.play(); // fait jouer le son
-    backgroundSon01.loop(); // fait rejouer le son une fois que ce oson a terminer de jouer
+    sonArriere_01 = new SoundFile(this, "sons/bs_02.wav"); // charge le son dans la variable
+    sonArriere_01.play(); // fait jouer le son
+    sonArriere_01.loop(); // fait rejouer le son une fois que ce oson a terminer de jouer
+
+    // // technologies
+    sonCd = new SoundFile(this, "sons/cd_01.wav");
+    sonPager = new SoundFile(this, "sons/pager_01.wav");
+    sonPhone = new SoundFile(this, "sons/phone_01.wav");
+    sonRadio = new SoundFile(this, "sons/radio_01.wav");
+    sonWalkman = new SoundFile(this, "sons/walkman_01.wav");
+
+    // // interaction
+    sonVictoire = new SoundFile(this, "sons/victoire.wav");
 
     //technologies
     //images
@@ -311,7 +343,7 @@ public void setup() {
                         isTooClose = true;
                         break;
                     }
-                }
+                } 
                 
             } while (isTooClose); // Répéter la génération de position aléatoire jusqu'à ce que la technologie soit assez éloignée des autres
 
@@ -375,22 +407,51 @@ public void draw() {
 public void displayGarden() {
     scrolling();
 
+    int xOffset;
+    int yOffset;
+
     // // bande de droite
+    int indexDroit = 0;
     for (int y = jardinY; y < jardinLength; y += height/jardinYSubDiv) { // boucle en y
-        for ( int x = 0; x < width/3; x += (width/3)/jardinXSubDiv) { // boucle en x
+        for ( int x = -width/5; x < width/3; x += (width/3)/jardinXSubDiv) { // boucle en x
             for (int i = 0; i < planteQte; i++) { // fait apparaitre plusieurs objet en mm temps
-                plantes[i].updatePosition(x, y);
-                plantes[i].display(); // appel la methode display des objets plantes
+                // image index
+                if (indexDroit < planteQte) {
+                    indexDroit++;
+                } else {
+                    indexDroit = 0;
+                }
+                
+                // position
+                xOffset = i * offsetValue;
+                yOffset = i * offsetValue;
+                plantes[i].updatePosition(x + xOffset, y + yOffset);
+                
+                // display
+                plantes[i].display(planteImageIndex[indexDroit]); // appel la methode display des objets plantes
             }
         }
     }
 
     // // bande de gauche
-    for (int y = jardinY; y < jardinLength; y += height/jardinYSubDiv) { // boucle en y
-        for ( int x = width/3 * 2; x < width; x += (width/3)/jardinXSubDiv) { // boucle en x
+    int indexGauche = 0;
+    for (int y = jardinY; y < jardinLength; y += height/jardinYSubDiv) { // boucle en y;
+        for ( int x = width/3 * 2; x < width + width/5; x += (width/3)/jardinXSubDiv) { // boucle en x
             for (int i = 0; i < planteQte; i++) { // fait apparaitre plusieurs objet en mm temps
-                plantes[i].updatePosition(x, y);
-                plantes[i].display(); // appel la methode display des objets plantes
+                // image index
+                if (indexGauche < planteQte) {
+                    indexGauche++;
+                } else {
+                    indexGauche = 0;
+                }
+                
+                // position
+                xOffset = i * offsetValue;
+                yOffset = i * offsetValue;
+                plantes[i].updatePosition(x + xOffset, y + yOffset);
+                
+                // display
+                plantes[i].display(planteImageIndex[indexGauche]); // appel la methode display des objets plantes
             }
         }
     }
@@ -571,31 +632,30 @@ class Joueur {
 class Plante {
     int posX;
     int posY;
-    int planteIndex;
     int offset;
     
 
 
-    Plante(int planteI, int offsetValue) {
-        this.planteIndex = planteI;
+    Plante( int offsetValue) {
         this.offset = offsetValue;
     }
 
-    public void display() {
-        image(plantesImage[planteIndex], posX, posY);
+    public void display(int i) {
+        image(plantesImage[i], posX, posY);
     }
 
     public int posOffset(int a) {    
         a = a + offset;
+        
         return a;
     }
 
+    // update la position de la plante avec un offset
     public void updatePosition(int x, int y) {
         posX = posOffset(x);
+
         posY = posOffset(y);
     }
-
-    
 }
 class Technologie {
     int posX;
@@ -736,6 +796,7 @@ class Ui {
     // position
     int moveKeyX;
     int moveKeyY;
+    int txtSz = 64;
 
     // constructor
     Ui() { 
@@ -779,6 +840,7 @@ class Ui {
     }
 
     public void interact() { // gere la barre despacement pour l'interaction
+        // barre d'espacement
         if (joueur.isTechClose == true) {
             if (spaceKeyPressed == true) {
                 image(spaceKey[1], width/2 - 150, moveKeyY);
@@ -786,6 +848,14 @@ class Ui {
             if (spaceKeyPressed == false) {
                 image(spaceKey[0], width/2 - 150, moveKeyY);
             }
+        }
+
+        // texte
+        if (isTechZoom == true) {
+            textSize(txtSz);
+            fill(blanc);
+            textAlign(CENTER);
+            text(interactionSourisUi, width/2, height/8);
         }
     }
 }

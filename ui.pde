@@ -46,6 +46,7 @@ class Ui {
     }
 
     void interact() { // gere la barre despacement pour l'interaction
+        // barre d'espacement
         if (joueur.isTechClose == true) {
             if (spaceKeyPressed == true) {
                 image(spaceKey[1], width/2 - 150, moveKeyY);
@@ -55,11 +56,12 @@ class Ui {
             }
         }
 
+        // texte
         if (isTechZoom == true) {
             textSize(txtSz);
             fill(blanc);
             textAlign(CENTER);
-            text(interactionSouris, width/2, height/8);
+            text(interactionSourisUi, width/2, height/8);
         }
     }
 }
