@@ -88,6 +88,7 @@ PImage[] radioImages;
 PImage[] walkmanImages;
 PImage[] tvsImages;
 
+
 //images des technologies en high res pour l'affichage en gros des technologies
 PImage[] cdPlayerImagesHighRes;
 PImage[] pagerImagesHighRes;
@@ -99,8 +100,16 @@ PImage[] tvsImagesHighRes;
 // objet
 Plante[] plantes = new Plante[planteQte]; // déclare un tableau d'objet pour les plantes
 Technologie[] technologies = new Technologie[6]; // déclare un tableau d'objet pour les technologies
+Technologie walkman;  // Déclare une variable pour l'objet Walkman
+Technologie pager;    // Idem
+Technologie phone;
+Technologie radio;
+Technologie cdPlayer;
+Technologie tvs;
 
-
+//position des technologies
+int randomXCD, randomYCD;  // Pour le CD 
+int randomX, randomY;  // Pour les autres technologies
 
 // // fonctions // //
 // set up //
@@ -252,10 +261,15 @@ void setup() {
 
     technologies[5] = new Technologie(tvsImages, tvsImagesHighRes, 0);
 
+    walkman = technologies[4];  // Déclare l'objet Walkman
+    pager = technologies[1];   // Idem
+    phone = technologies[2];
+    radio = technologies[3];
+    cdPlayer = technologies[0];
+    tvs = technologies[5];
 
     for (int i = 0; i < technologies.length - 1; i++) {  // Boucle pour les 5 premières technologies
         if (i != 5) { // Sauf pour la dernière technologie
-            int randomX, randomY;
             boolean isTooClose;
 
             do {
@@ -274,15 +288,34 @@ void setup() {
                         break;
                     }
                 }
+                
             } while (isTooClose); // Répéter la génération de position aléatoire jusqu'à ce que la technologie soit assez éloignée des autres
 
             // Mettre la position aléatoire à la technologie
             technologies[i].setPosition(randomX, randomY);
         }
     }
+    
+    boolean isCDTooClose; // Vérifier si le CD est trop proche des autres technologies
+    do { 
+        isCDTooClose = false; // Initialiser la variable à faux
+    
+        randomXCD = int(random(50, width - 50));
+        randomYCD = int(random(jardinY, jardinY + jardinLength));
+    
+        // Vérifier la distance entre le CD et les autres technologies
+        for (int i = 0; i < technologies.length - 1; i++) {
+            float distance = dist(randomXCD, randomYCD, technologies[i].posX, technologies[i].posY);
+            if (distance < 500) {  // Si la distance est inférieure à 500 pixels
+                isCDTooClose = true;
+                break;
+            }
+        }
+    } while (isCDTooClose);
 
     // Met une position fixe pour la dernière technologie
     technologies[5].setPosition(width/2, (-jardinLength) + jardinLength/4 ); // MON IMAGE SE MET PAS A 500 EN X ET JCOMPREND PAS
+      
 }
 
 // draw // 
@@ -299,11 +332,15 @@ void draw() {
         tech.display(joueur, tech.posX, tech.posY);
     }
 
+    image(cdPlayer.techImages[4], randomXCD, randomYCD + jardinY); // Afficher le CD qui suit le scrolling  
+
     // joueur
     joueur.display(); // appel la méthode display de l'objet joueur
 
     // ui
     ui.display();
+
+    
 }
 
 // jardin //
@@ -371,9 +408,6 @@ void keyReleased() {
 
 void mousePressed() {
     println("Mouse pressed at: " + mouseX + ", " + mouseY);
-
-    Technologie walkman = technologies[4];  // Prendre la technologie Walkman
-    Technologie pager = technologies[1];
 
     if (walkman.isPointInHighResImage(mouseX, mouseY)) {
         walkman.imageIndex = 1;  // Change l'image du Walkman à la deuxième image
