@@ -68,7 +68,7 @@ class Technologie {
         }
     
         // Si la touche espace est pressée et qu'elle n'était pas pressée au frame précédent
-        if (spacePressed && !spaceWasPressed) {
+        if (spacePressed && !spaceWasPressed && this != technologies[5]) {
             // Si le joueur est en collision avec la technologie actuelle et que l'image haute résolution n'est pas déjà affichée
             if (isCollidingWithPlayer(joueur, collisionRadius) || highResDisplayed) {
                 // Active l'affichage de l'image haute résolution

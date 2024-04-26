@@ -47,11 +47,11 @@ class Ui {
 
     void interact() { // gere la barre despacement pour l'interaction
         // barre d'espacement
-        if (joueur.isTechClose == true || distanceToCD < 100) {
+        if (joueur.isTechClose == true || distanceToCD < 100 || (technologies[5].highResPosY > -100 && isWalkmanDone && isCdPlayerDone && isPagerDone && isPhoneDone && isRadioDone)) {
             if (spaceKeyPressed == true) {
                 image(spaceKey[1], width/2 - 150, moveKeyY);
             }
-            if (spaceKeyPressed == false || distanceToCD < 100) {
+            if (spaceKeyPressed == false) {
                 image(spaceKey[0], width/2 - 150, moveKeyY);
             }
         }

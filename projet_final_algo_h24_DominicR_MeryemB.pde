@@ -74,7 +74,7 @@ Ui ui;
 // position
 float pX; // déclare une variable pour la position en x du joueur
 float pY; // déclare une variable pour la position en y du joueur
-float pS = 5; // déclare une variable pour la vitesse de déplacement du joueur
+float pS = 10; // déclare une variable pour la vitesse de déplacement du joueur
 
 // mouvement
 boolean upKeyPressed = false; 
@@ -146,6 +146,7 @@ PImage[] tvsImagesHighRes;
 
 //vidéo de fin
 Movie theEnd;
+boolean isVideoStarted = false;
 
 // objet
 Plante[] plantes = new Plante[planteQte]; // déclare un tableau d'objet pour les plantes
@@ -248,7 +249,7 @@ void setup() {
     sonClicInteraction = new SoundFile(this, "sons/clic_interaction.wav");
     
     //fin
-    //theEnd = new Movie(this, "video/algo_t2_credits.mp4"); Not working
+    theEnd = new Movie(this, "algo_t2_credits.mp4"); 
 
     //technologies
     //images
@@ -418,7 +419,6 @@ void draw() {
 
     if (technologies[5].highResPosY > -100 && technologies[5].imageIndex >= 1 && isWalkmanDone && isCdPlayerDone && isPagerDone && isPhoneDone && isRadioDone) {
         //Si assez de temps est passé, changer l'image de la télévision 
-        println("TVS");
             if (millis() - tvsLastChange >= tvsChangeInterval && tvs.imageIndex < 9) {
                 // Changer l'image de la télévision et réinitialiser le temps
                 tvs.imageIndex += 1;
@@ -427,13 +427,18 @@ void draw() {
                 tvs.imageIndex = 10;
                 sonTV2.play();
             } 
-        }
+    }
+
+    distanceToCD = dist(joueur.x, joueur.y, randomXCD, randomYCD);
+    
     // joueur
     joueur.display(); // appel la méthode display de l'objet joueur
    
     // ui
     ui.display();
-    
+
+   
+    image(theEnd, 0, 0);
 }
 
 // jardin //
@@ -522,22 +527,17 @@ void keyPressed() {
             tech.spacePressed = true;  // Activer l'interaction
         }
 
-        distanceToCD = dist(joueur.x, joueur.y, randomXCD, randomYCD);
+        
         if (distanceToCD < 100) { // Si le joueur est en collision avec le CD
             isCDPickedUp = true; // Ramasser le CD
         }
-
-        println(technologies[5].highResPosY);
         
-        if(technologies[5].highResPosY < -100 && isWalkmanDone && isCdPlayerDone && isPagerDone && isPhoneDone && isRadioDone) {
-            tvs.imageIndex = 1;
+        if(technologies[5].highResPosY > -100 && isWalkmanDone && isCdPlayerDone && isPagerDone && isPhoneDone && isRadioDone) {
             sonTV1.play();
+            tvs.imageIndex = 1;
             sonVictoire.stop();
-            println("TV1");
         }
-    }
-
-    
+    }  
 }
 
 void keyReleased() {
@@ -581,8 +581,13 @@ void mousePressed() {
     pager.isButtonClicked(mouseX, mouseY); // Vérifie si le bouton de la technologie Pager est cliqué
     radio.isRadioClicked(mouseX, mouseY);
     
-    if(tvs.isPointInHighResImage(mouseX, mouseY) && tvs.imageIndex == 10 && isWalkmanDone && isCdPlayerDone && isPagerDone && isPhoneDone && isRadioDone) {
+    if (tvs.isPointInHighResImage(mouseX, mouseY) && tvs.imageIndex == 10 && isWalkmanDone && isCdPlayerDone && isPagerDone && isPhoneDone && isRadioDone) {
         tvs.imageIndex = 11;
         sonTV3.play();
+        theEnd.play();
     }
+}
+
+void movieEvent(Movie m) {
+  m.read();
 }
