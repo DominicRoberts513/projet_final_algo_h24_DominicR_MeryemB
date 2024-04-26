@@ -1,4 +1,4 @@
-class Technologie {
+  class Technologie {
     int posX;
     int posY;
     PImage[] techImages;
@@ -16,13 +16,13 @@ class Technologie {
     int[] buttonOrderPager = {3, 4, 4, 2, 1, 3, 4, 2, 3, 1, 2}; // ordre des boutons pour le pager
     int currentOrderPagerIndex = 0; // index de l'ordre actuel
     Button[] buttonsRadio = { // boutons pour le pager
-        new Button(467, 455, 15, 15, 0), // position x, position y, largeur, hauteur, ordre du bouton
-        new Button(499, 455, 15, 15, 1),
-        new Button(522, 455, 15, 15, 2),
-        new Button(545, 455, 15, 15, 3),
-        new Button(576, 455, 15, 15, 4),
-        new Button(610, 455, 15, 15, 5),
-        new Button(638, 455, 15, 15, 6)
+        new Button(467, 455, 10, 10, 0), // position x, position y, largeur, hauteur, ordre du bouton
+        new Button(499, 455, 10, 10, 1),
+        new Button(522, 455, 10, 10, 2),
+        new Button(545, 455, 10, 10, 3),
+        new Button(576, 455, 10, 10, 4),
+        new Button(610, 455, 10, 10, 5),
+        new Button(638, 455, 10, 10, 6)
     };
 
     Technologie(PImage[] techImages, PImage[] highResTechImages, int imageIndex) { // constructeur de la classe Technologie
@@ -129,15 +129,7 @@ class Technologie {
     boolean isRadioClicked(int x, int y) { // vérifie si un bouton est cliqué
         for (Button button : buttonsRadio) { 
             if (button.isMouseInside(x, y)) { // si le point est à l'intérieur du bouton
-                if (button.order == 5) {
-                    imageIndex = 7;
-                    sonRadio.play();
-                    return true;
-                }
-
                 imageIndex = button.order; // Change à l'image du boutton cliqué
-                println(button.order);
-                println(imageIndex);
                 return true;
             }
         }

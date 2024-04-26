@@ -44,9 +44,13 @@ SoundFile sonRadio;
 SoundFile sonWalkman;
 
 // q sonore
-SoundFile sonInteraction;
 SoundFile sonVictoire;
-SoundFile sonEchec;
+SoundFile sonClicInteraction;
+
+//son de la fin du jeu
+SoundFile sonTV1;
+SoundFile sonTV2;
+SoundFile sonTV3;
 
 // ui //
 // images
@@ -218,9 +222,15 @@ void setup() {
     sonPhone = new SoundFile(this, "sons/phone_01.wav");
     sonRadio = new SoundFile(this, "sons/radio_01.wav");
     sonWalkman = new SoundFile(this, "sons/walkman_01.wav");
+    sonTV1 = new SoundFile(this, "sons/tv_fin_01.wav");
+    sonTV2 = new SoundFile(this, "sons/tv_fin_02.wav");
+    sonTV3 = new SoundFile(this, "sons/tv_fin_03.wav");
 
     // // interaction
-    sonVictoire = new SoundFile(this, "sons/victoire.wav");
+    sonVictoire = new SoundFile(this, "sons/bs_fin.wav");
+    sonClicInteraction = new SoundFile(this, "sons/clic_interaction.wav");
+    
+    
 
     //technologies
     //images
@@ -484,8 +494,9 @@ void keyReleased() {
 }
 
 void mousePressed() {
-    println("Mouse pressed at: " + mouseX + ", " + mouseY);`
-
+    //println("Mouse pressed at: " + mouseX + ", " + mouseY);`
+    sonClicInteraction.play(); // Joue le son de l'interaction
+    
     if (walkman.isPointInHighResImage(mouseX, mouseY)) {
         walkman.imageIndex = 1;  // Change l'image du Walkman à la deuxième image 
         sonWalkman.play(); // Joue le son du Walkman
@@ -509,13 +520,8 @@ void mousePressed() {
         }
     }
 
-    if(radio.isPointInHighResImage(mouseX, mouseY) && radio.imageIndex != 7) {
-        radio.imageIndex += 1;  // Change l'image de la Radio à la prochaine image
-        if (radio.imageIndex == 7) {
-            sonRadio.play(); // Joue le son de la Radio
-        }
-    }
 
     pager.isButtonClicked(mouseX, mouseY); // Vérifie si le bouton de la technologie Pager est cliqué
+    radio.isRadioClicked(mouseX, mouseY);
    
 }
