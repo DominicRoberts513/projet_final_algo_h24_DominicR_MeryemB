@@ -47,18 +47,18 @@ class Ui {
 
     void interact() { // gere la barre despacement pour l'interaction
         // barre d'espacement
-        if (joueur.isTechClose == true) {
+        if (joueur.isTechClose == true || distanceToCD < 100) {
             if (spaceKeyPressed == true) {
                 image(spaceKey[1], width/2 - 150, moveKeyY);
             }
-            if (spaceKeyPressed == false) {
+            if (spaceKeyPressed == false || distanceToCD < 100) {
                 image(spaceKey[0], width/2 - 150, moveKeyY);
             }
         }
 
         // texte
         for (Technologie tech : technologies) {
-            if (tech.highResDisplayed) {
+            if (tech.highResDisplayed && tech != technologies[5]) {
                 textSize(txtSz);
                 fill(blanc);
                 textAlign(CENTER);

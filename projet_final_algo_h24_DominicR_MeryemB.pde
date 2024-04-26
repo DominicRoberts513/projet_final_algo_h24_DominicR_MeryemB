@@ -9,6 +9,7 @@
 // // librairie // //
 // sound //
 import processing.sound.*;
+import processing.video.*;
 
 // // variables // //
 // général //
@@ -20,13 +21,14 @@ int resizer = 100; // déclare une variable pour le redimensionnement des images
 int resizerHighRes = 600; // déclare une variable pour le redimensionnement des images en haute résolution
 int collisionRadius = 100; // Rayon de collision
 
+
 // couleurs //
 color noir = color(49, 1, 11);
 color rouge = color(239, 60, 92);
 color jaune = color(234, 234, 40);
 color vert = color(34, 216, 100);
 color vert_foncee = color(68, 123, 28);
-color bleu = color(42, 135, 223);
+color bleu = color(37, 89, 161);
 color bleu_pale = color(236, 248, 252);
 color blanc = color(255, 255, 255);
 
@@ -46,6 +48,7 @@ SoundFile sonWalkman;
 // q sonore
 SoundFile sonVictoire;
 SoundFile sonClicInteraction;
+boolean isSonVictoire = false;
 
 //son de la fin du jeu
 SoundFile sonTV1;
@@ -109,9 +112,20 @@ PImage[] plantesImage = new PImage[7]; // déclare une variable pour y storer un
 int randomXCD, randomYCD;  // Pour le CD 
 int randomX, randomY;  // Pour les autres technologies
 
+//variables pour les technologies
+int tvsLastChange = 0; // Dernier changement d'image
+int tvsChangeInterval = 1000; // Intervalle de temps pour changer l'image
+boolean isCdPlayerDone = false; // Vérifie si le CdPlayer est terminé
+boolean isPagerDone = false; // Vérifie si le Pager est terminé
+boolean isPhoneDone = false; // Vérifie si le Phone est terminé
+boolean isRadioDone = false; // Vérifie si la Radio est terminée
+boolean isWalkmanDone = false; // Vérifie si le Walkman est terminé
+
+
 // bool
 boolean isCDPickedUp = false; // Vérifie si le CD est ramassé
 boolean isTechZoom = false; // vérifie si la tech est zoom
+float distanceToCD; // Distance entre le joueur et le CD
 
 // images
 PImage[] cdPlayerImages; //idem
@@ -129,6 +143,9 @@ PImage[] phoneImagesHighRes;
 PImage[] radioImagesHighRes;
 PImage[] walkmanImagesHighRes;
 PImage[] tvsImagesHighRes;
+
+//vidéo de fin
+Movie theEnd;
 
 // objet
 Plante[] plantes = new Plante[planteQte]; // déclare un tableau d'objet pour les plantes
@@ -152,31 +169,31 @@ void setup() {
     // // // up
     for ( int i = 1; i <= upKey.length; i++) {
         upKey[i - 1] = loadImage ( "img/ui/up_0" + i + ".png");
-        upKey[i - 1].resize(100, 100);
+        upKey[i - 1].resize(resizer, resizer);
     }
 
     // // // down
     for ( int i = 1; i <= downKey.length; i++) {
         downKey[i - 1] = loadImage ( "img/ui/down_0" + i + ".png");
-        downKey[i -1].resize(100, 100);
+        downKey[i - 1].resize(resizer, resizer);
     }
 
     // // // left
     for ( int i = 1; i <= leftKey.length; i++) {
         leftKey[i - 1] = loadImage ( "img/ui/left_0" + i + ".png");
-        leftKey[i - 1].resize(100, 100);
+        leftKey[i - 1].resize(resizer, resizer);
     }
 
     // // // right
     for ( int i = 1; i <= rightKey.length; i++) {
         rightKey[i - 1] = loadImage ( "img/ui/right_0" + i + ".png");
-        rightKey[i - 1].resize(100, 100);
+        rightKey[i - 1].resize(resizer, resizer);
     }
 
     // // interact
     for ( int i = 1; i <= rightKey.length; i++) {
         spaceKey[i - 1] = loadImage ( "img/ui/space_0" + i + ".png");
-        spaceKey[i - 1].resize(300, 100);
+        spaceKey[i - 1].resize(resizer * 3, resizer);
     }
 
     // // objet
@@ -230,7 +247,8 @@ void setup() {
     sonVictoire = new SoundFile(this, "sons/bs_fin.wav");
     sonClicInteraction = new SoundFile(this, "sons/clic_interaction.wav");
     
-    
+    //fin
+    //theEnd = new Movie(this, "video/algo_t2_credits.mp4"); Not working
 
     //technologies
     //images
@@ -346,7 +364,12 @@ void setup() {
     do { 
         isCDTooClose = false; // Initialiser la variable à faux
     
-        randomXCD = int(random(50, width - 50));
+        if (random(1) < 0.5) { // 50% de chance de choisir le tiers gauche de l'écran
+            randomXCD = int(random(100, width / 3 - 100));
+        } else { // 50% de chance de choisir le tiers droit de l'écran
+            randomXCD = int(random(2 * width / 3 + 50, width - 100));
+        }
+
         randomYCD = int(random(jardinY, jardinY + jardinLength));
     
         // Vérifier la distance entre le CD et les autres technologies
@@ -359,19 +382,18 @@ void setup() {
         }
     } while (isCDTooClose);
 
-    // Met une position fixe pour la dernière technologie
-    technologies[5].setPosition(width/2, (-jardinLength) + jardinLength/4 ); // MON IMAGE SE MET PAS A 500 EN X ET JCOMPREND PAS
-      
 }
 
 // draw // 
 void draw() {
     // général
-    background(noir); // donne une couleur à l'arrière plan
+    background(noir);
 
     // jardin
     // // plantes
     displayGarden();
+    fill(bleu);
+    rect(technologies[5].highResPosX - width, technologies[5].highResPosY, width*2, height/1.88);
 
     // Afficher les technologies
     for (Technologie tech : technologies) {
@@ -384,15 +406,34 @@ void draw() {
         }
     } else {
         if (cdPlayer.techImages[4] != null) {
-            image(cdPlayer.techImages[4], randomXCD, randomYCD + jardinY); // Afficher le CD
+            image(cdPlayer.techImages[4], randomXCD, randomYCD); // Afficher le CD
         }
     }
 
+    if(isWalkmanDone && isCdPlayerDone && isPagerDone && isPhoneDone && isRadioDone && !isSonVictoire) {
+        sonArriere_01.stop();
+        sonVictoire.play();
+        isSonVictoire = true;
+    }
+
+    if (technologies[5].highResPosY > -100 && technologies[5].imageIndex >= 1 && isWalkmanDone && isCdPlayerDone && isPagerDone && isPhoneDone && isRadioDone) {
+        //Si assez de temps est passé, changer l'image de la télévision 
+        println("TVS");
+            if (millis() - tvsLastChange >= tvsChangeInterval && tvs.imageIndex < 9) {
+                // Changer l'image de la télévision et réinitialiser le temps
+                tvs.imageIndex += 1;
+                tvsLastChange = millis();
+            } else if(millis() - tvsLastChange >= tvsChangeInterval * 5 && tvs.imageIndex == 9) {
+                tvs.imageIndex = 10;
+                sonTV2.play();
+            } 
+        }
     // joueur
     joueur.display(); // appel la méthode display de l'objet joueur
-
+   
     // ui
     ui.display();
+    
 }
 
 // jardin //
@@ -456,6 +497,7 @@ void scrolling() {
         
         if (pTop == true && upKeyPressed == true) { 
             jardinY = jardinY + int(pS);
+            randomYCD += int(pS);
             for (Technologie tech : technologies) {
                 tech.move(0, int(pS)); // Bouge les technologies vers le bas
             }
@@ -464,6 +506,7 @@ void scrolling() {
     if (jardinY >= height * -1.1) {
         if (pBot == true && downKeyPressed == true) {
             jardinY = jardinY - int(pS);
+            randomYCD -= int(pS);
             for (Technologie tech : technologies) {
                 tech.move(0, -int(pS)); // Bouge les technologies vers le haut
             }
@@ -479,10 +522,22 @@ void keyPressed() {
             tech.spacePressed = true;  // Activer l'interaction
         }
 
-        if (technologies[4].isCollidingWithPlayer(joueur, 1000)) { // Si le joueur est en collision avec le CD
+        distanceToCD = dist(joueur.x, joueur.y, randomXCD, randomYCD);
+        if (distanceToCD < 100) { // Si le joueur est en collision avec le CD
             isCDPickedUp = true; // Ramasser le CD
         }
+
+        println(technologies[5].highResPosY);
+        
+        if(technologies[5].highResPosY < -100 && isWalkmanDone && isCdPlayerDone && isPagerDone && isPhoneDone && isRadioDone) {
+            tvs.imageIndex = 1;
+            sonTV1.play();
+            sonVictoire.stop();
+            println("TV1");
+        }
     }
+
+    
 }
 
 void keyReleased() {
@@ -494,12 +549,12 @@ void keyReleased() {
 }
 
 void mousePressed() {
-    //println("Mouse pressed at: " + mouseX + ", " + mouseY);`
     sonClicInteraction.play(); // Joue le son de l'interaction
-    
+
     if (walkman.isPointInHighResImage(mouseX, mouseY)) {
         walkman.imageIndex = 1;  // Change l'image du Walkman à la deuxième image 
         sonWalkman.play(); // Joue le son du Walkman
+        isWalkmanDone = true; // Le Walkman est terminé
     }
 
     if (cdPlayer.isPointInHighResImage(mouseX, mouseY) && isCDPickedUp && cdPlayer.imageIndex != 3) { //Si le CD est ramassé et que l'image du Cdplayer n'est pas la 4e image et que la souris est sur l'image du Cdplayer
@@ -510,12 +565,14 @@ void mousePressed() {
 
         if(cdPlayer.imageIndex == 3) {
             sonCd.play(); // Joue le son du CD
+            isCdPlayerDone = true; // Le CdPlayer est terminé
         }
     }
 
     if (phone.isPointInHighResImage(mouseX, mouseY) && phone.imageIndex != 12) {
         phone.imageIndex += 1;  // Change l'image du Phone à la prochaine image
         if (phone.imageIndex == 12) {
+            isPhoneDone = true; // Le Phone est terminé
             sonPhone.play(); // Joue le son du Phone
         }
     }
@@ -523,5 +580,9 @@ void mousePressed() {
 
     pager.isButtonClicked(mouseX, mouseY); // Vérifie si le bouton de la technologie Pager est cliqué
     radio.isRadioClicked(mouseX, mouseY);
-   
+    
+    if(tvs.isPointInHighResImage(mouseX, mouseY) && tvs.imageIndex == 10 && isWalkmanDone && isCdPlayerDone && isPagerDone && isPhoneDone && isRadioDone) {
+        tvs.imageIndex = 11;
+        sonTV3.play();
+    }
 }

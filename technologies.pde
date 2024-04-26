@@ -1,6 +1,8 @@
 class Technologie {
     int posX;
     int posY;
+    int highResPosX;
+    float highResPosY;
     PImage[] techImages;
     PImage[] highResTechImages; 
     int imageIndex;
@@ -43,14 +45,11 @@ class Technologie {
 
     void move(int dx, int dy) { // déplace la technologie
         int newX = this.posX + dx;
-        if (imageIndex != 5 && (newX < width/3 || newX > 2*width/3)) { // seulement si la nouvelle position n'est pas dans le tiers du milieu
+        if (newX < width/3 || newX > 2*width/3) { // seulement si la nouvelle position n'est pas dans le tiers du milieu
             this.posX = newX; // position de la technologie
-        } else if (imageIndex == 5) {
-            this.posX = newX;
-        }
+        } 
         this.posY += dy;
     }
-
 
     void display(Joueur joueur, int posX, int posY) {
         // Calcul de la largeur et de la hauteur de l'image haute résolution
@@ -58,8 +57,15 @@ class Technologie {
         int newHeight = highResTechImages[imageIndex].height;
     
         // Calcul de la position de l'image haute résolution
-        int highResPosX = width / 2 - newWidth / 2;
-        int highResPosY = height / 2 - newHeight / 2;
+        highResPosX = width / 2 - newWidth / 2;
+        highResPosY = height / 2 - newHeight / 2;
+    
+        // If this is the fifth technology, always display the high-resolution image
+        if (this == technologies[5]) {
+            highResDisplayed = true;
+            highResPosX = width/5;
+            highResPosY = this.posY + (-jardinLength) + jardinLength/12.5;
+        }
     
         // Si la touche espace est pressée et qu'elle n'était pas pressée au frame précédent
         if (spacePressed && !spaceWasPressed) {
@@ -81,7 +87,7 @@ class Technologie {
         // Mis à jour de l'état de la touche espace
         spaceWasPressed = spacePressed;
     }
-    
+
     boolean isCollidingWithPlayer(Joueur joueur, int collisionRadius) { // vérifie si le joueur est en collision avec la technologie
         float techCenterX = this.posX + techImages[imageIndex].width / 2; // centre de la technologie
         float techCenterY = this.posY + techImages[imageIndex].height / 2;
@@ -112,6 +118,7 @@ class Technologie {
                     currentOrderPagerIndex++; // incrémente l'index de l'ordre
                     if (currentOrderPagerIndex == buttonOrderPager.length) { // Si l'ordre complet a été complété
                         imageIndex = 5; // Change à l'image de la technologie finale
+                        isPagerDone = true; // Le pager est terminé
                         sonPager.play(); // Joue le son du pager
                     } else {
                         imageIndex = button.order; // Change à l'image du boutton cliqué
@@ -132,6 +139,7 @@ class Technologie {
                 if (button.order == 5) {
                     imageIndex = 7;
                     sonRadio.play();
+                    isRadioDone = true;
                     return true;
                 }
 
