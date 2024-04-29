@@ -210,7 +210,7 @@ void setup() {
     pY = height/4 * 3; // donne une valeur initial à la variable pY
 
     // // objet
-    joueur = new Joueur(pX, pY, pS); // cré un instence de l'objet joueur
+    joueur = new Joueur(pX, pY, pS); // crée un instence de l'objet joueur
 
     // plantes
     // // images
@@ -581,6 +581,7 @@ void mousePressed() {
     pager.isButtonClicked(mouseX, mouseY); // Vérifie si le bouton de la technologie Pager est cliqué
     radio.isRadioClicked(mouseX, mouseY);
     
+    //Si la souris est sur l'image de la télévision et que la souris est cliquée, faire jouer le son et la vidéo de fin
     if (tvs.isPointInHighResImage(mouseX, mouseY) && tvs.imageIndex == 10 && isWalkmanDone && isCdPlayerDone && isPagerDone && isPhoneDone && isRadioDone) {
         tvs.imageIndex = 11;
         sonTV3.play();
@@ -588,6 +589,7 @@ void mousePressed() {
     }
 }
 
+//Faire jouer la vidéo
 void movieEvent(Movie m) {
   m.read();
 }
