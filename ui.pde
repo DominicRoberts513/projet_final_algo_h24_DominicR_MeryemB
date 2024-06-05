@@ -66,4 +66,8 @@ class Ui {
             }
         }
     }
+
+    void menu() {
+        
+    }
 }

@@ -67,6 +67,11 @@ PImage[] rightKey = new PImage[2];
 PImage[] spaceKey = new PImage[2];
 String interactionSourisUi = "Utilisez la souris pour intéragir avec la technologie!";
 
+// // menu
+PImage menuBg[] = new PImage[2];
+PImage playBtn[] = new PImage[2];
+PImage quitBtn[] = new PImage[2]; 
+
 // objet
 Ui ui;
 
