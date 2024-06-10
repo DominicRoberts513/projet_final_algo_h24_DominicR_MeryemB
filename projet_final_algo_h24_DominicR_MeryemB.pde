@@ -183,7 +183,6 @@ void setup() {
     // // objet
     ui = new Ui();
 
-    if (isGameOn == true) {
         // ui
         // // move
         // // // up
@@ -401,7 +400,7 @@ void setup() {
                 }
             }
         } while (isCDTooClose);
-    }
+
     
     
 
@@ -409,8 +408,6 @@ void setup() {
 
 // draw // 
 void draw() {
-
-    if (isGameOn == true) {
         // général
         background(noir);
 
@@ -462,12 +459,6 @@ void draw() {
 
     
         image(theEnd, 0, 0);
-    } else {
-        image(menuBg[0], 0, 0);
-        if (mousePressed == true) {
-            sonClicInteraction.play(); // Joue le son de l'interaction
-        }
-    }
 
     
 }
