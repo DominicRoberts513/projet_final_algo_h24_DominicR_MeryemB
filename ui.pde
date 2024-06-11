@@ -67,7 +67,27 @@ class Ui {
         }
     }
 
-    void menu() {
+    void menuDisplay() {
         
+        if (isGameOn != true) {
+            // menu arriere plan
+            image(menuBg[0], 0, 0);
+
+            // bouton joué
+            fill(blanc);
+            rect((width/6 * 3) - (width/6)/2, height/5 * 2 ,width/6 , height/6);
+
+            if (mouseX > (width/6 * 3) - (width/6)/2 && mouseX < ((width/6 * 3) - (width/6)/2) + (width/6)) {
+                if (mouseY > height/5 * 2 && mouseY < (height/5 * 2) + (height/6)) {
+                    println("survole");
+                    if (mousePressed) {
+                        println("click");
+                    } 
+                }
+            }
+        
+
+            // bouton quitté
+        }
     }
 }
