@@ -25,4 +25,21 @@ class Plante {
 
         posY = posOffset(y);
     }
+
+    void updateSize(int i, int y) {
+        int w;
+        int h;
+
+        if (y/1000 <=  0) {
+            y = 1;
+        }
+
+        w = (resizer + y);
+        h = (resizer + y);
+
+        println("w : " + w);
+        println("h : " + h);
+
+        plantesImage[i].resize(w, h);
+    }
 }
