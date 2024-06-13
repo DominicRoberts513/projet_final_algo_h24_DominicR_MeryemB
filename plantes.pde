@@ -9,7 +9,8 @@ class Plante {
         this.offset = offsetValue;
     }
 
-    void display(int i) {
+    void display(int i, int x, int y) {
+        updatePosition(x, y);
         image(plantesImage[i], posX, posY);
     }
 

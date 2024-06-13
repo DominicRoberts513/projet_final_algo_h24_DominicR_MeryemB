@@ -102,7 +102,7 @@ Joueur joueur; // déclare l'objet joueur
 
 // plantes //
 // quantité
-int planteQte = 4;
+int planteQte = 6;
 int planteOffset = 25;
 int[] offsetValue = new int[planteQte];
 int[] planteImageIndex = new int[7];

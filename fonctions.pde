@@ -13,11 +13,11 @@
 void displayGarden() {
 
     scrolling();
-    for (int i = 0; i <= planteQte; i++) {
+    for (int i = 1; i <= planteQte; i++) {
         int x = (i*(width/planteQte)) + width/planteQte;
 
         //plantes[2].updatePosition(x, height/2);
-        plantes[0].display(planteImageIndex[1]); // appel la methode display des objets plantes
+        plantes[i - 1].display(planteImageIndex[i - 1], x, height/2); // appel la methode display des objets plantes
     }
 
     /* 
