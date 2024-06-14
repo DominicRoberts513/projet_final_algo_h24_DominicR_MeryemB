@@ -9,13 +9,11 @@
 ** jardin
 */
 
+/* 
+** début code jardin v01
+
 // pour faire apparaitre le jardin
 void displayGarden() {
-    
-
-    /* 
-    ** début code jardin v01
-
     int xOffset;
     int yOffset;
 
@@ -70,34 +68,13 @@ void displayGarden() {
                 plantes[i].display(planteImageIndex[indexGauche]); // appel la methode display des objets plantes
             }
         }
-    }
-
-    ** fin code jardin v01
-    */
+    } 
 }
 
-// fait le défilement du jardin
-void scrolling() {
-        if (jardinY <= height/6 * 5) {
-            
-            if (pTop == true && upKeyPressed == true) { 
-                jardinY = jardinY + int(pS);
-                randomYCD += int(pS);
-                for (Technologie tech : technologies) {
-                    tech.move(0, int(pS)); // Bouge les technologies vers le bas
-                }
-            } 
-        }
-        if (jardinY >= height * -1.1) {
-            if (pBot == true && downKeyPressed == true) {
-                jardinY = jardinY - int(pS);
-                randomYCD -= int(pS);
-                for (Technologie tech : technologies) {
-                    tech.move(0, -int(pS)); // Bouge les technologies vers le haut
-                }
-            }
-        }
-    }
+** fin code jardin v01
+*/
+
+
 
 /*
 ** interactionavec les technologies
@@ -178,8 +155,3 @@ void movieEvent(Movie m) {
   m.read();
 }
 
-void updatePlanteImageIndex() {
-    for (int i = 0; i < planteQte; i++) {
-        planteImageIndex[i] = int(random(7));
-    }
-}

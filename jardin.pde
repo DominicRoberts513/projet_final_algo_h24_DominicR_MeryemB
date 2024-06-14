@@ -1,17 +1,16 @@
 class Jardin {
-
     Jardin() {
-        
+        updatePlanteImageIndex();
     }
 
     void display() {
         scrolling();
 
-        for (int y = jardinY; y < jardinLength; y += jardinYSubDiv) {
-            updatePlanteImageIndex();
+        for (int y = jardinY; y < jardinLength; y += height/jardinYSubDiv) {
             for (int i = 1; i <= planteQte; i++) {
                 int x = (i*(width/planteQte)) - width/planteQte;
                 // int y = (i*(height/planteQte)) /* + height/planteQte */;
+                plantes[i - 1].updateSize(i - 1, y);
 
                 plantes[i - 1].display(planteImageIndex[i - 1], x, y); // appel la methode display des objets plantes
             }
@@ -41,4 +40,10 @@ class Jardin {
         }
     }
     
+    // index pour les images de plantes
+    void updatePlanteImageIndex() {
+        for (int i = 0; i < planteQte; i++) {
+            planteImageIndex[i] = int(random(7));
+        }
+    }
 }

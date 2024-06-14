@@ -38,9 +38,6 @@ class Plante {
         w = (resizer + y);
         h = (resizer + y);
 
-        println("w : " + w);
-        println("h : " + h);
-
         plantesImage[i].resize(w, h);
     }
 }

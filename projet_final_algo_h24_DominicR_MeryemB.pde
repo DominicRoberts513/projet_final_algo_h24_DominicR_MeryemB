@@ -422,7 +422,7 @@ void draw() {
 
     // jardin
     // // plantes
-    displayGarden();
+    // displayGarden();
     jardin.display();
 
     // Afficher les technologies
