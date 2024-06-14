@@ -11,14 +11,7 @@
 
 // pour faire apparaitre le jardin
 void displayGarden() {
-
-    scrolling();
-    for (int i = 1; i <= planteQte; i++) {
-        int x = (i*(width/planteQte)) + width/planteQte;
-
-        //plantes[2].updatePosition(x, height/2);
-        plantes[i - 1].display(planteImageIndex[i - 1], x, height/2); // appel la methode display des objets plantes
-    }
+    
 
     /* 
     ** début code jardin v01
@@ -85,26 +78,26 @@ void displayGarden() {
 
 // fait le défilement du jardin
 void scrolling() {
-    if (jardinY <= height/6 * 5) {
-        
-        if (pTop == true && upKeyPressed == true) { 
-            jardinY = jardinY + int(pS);
-            randomYCD += int(pS);
-            for (Technologie tech : technologies) {
-                tech.move(0, int(pS)); // Bouge les technologies vers le bas
-            }
-        } 
-    }
-    if (jardinY >= height * -1.1) {
-        if (pBot == true && downKeyPressed == true) {
-            jardinY = jardinY - int(pS);
-            randomYCD -= int(pS);
-            for (Technologie tech : technologies) {
-                tech.move(0, -int(pS)); // Bouge les technologies vers le haut
+        if (jardinY <= height/6 * 5) {
+            
+            if (pTop == true && upKeyPressed == true) { 
+                jardinY = jardinY + int(pS);
+                randomYCD += int(pS);
+                for (Technologie tech : technologies) {
+                    tech.move(0, int(pS)); // Bouge les technologies vers le bas
+                }
+            } 
+        }
+        if (jardinY >= height * -1.1) {
+            if (pBot == true && downKeyPressed == true) {
+                jardinY = jardinY - int(pS);
+                randomYCD -= int(pS);
+                for (Technologie tech : technologies) {
+                    tech.move(0, -int(pS)); // Bouge les technologies vers le haut
+                }
             }
         }
     }
-}
 
 /*
 ** interactionavec les technologies
@@ -183,4 +176,10 @@ void mousePressed() {
 //Faire jouer la vidéo
 void movieEvent(Movie m) {
   m.read();
+}
+
+void updatePlanteImageIndex() {
+    for (int i = 0; i < planteQte; i++) {
+        planteImageIndex[i] = int(random(7));
+    }
 }

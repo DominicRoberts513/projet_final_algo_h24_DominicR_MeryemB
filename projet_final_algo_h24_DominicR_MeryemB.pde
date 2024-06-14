@@ -13,14 +13,10 @@ import processing.video.*;
 
 // // variables // //
 // général //
-int jardinLength; // déclare une variable pour storer la longueur du jardin
-int jardinY; // déclare une variable pour enregistrer la coordonée y du jardin
-int jardinYSubDiv = 5; // sous division en y du jardin
-int jardinXSubDiv = 7; // sous division en x du jardin
+
 int resizer = 100; // déclare une variable pour le redimensionnement des images
 int resizerHighRes = 600; // déclare une variable pour le redimensionnement des images en haute résolution
 int collisionRadius = 100; // Rayon de collision
-
 
 // couleurs //
 color noir = color(49, 1, 11);
@@ -76,7 +72,7 @@ PImage quitBtn[] = new PImage[2];
 boolean isGameOn = true; // pour détecter si le jeu est en mode menu ou jeu
 
 // objet
-Ui ui;
+Ui ui; // déclare l'objet
 
 // joueur //
 // position
@@ -100,10 +96,20 @@ boolean pBot = false;
 // objet
 Joueur joueur; // déclare l'objet joueur
 
+// jardin //
+// position & formatage
+int jardinLength; // déclare une variable pour storer la longueur du jardin
+int jardinY; // déclare une variable pour enregistrer la coordonée y du jardin
+int jardinYSubDiv = 5; // sous division en y du jardin
+int jardinXSubDiv = 7; // sous division en x du jardin
+
+// objet
+Jardin jardin; // déclare l'objet jardin
+
 // plantes //
 // quantité
 int planteQte = 6;
-int planteOffset = 25;
+int planteOffset = 50;
 int[] offsetValue = new int[planteQte];
 int[] planteImageIndex = new int[7];
 
@@ -128,7 +134,6 @@ boolean isPagerDone = false; // Vérifie si le Pager est terminé
 boolean isPhoneDone = false; // Vérifie si le Phone est terminé
 boolean isRadioDone = false; // Vérifie si la Radio est terminée
 boolean isWalkmanDone = false; // Vérifie si le Walkman est terminé
-
 
 // bool
 boolean isCDPickedUp = false; // Vérifie si le CD est ramassé
@@ -213,14 +218,14 @@ void setup() {
     for ( int i = 1; i <= rightKey.length; i++) {
         spaceKey[i - 1] = loadImage ( "img/ui/space_0" + i + ".png");
         spaceKey[i - 1].resize(resizer * 3, resizer);
-    }
-
-    // ui
-        
+    }       
 
     // jardin
     jardinLength = height * 2; // calcul la valeur pour la longueur du jardin
     jardinY = height - jardinLength; // calcul la valeur y du jardin
+
+    // // objet
+    jardin = new Jardin();
 
     // joueur
     // // position
@@ -241,7 +246,7 @@ void setup() {
     plantes = new Plante[planteQte]; // crée une quantité d'objet plante
 
     for (int i = 0; i < planteQte; i++) { // appel les constructors et remplie les tableau de valeurs
-        planteImageIndex[i] = int(random(7));
+        
         offsetValue[i] = int(random(planteOffset * -1, planteOffset));
         plantes[i] = new Plante(offsetValue[i]);
     }
@@ -263,8 +268,7 @@ void setup() {
     sonTV3 = new SoundFile(this, "sons/tv_fin_03.wav");
 
     // // interaction
-    sonVictoire = new SoundFile(this, "sons/bs_fin.wav");
-        
+    sonVictoire = new SoundFile(this, "sons/bs_fin.wav"); 
         
     //fin
     theEnd = new Movie(this, "algo_t2_credits.mp4"); 
@@ -412,12 +416,14 @@ void draw() {
 
     // général
     background(noir);
+    
+    fill(bleu);
+    rect(technologies[5].highResPosX - width, technologies[5].highResPosY, width*2, height/1.88);
 
     // jardin
     // // plantes
     displayGarden();
-    fill(bleu);
-    rect(technologies[5].highResPosX - width, technologies[5].highResPosY, width*2, height/1.88);
+    jardin.display();
 
     // Afficher les technologies
     for (Technologie tech : technologies) {
