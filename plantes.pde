@@ -13,6 +13,7 @@ class Plante {
 
     void display(int i, int x, int y) {
         updatePosition(x, y);
+        updateSize(i, 0);
         image(plantesImage[i], posX, posY);
     }
 
@@ -29,19 +30,20 @@ class Plante {
         posY = posOffset(y, offsetY);
     }
 
-    void updateSize(int i, int y) {
+    void updateSize(int i, int a) {
         int w;
         int h;
-
-        if (y/1000 <=  0) {
-            y = 1;
+        if (a > 0) {
+            w = (resizer + a);
+            h = (resizer + a);
+        } else if ( a == 0) {
+            w = resizer;
+            h = resizer;
+        } else {
+            w = 1;
+            h = 1;
         }
-
-        y = y/3 * 2;
-
-        w = (resizer + y);
-        h = (resizer + y);
-
+        
         plantesImage[i].resize(w, h);
     }
 }

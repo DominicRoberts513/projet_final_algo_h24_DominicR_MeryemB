@@ -16,7 +16,6 @@ class Jardin {
         for (int k = 0; k < jardinXSubDiv; k++) {
             for (int j = 0; j < jardinYSubDiv; j++) {
                 for (int i = 1; i <= planteQte; i++) {
-                    plantes[i - 1].updateSize(i - 1, 1);
                     plantes[i - 1].display(jardinImgMatrix[i][j], jardinPosXMatrix[k][j], jardinPosYMatrix[k][j] + jardinY); // appel la methode display des objets plantes
                 }
             }
@@ -73,30 +72,31 @@ class Jardin {
         // tableau //
         for (int i = 0; i < jardinXSubDiv; i++) {
             for (int j = 0; j < jardinYSubDiv; j++) {
-                
-                // x
+
+                // // x
                 if (x > width) {
                     x = 0;
                 }
+
                 jardinPosXMatrix[i][j] = x;
 
                 x += (width/jardinXSubDiv) + int(random(planteOffsetX * -1, planteOffsetX));
-
-                println("x " + i + ", " + j + " : " + x);
                 
-                // y
+                // // y
                 if (y > jardinLength) {
                     y = jardinY;
                 }
+
                 jardinPosYMatrix[i][j] = y;
 
                 y += (jardinLength/jardinYSubDiv) + int(random(planteOffsetY * -1, planteOffsetY));
 
-                println("y " + i + ", " + j + " : " + y);
-
-                // image index
+                // // image index
                 imageIndex = int(random(7));
-                jardinImgMatrix[i][j] = imageIndex;
+
+                jardinImgMatrix[i][j] = imageIndex; 
+
+                // // grosseur 
 
             }
         }
