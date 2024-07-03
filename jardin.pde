@@ -1,20 +1,36 @@
 class Jardin {
     Jardin() {
         updatePlanteImageIndex();
+        layoutMatrix();
     }
 
     void display() {
         scrolling();
 
-        for (int y = jardinY; y < jardinLength; y += height/jardinYSubDiv) {
-            for (int i = 1; i <= planteQte; i++) {
-                int x = (i*(width/planteQte)) - width/planteQte;
-                // int y = (i*(height/planteQte)) /* + height/planteQte */;
-                plantes[i - 1].updateSize(i - 1, y);
-
-                plantes[i - 1].display(planteImageIndex[i - 1], x, y); // appel la methode display des objets plantes
+        for (int x = 0; x <= width; x += width/jardinXSubDiv) {
+            for (int y = jardinY; y <= jardinLength; y += jardinLength/jardinYSubDiv) {
+                
             }
         }
+
+        for (int k = 0; k < jardinXSubDiv; k++) {
+            for (int j = 0; j < jardinYSubDiv; j++) {
+                for (int i = 1; i <= planteQte; i++) {
+                    plantes[i - 1].updateSize(i - 1, 1);
+                    plantes[i - 1].display(jardinImgMatrix[i][j], jardinPosXMatrix[k][j], jardinPosYMatrix[k][j] + jardinY); // appel la methode display des objets plantes
+                }
+            }
+        }
+
+        // for (int x = 0; x < width; x += width/jardinXSubDiv) {
+        //     for () {
+        //         int y = jardinY + (i*(jardinLength/planteQte)) - jardinLength/planteQte;
+        //         // int y = (i*(height/planteQte)) /* + height/planteQte */;
+        //         
+
+                
+        //     }
+        // }
     }
 
     // fait le défilement du jardin
@@ -44,6 +60,45 @@ class Jardin {
     void updatePlanteImageIndex() {
         for (int i = 0; i < planteQte; i++) {
             planteImageIndex[i] = int(random(7));
+        }
+    }
+
+    void layoutMatrix() {
+
+        // éléments du tableau //
+        int x = 0;
+        int y = jardinY;
+        int imageIndex;
+
+        // tableau //
+        for (int i = 0; i < jardinXSubDiv; i++) {
+            for (int j = 0; j < jardinYSubDiv; j++) {
+                
+                // x
+                if (x > width) {
+                    x = 0;
+                }
+                jardinPosXMatrix[i][j] = x;
+
+                x += (width/jardinXSubDiv) + int(random(planteOffsetX * -1, planteOffsetX));
+
+                println("x " + i + ", " + j + " : " + x);
+                
+                // y
+                if (y > jardinLength) {
+                    y = jardinY;
+                }
+                jardinPosYMatrix[i][j] = y;
+
+                y += (jardinLength/jardinYSubDiv) + int(random(planteOffsetY * -1, planteOffsetY));
+
+                println("y " + i + ", " + j + " : " + y);
+
+                // image index
+                imageIndex = int(random(7));
+                jardinImgMatrix[i][j] = imageIndex;
+
+            }
         }
     }
 }

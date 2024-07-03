@@ -1,12 +1,14 @@
 class Plante {
     int posX;
     int posY;
-    int offset;
+    int offsetX;
+    int offsetY;
     
 
 
-    Plante( int offsetValue) {
-        this.offset = offsetValue;
+    Plante( int offsetValueX, int offsetValueY) {
+        this.offsetX = offsetValueX;
+        this.offsetY = offsetValueY;
     }
 
     void display(int i, int x, int y) {
@@ -14,17 +16,17 @@ class Plante {
         image(plantesImage[i], posX, posY);
     }
 
-    int posOffset(int a) {    
+    int posOffset(int a, int offset) { 
         a = a + offset;
-        
+
         return a;
     }
 
     // update la position de la plante avec un offset
     void updatePosition(int x, int y) {
-        posX = posOffset(x);
+        posX = posOffset(x, offsetX);
 
-        posY = posOffset(y);
+        posY = posOffset(y, offsetY);
     }
 
     void updateSize(int i, int y) {
@@ -34,6 +36,8 @@ class Plante {
         if (y/1000 <=  0) {
             y = 1;
         }
+
+        y = y/3 * 2;
 
         w = (resizer + y);
         h = (resizer + y);

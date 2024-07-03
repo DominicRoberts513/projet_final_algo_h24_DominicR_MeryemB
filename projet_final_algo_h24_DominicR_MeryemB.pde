@@ -100,17 +100,22 @@ Joueur joueur; // déclare l'objet joueur
 // position & formatage
 int jardinLength; // déclare une variable pour storer la longueur du jardin
 int jardinY; // déclare une variable pour enregistrer la coordonée y du jardin
-int jardinYSubDiv = 5; // sous division en y du jardin
-int jardinXSubDiv = 7; // sous division en x du jardin
+int jardinYSubDiv = 12; // sous division en y du jardin
+int jardinXSubDiv = 16; // sous division en x du jardin
+int[][] jardinPosXMatrix = new int[jardinXSubDiv][jardinYSubDiv];
+int[][] jardinPosYMatrix = new int[jardinXSubDiv][jardinYSubDiv];
+int[][] jardinImgMatrix = new int[jardinXSubDiv][jardinYSubDiv];
 
 // objet
 Jardin jardin; // déclare l'objet jardin
 
 // plantes //
 // quantité
-int planteQte = 6;
-int planteOffset = 50;
-int[] offsetValue = new int[planteQte];
+int planteQte = 1;
+int planteOffsetX = 20;
+int planteOffsetY = 10;
+int[] offsetValueX = new int[planteQte];
+int[] offsetValueY = new int[planteQte];
 int[] planteImageIndex = new int[7];
 
 // position
@@ -179,6 +184,8 @@ void setup() {
     size(1000, 800); // donne la grosseur à la fenêtre
     sonClicInteraction = new SoundFile(this, "sons/clic_interaction.wav");
 
+    background(noir);
+
     // menu image
     for ( int i = 1; i <= menuBg.length; i++) {
         menuBg[i - 1] = loadImage( "img/ui/menu_0" + i + ".png");
@@ -246,9 +253,9 @@ void setup() {
     plantes = new Plante[planteQte]; // crée une quantité d'objet plante
 
     for (int i = 0; i < planteQte; i++) { // appel les constructors et remplie les tableau de valeurs
-        
-        offsetValue[i] = int(random(planteOffset * -1, planteOffset));
-        plantes[i] = new Plante(offsetValue[i]);
+        offsetValueX[i] = int(random(planteOffsetX * -1, planteOffsetX));
+        offsetValueY[i] = int(random(planteOffsetY * -1, planteOffsetY));
+        plantes[i] = new Plante(offsetValueX[i], offsetValueY[i]);
     }
         
     // music
@@ -422,7 +429,6 @@ void draw() {
 
     // jardin
     // // plantes
-    // displayGarden();
     jardin.display();
 
     // Afficher les technologies
