@@ -7,13 +7,13 @@ class Plante {
 
 
     Plante( int offsetValueX, int offsetValueY) {
-        this.offsetX = offsetValueX;
-        this.offsetY = offsetValueY;
+        this.offsetX = int(random(offsetValueX * -1, offsetValueX));
+        this.offsetY = int(random(offsetValueY * -1, offsetValueY));
     }
 
     void display(int i, int x, int y) {
         updatePosition(x, y);
-        updateSize(i, 0);
+        
         image(plantesImage[i], posX, posY);
     }
 
@@ -30,9 +30,12 @@ class Plante {
         posY = posOffset(y, offsetY);
     }
 
+    // update la grosseur des images
     void updateSize(int i, int a) {
         int w;
         int h;
+
+        // if batard pour pas que la fonction fasse chier
         if (a > 0) {
             w = (resizer + a);
             h = (resizer + a);

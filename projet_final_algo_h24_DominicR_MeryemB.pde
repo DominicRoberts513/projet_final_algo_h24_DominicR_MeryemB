@@ -97,26 +97,32 @@ boolean pBot = false;
 Joueur joueur; // déclare l'objet joueur
 
 // jardin //
+// debug
+/* 
+** permet de faire apparaitre les coordonné des plantes ainsi
+** que les matrices d'index d'images sur le canva
+*/
+boolean jardinDebugUi = false;
+
 // position & formatage
 int jardinLength; // déclare une variable pour storer la longueur du jardin
 int jardinY; // déclare une variable pour enregistrer la coordonée y du jardin
-int jardinYSubDiv = 12; // sous division en y du jardin
-int jardinXSubDiv = 16; // sous division en x du jardin
+int jardinYSubDiv = 25; // 25 // sous division en y du jardin
+int jardinXSubDiv = 22; // 22 // sous division en x du jardin
 int[][] jardinPosXMatrix = new int[jardinXSubDiv][jardinYSubDiv];
 int[][] jardinPosYMatrix = new int[jardinXSubDiv][jardinYSubDiv];
 int[][] jardinImgMatrix = new int[jardinXSubDiv][jardinYSubDiv];
+int[][] jardinPerspSize = new int[jardinXSubDiv][jardinYSubDiv];
 
 // objet
 Jardin jardin; // déclare l'objet jardin
 
 // plantes //
 // quantité
-int planteQte = 1;
-int planteOffsetX = 20;
-int planteOffsetY = 10;
-int[] offsetValueX = new int[planteQte];
-int[] offsetValueY = new int[planteQte];
-int[] planteImageIndex = new int[7];
+int planteOffsetX = 50; // 50
+int planteOffsetY = 20; // 20
+int offsetValueX;
+int offsetValueY;
 
 // position
 int planteX; // déclare une variable pour la position en x de la plante
@@ -167,7 +173,7 @@ Movie theEnd;
 boolean isVideoStarted = false;
 
 // objet
-Plante[] plantes = new Plante[planteQte]; // déclare un tableau d'objet pour les plantes
+Plante plantes; // déclare un tableau d'objet pour les plantes
 Technologie[] technologies = new Technologie[6]; // déclare un tableau d'objet pour les technologies
 Technologie walkman;  // Déclare une variable pour l'objet Walkman
 Technologie pager;    // Idem
@@ -250,13 +256,10 @@ void setup() {
     }
 
     // // objets
-    plantes = new Plante[planteQte]; // crée une quantité d'objet plante
-
-    for (int i = 0; i < planteQte; i++) { // appel les constructors et remplie les tableau de valeurs
-        offsetValueX[i] = int(random(planteOffsetX * -1, planteOffsetX));
-        offsetValueY[i] = int(random(planteOffsetY * -1, planteOffsetY));
-        plantes[i] = new Plante(offsetValueX[i], offsetValueY[i]);
-    }
+    // crée une quantité d'objet plante
+    offsetValueX = int(random(planteOffsetX * -1, planteOffsetX));
+    offsetValueY = int(random(planteOffsetY * -1, planteOffsetY));
+    plantes = new Plante(offsetValueX, offsetValueY);
         
     // music
     // // musique de fond

@@ -4,80 +4,8 @@
 **
 */
 
-
 /*
-** jardin
-*/
-
-/* 
-** début code jardin v01
-
-// pour faire apparaitre le jardin
-void displayGarden() {
-    int xOffset;
-    int yOffset;
-
-    // // bande de droite
-    int indexDroit = 0;
-    for (int y = jardinY; y < jardinLength; y += height/jardinYSubDiv) { // boucle en y
-        for (int i = 0; i < planteQte; i++) {
-            plantes[i].updateSize(i, y);
-        }
-        for ( int x = -width/5; x < width/3; x += (width/3)/jardinXSubDiv) { // boucle en x
-            for (int i = 0; i < planteQte; i++) { // fait apparaitre plusieurs objet en mm temps
-                // image index
-                if (indexDroit < planteQte) {
-                    indexDroit++;
-                } else {
-                    indexDroit = 0;
-                }
-                
-                //println("i droit : " + i);
-
-                // position
-                xOffset = i * offsetValue[i];
-                yOffset = i * offsetValue[i];
-                plantes[i].updatePosition(x + xOffset, y + yOffset);
-                
-                
-
-                // display
-                plantes[i].display(planteImageIndex[indexDroit]); // appel la methode display des objets plantes
-            }
-        }
-    }
-
-    // // bande de gauche
-    int indexGauche = 0;
-    for (int y = jardinY; y < jardinLength; y += height/jardinYSubDiv) { // boucle en y;
-        for ( int x = width/3 * 2; x < width + width/5; x += (width/3)/jardinXSubDiv) { // boucle en x
-            for (int i = 0; i < planteQte; i++) { // fait apparaitre plusieurs objet en mm temps
-                // image index
-                if (indexGauche < planteQte) {
-                    indexGauche++;
-                } else {
-                    indexGauche = 0;
-                }
-                
-                // position
-                xOffset = i * offsetValue[i];
-                yOffset = i * offsetValue[i];
-                plantes[i].updatePosition(x + xOffset, y + yOffset);
-                
-                // display
-                plantes[i].display(planteImageIndex[indexGauche]); // appel la methode display des objets plantes
-            }
-        }
-    } 
-}
-
-** fin code jardin v01
-*/
-
-
-
-/*
-** interactionavec les technologies
+** interaction avec les technologies
 */
 
 // touche espace //
@@ -154,4 +82,3 @@ void mousePressed() {
 void movieEvent(Movie m) {
   m.read();
 }
-
