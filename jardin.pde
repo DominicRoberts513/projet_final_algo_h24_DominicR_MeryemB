@@ -6,8 +6,11 @@ class Jardin {
     void display() {
         scrolling();
 
+        // boucles
         for (int k = 0; k < jardinXSubDiv; k++) {
             for (int j = 0; j < jardinYSubDiv; j++) {
+
+                // masking pour les pan de montagnes et le chemin
                 if (jardinPosYMatrix[k][j] + jardinY >= jardinY) {
                     if (jardinPosXMatrix[k][j] <= width/3 || jardinPosXMatrix[k][j] >= (width/3)*2) {
                         // affichage des plants
@@ -22,7 +25,6 @@ class Jardin {
                     
                             text("(" + jardinPosXMatrix[k][j] + ", " + jardinPosYMatrix[k][j] + " )", jardinPosXMatrix[k][j], jardinPosYMatrix[k][j] + jardinY + 25);
                         }
-                        
                     }
                 }
             }
@@ -62,7 +64,7 @@ class Jardin {
             - position en x
             - position en y
             - index de l'image
-            - surplus de grousseur pour la perspective
+            - surplus de grosseur pour la perspective
         
         **
         */
@@ -93,7 +95,11 @@ class Jardin {
 
                 jardinPosYMatrix[k][j] = y;
 
-                y = (k * (jardinLength/jardinYSubDiv)) + int(random(planteOffsetY * -1, planteOffsetY));
+                if (j == int(jardinYSubDiv/3) || j == int((jardinYSubDiv/3)*2)) {
+                    y = (k * (jardinLength/jardinYSubDiv)) + int(random(planteOffsetY * -1, planteOffsetY)) + 100;
+                } else {
+                    y = (k * (jardinLength/jardinYSubDiv)) + int(random(planteOffsetY * -1, planteOffsetY));
+                }               
 
                 // println("rangé " + k + " : " + jardinPosYMatrix[k][j] + " (" + k + ", " + j + ")");
 
