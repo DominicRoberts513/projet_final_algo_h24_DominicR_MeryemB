@@ -105,15 +105,17 @@ Joueur joueur; // déclare l'objet joueur
 boolean jardinDebugUi = false;
 
 // position & formatage
+// // jardin
 int jardinLength; // déclare une variable pour storer la longueur du jardin
 int jardinY; // déclare une variable pour enregistrer la coordonée y du jardin
-int jardinYSubDiv = 10; // 25 // sous division en y du jardin
-int jardinXSubDiv = 10; // 22 // sous division en x du jardin
+int jardinYSubDiv = 25; // 25 // sous division en y du jardin
+int jardinXSubDiv = 22; // 22 // sous division en x du jardin
 int[][] jardinPosXMatrix = new int[jardinXSubDiv][jardinYSubDiv];
 int[][] jardinPosYMatrix = new int[jardinXSubDiv][jardinYSubDiv];
 int[][] jardinImgMatrix = new int[jardinXSubDiv][jardinYSubDiv];
 int[][] jardinPerspSize = new int[jardinXSubDiv][jardinYSubDiv];
 
+// // montagnes
 int mtnW;
 int mtnH;
 
@@ -122,8 +124,8 @@ Jardin jardin; // déclare l'objet jardin
 
 // plantes //
 // quantité
-int planteOffsetX = 0; // 50
-int planteOffsetY = 0; // 20
+int planteOffsetX = 20; // 50
+int planteOffsetY = 10; // 20
 int offsetValueX;
 int offsetValueY;
 

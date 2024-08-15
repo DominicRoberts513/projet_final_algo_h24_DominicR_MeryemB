@@ -5,26 +5,49 @@ class Jardin {
 
     void display() {
         scrolling();
+        // montagne
+        for (int j = 0; j < jardinYSubDiv; j++) {
+            if (j == jardinYSubDiv/3) {
+                displayMtn(0, jardinLength/3 + jardinY);                    
+                displayMtn(width - mtnW, jardinLength/3 + jardinY);
+            } else if (j == (jardinYSubDiv/3) * 2) {
+                displayMtn(0, ((jardinLength/3) * 2) + jardinY);
+                displayMtn(width - mtnW, ((jardinLength/3) * 2) + jardinY);
+            }
+        }
 
         // boucles
         for (int k = 0; k < jardinXSubDiv; k++) {
             for (int j = 0; j < jardinYSubDiv; j++) {
+                
 
-                // masking pour les pan de montagnes et le chemin
+                // plantes
+                // // masking
+                // // // limite au sommet de la montagne
                 if (jardinPosYMatrix[k][j] + jardinY >= jardinY) {
-                    if (jardinPosXMatrix[k][j] <= width/3 || jardinPosXMatrix[k][j] >= (width/3)*2) {
-                        // affichage des plants
-                        plantes.updateSize(jardinImgMatrix[k][j], jardinPerspSize[k][j]);
-                        plantes.display(jardinImgMatrix[k][j], jardinPosXMatrix[k][j], jardinPosYMatrix[k][j] + jardinY); // appel la methode display des objets plantes
+                    // // // limites pour le chemin
+                    if (jardinPosXMatrix[k][j] <= width/3 || jardinPosXMatrix[k][j] >= ((width/3)*2)) {
+                        // // // limites pour les falaises de la montagnes
+                        if (jardinPosYMatrix[k][j] + jardinY >= jardinLength/3 + jardinY && jardinPosYMatrix[k][j] + jardinY <= jardinLength/3 + mtnH + jardinY) {
+                        // fait rien  
+                        } else if (jardinPosYMatrix[k][j] + jardinY >= ((jardinLength/3) * 2) + jardinY && jardinPosYMatrix[k][j] + jardinY <= ((jardinLength/3) * 2) + mtnH + jardinY) {
+                        // allo
+                        } else {
+                            // affichage des plants
+                            plantes.updateSize(jardinImgMatrix[k][j], 0);
+                            plantes.display(jardinImgMatrix[k][j], jardinPosXMatrix[k][j], jardinPosYMatrix[k][j] + jardinY); // appel la methode display des objets plantes
 
-                        // jardin debug ui
-                        if (jardinDebugUi == true) {
-                            textSize(25);
-                            fill(blanc);
-                            text("(" + k + ", " + j + ", " + jardinImgMatrix[k][j] + " )", jardinPosXMatrix[k][j], jardinPosYMatrix[k][j] + jardinY);
-                    
-                            text("(" + jardinPosXMatrix[k][j] + ", " + jardinPosYMatrix[k][j] + " )", jardinPosXMatrix[k][j], jardinPosYMatrix[k][j] + jardinY + 25);
+                            // jardin debug ui
+                            if (jardinDebugUi == true) {
+                                textSize(25);
+                                fill(blanc);
+                                text("(" + k + ", " + j + ", " + jardinImgMatrix[k][j] + " )", jardinPosXMatrix[k][j], jardinPosYMatrix[k][j] + jardinY);
+                        
+                                text("(" + jardinPosXMatrix[k][j] + ", " + jardinPosYMatrix[k][j] + " )", jardinPosXMatrix[k][j], jardinPosYMatrix[k][j] + jardinY + 25);
+                            }
                         }
+                        
+                        
                     }
                 }
             }
@@ -60,18 +83,15 @@ class Jardin {
 
         /* 
         **
-        |$éléments du tableau$|
+        |$ éléments du tableau $|
             - position en x
             - position en y
-            - index de l'image
-            - surplus de grosseur pour la perspective
-        
+            - index de l'image       
         **
         */
         int x = ((width/jardinXSubDiv)/2) * -1;
         int y = jardinY;
         int imageIndex;
-        int scaleFactor = 0;
 
         // tableau //
         for (int k = 0; k < jardinXSubDiv; k++) {
@@ -82,7 +102,7 @@ class Jardin {
                     x = ((width/jardinXSubDiv)/2) * -1;
                 }
 
-                jardinPosXMatrix[k][j] = x;
+                jardinPosXMatrix[k][j] = x - planteOffsetX;
 
                 x += (width/jardinXSubDiv) + int(random(planteOffsetX * -1, planteOffsetX));
                 
@@ -93,7 +113,7 @@ class Jardin {
                     y = jardinY;
                 }
 
-                jardinPosYMatrix[k][j] = y;
+                jardinPosYMatrix[k][j] = y - planteOffsetY;
 
                 if (j == int(jardinYSubDiv/3) || j == int((jardinYSubDiv/3)*2)) {
                     y = (k * (jardinLength/jardinYSubDiv)) + int(random(planteOffsetY * -1, planteOffsetY)) + 100;
@@ -107,20 +127,6 @@ class Jardin {
                 imageIndex = int(random(7));
 
                 jardinImgMatrix[k][j] = imageIndex; 
-
-                
-                
-                /*
-                ** 
-                // // placer du plus loin au plus proche ig?
-                jardinPosYMatrix[i][j] = sort(jardinPosYMatrix[i][j]);
-                **
-                */
-
-                // // grosseur 
-                scaleFactor = j * 10;
-                jardinPerspSize[k][j] = 0;
-
             }
         }
     }
@@ -129,4 +135,11 @@ class Jardin {
         y = int(cos(PI/3) * jardinLength);
         return y;
     }
+
+    void displayMtn(int x, int y) {
+        // montagnes
+        fill(jaune);
+        // println("x : " + x + ", y : " + y);
+        rect(x, y, mtnW, mtnH);
+    } 
 }
