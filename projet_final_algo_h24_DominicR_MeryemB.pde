@@ -64,12 +64,13 @@ PImage[] spaceKey = new PImage[2];
 String interactionSourisUi = "Utilisez la souris pour intéragir avec la technologie!";
 
 // // menu
+int menuImgIndex = 0;
 PImage menuBg[] = new PImage[2];
 PImage playBtn[] = new PImage[2];
 PImage quitBtn[] = new PImage[2]; 
 
 // // bool
-boolean isGameOn = true; // pour détecter si le jeu est en mode menu ou jeu
+boolean isGameOn = false; // pour détecter si le jeu est en mode menu ou jeu
 
 // objet
 Ui ui; // déclare l'objet
@@ -206,6 +207,7 @@ void setup() {
     // // objet
     ui = new Ui();
 
+
     // ui
     // // move
     // // // up
@@ -213,6 +215,7 @@ void setup() {
         upKey[i - 1] = loadImage ( "img/ui/up_0" + i + ".png");
         upKey[i - 1].resize(resizer, resizer);
     }
+
 
     // // // down
     for ( int i = 1; i <= downKey.length; i++) {
@@ -421,6 +424,7 @@ void setup() {
                 isCDTooClose = true;
                 break;
             }
+
         }
     } while (isCDTooClose);
 }
@@ -431,7 +435,12 @@ void draw() {
 
     
 
-    // ::::::::::::::::::::::::::::::::::::::::::::::::
+    
+        image(theEnd, 0, 0);
+    } else {
+        image(menuBg[menuImgIndex], 0, 0);
+    }
+
 
     // général
     background(noir);
@@ -458,36 +467,55 @@ void draw() {
         }
     }
 
-    if(isWalkmanDone && isCdPlayerDone && isPagerDone && isPhoneDone && isRadioDone && !isSonVictoire) {
-        sonArriere_01.stop();
-        sonVictoire.play();
-        isSonVictoire = true;
-    }
+    if (isGameOn != false) {
+        if (walkman.isPointInHighResImage(mouseX, mouseY)) {
+            walkman.imageIndex = 1;  // Change l'image du Walkman à la deuxième image 
+            sonWalkman.play(); // Joue le son du Walkman
+            isWalkmanDone = true; // Le Walkman est terminé
+        }
 
-    if (technologies[5].highResPosY > -100 && technologies[5].imageIndex >= 1 && isWalkmanDone && isCdPlayerDone && isPagerDone && isPhoneDone && isRadioDone) {
-    //Si assez de temps est passé, changer l'image de la télévision 
-        if (millis() - tvsLastChange >= tvsChangeInterval && tvs.imageIndex < 9) {
-            // Changer l'image de la télévision et réinitialiser le temps
-            tvs.imageIndex += 1;
-            tvsLastChange = millis();
-        } else if(millis() - tvsLastChange >= tvsChangeInterval * 5 && tvs.imageIndex == 9) {
-            tvs.imageIndex = 10;
-            sonTV2.play();
-        } 
-    }
-    distanceToCD = dist(joueur.x, joueur.y, randomXCD, randomYCD);
+        if (cdPlayer.isPointInHighResImage(mouseX, mouseY) && isCDPickedUp && cdPlayer.imageIndex != 3) { //Si le CD est ramassé et que l'image du Cdplayer n'est pas la 4e image et que la souris est sur l'image du Cdplayer
+            cdPlayer.imageIndex += 1;  // Change l'image du Cdplayer à la prochaine image si le CD est ramassé
+            if (cdPlayer.imageIndex == 1) {
+                cdPlayer.techImages[4] = null; // Enlève l'image du CD
+            }
+
+            if(cdPlayer.imageIndex == 3) {
+                sonCd.play(); // Joue le son du CD
+                isCdPlayerDone = true; // Le CdPlayer est terminé
+            }
+        }
+
+        if (phone.isPointInHighResImage(mouseX, mouseY) && phone.imageIndex != 12) {
+            phone.imageIndex += 1;  // Change l'image du Phone à la prochaine image
+            if (phone.imageIndex == 12) {
+                isPhoneDone = true; // Le Phone est terminé
+                sonPhone.play(); // Joue le son du Phone
+            }
+        }
+
+        pager.isButtonClicked(mouseX, mouseY); // Vérifie si le bouton de la technologie Pager est cliqué
+        radio.isRadioClicked(mouseX, mouseY);
         
-    // joueur
-    joueur.display(); // appel la méthode display de l'objet joueur
-    
-    // ui
-    // // game ui
-    ui.display();
+        //Si la souris est sur l'image de la télévision et que la souris est cliquée, faire jouer le son et la vidéo de fin
+        if (tvs.isPointInHighResImage(mouseX, mouseY) && tvs.imageIndex == 10 && isWalkmanDone && isCdPlayerDone && isPagerDone && isPhoneDone && isRadioDone) {
+            tvs.imageIndex = 11;
+            sonTV3.play();
+            theEnd.play();
+        }
+    } else {
+        if (menuImgIndex == 0) {
+            menuImgIndex = 1;
+        } else if (menuImgIndex == 1) {
+            isGameOn = true;
+        }
+    }
+}
 
-    // end
-    image(theEnd, 0, 0);
+//fin
+void fin() {
+    isGameOn = false;
+    menuImgIndex = 0;
 
-    // menu //
-    // // menu
-    ui.menuDisplay();
+    // tout ce que tu a reset
 }
