@@ -102,7 +102,7 @@ class Jardin {
                     x = ((width/jardinXSubDiv)/2) * -1;
                 }
 
-                jardinPosXMatrix[k][j] = x - planteOffsetX;
+                jardinPosXMatrix[k][j] = x + planteOffsetX;
 
                 x += (width/jardinXSubDiv) + int(random(planteOffsetX * -1, planteOffsetX));
                 
@@ -131,15 +131,12 @@ class Jardin {
         }
     }
 
-    int jardinTranslation(int y) {
-        y = int(cos(PI/3) * jardinLength);
-        return y;
-    }
-
     void displayMtn(int x, int y) {
         // montagnes
         fill(jaune);
         // println("x : " + x + ", y : " + y);
-        rect(x, y, mtnW, mtnH);
+        rect(x, y + (2 * planteOffsetY), mtnW, mtnH);
+
+        // meryem! mettre l'image directement ici
     } 
 }
