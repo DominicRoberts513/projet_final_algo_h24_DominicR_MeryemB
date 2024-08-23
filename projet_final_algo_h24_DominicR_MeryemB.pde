@@ -273,8 +273,8 @@ void setup() {
     // music
     // // musique de fond
     sonArriere_01 = new SoundFile(this, "sons/bs_02.wav"); // charge le son dans la variable
-    // sonArriere_01.play(); // fait jouer le son
-    // sonArriere_01.loop(); // fait rejouer le son une fois que ce oson a terminer de jouer
+    sonArriere_01.play(); // fait jouer le son
+    sonArriere_01.loop(); // fait rejouer le son une fois que ce oson a terminer de jouer
 
     // // technologies
     sonCd = new SoundFile(this, "sons/cd_01.wav");
