@@ -435,11 +435,12 @@ void draw() {
 
     
 
-    
-        image(theEnd, 0, 0);
-    } else {
-        image(menuBg[menuImgIndex], 0, 0);
-    }
+    // Tt en commentaire pcq il te manque un if et ca faisait bugger le jeu
+
+    // image(theEnd, 0, 0);
+    // } else {
+    //  image(menuBg[menuImgIndex], 0, 0);
+    // }
 
 
     // général
