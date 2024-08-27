@@ -504,7 +504,10 @@ void draw() {
             sonTV3.play();
             theEnd.play();
         }
+
+        joueur.display();
     } else {
+        image(menuBg[menuImgIndex], 0, 0);
         if (menuImgIndex == 0) {
             menuImgIndex = 1;
         } else if (menuImgIndex == 1) {
