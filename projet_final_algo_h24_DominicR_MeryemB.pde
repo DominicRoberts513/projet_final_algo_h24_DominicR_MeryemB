@@ -431,44 +431,38 @@ void setup() {
 
 // draw // 
 void draw() {
-    // ::::::::::::::::::: test zone ::::::::::::::::::
-
-    
-
-    // Tt en commentaire pcq il te manque un if et ca faisait bugger le jeu
-
-    // image(theEnd, 0, 0);
-    // } else {
-    //  image(menuBg[menuImgIndex], 0, 0);
-    // }
-
-
     // général
     background(noir);
     
-    fill(bleu);
-    rect(technologies[5].highResPosX - width, technologies[5].highResPosY, width*2, height/1.88);
+    
 
-    // jardin
-    // // plantes
-    jardin.display();
-
-    // Afficher les technologies
-    for (Technologie tech : technologies) {
-        tech.display(joueur, tech.posX, tech.posY);
-    }
-
-    if (isCDPickedUp) {
-        if (cdPlayer.techImages[4] != null) {
-            image(cdPlayer.techImages[4], 0, 0); // Afficher le CD
-        }
-    } else {
-        if (cdPlayer.techImages[4] != null) {
-            image(cdPlayer.techImages[4], randomXCD, randomYCD); // Afficher le CD
-        }
-    }
+    
 
     if (isGameOn != false) {
+        println("if");
+
+        fill(bleu);
+        rect(technologies[5].highResPosX - width, technologies[5].highResPosY, width*2, height/1.88);
+
+        // jardin
+        // // plantes
+        jardin.display();
+
+        // Afficher les technologies
+        for (Technologie tech : technologies) {
+            tech.display(joueur, tech.posX, tech.posY);
+        }
+
+        if (isCDPickedUp) {
+            if (cdPlayer.techImages[4] != null) {
+                image(cdPlayer.techImages[4], 0, 0); // Afficher le CD
+            }
+        } else {
+            if (cdPlayer.techImages[4] != null) {
+                image(cdPlayer.techImages[4], randomXCD, randomYCD); // Afficher le CD
+            }
+        }
+
         if (walkman.isPointInHighResImage(mouseX, mouseY)) {
             walkman.imageIndex = 1;  // Change l'image du Walkman à la deuxième image 
             sonWalkman.play(); // Joue le son du Walkman
@@ -507,19 +501,10 @@ void draw() {
 
         joueur.display();
     } else {
+        println("else");
         image(menuBg[menuImgIndex], 0, 0);
-        if (menuImgIndex == 0) {
-            menuImgIndex = 1;
-        } else if (menuImgIndex == 1) {
-            isGameOn = true;
-        }
+        
     }
 }
 
-//fin
-void fin() {
-    isGameOn = false;
-    menuImgIndex = 0;
 
-    // tout ce que tu a reset
-}
