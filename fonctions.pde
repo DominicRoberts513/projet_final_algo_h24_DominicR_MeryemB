@@ -39,6 +39,7 @@ void keyReleased() {
 // click de souris
 void mousePressed() {
     sonClicInteraction.play(); // Joue le son de l'interaction
+    mouseJustPressed = true;
 
     if (isGameOn != false) {
         if (walkman.isPointInHighResImage(mouseX, mouseY)) {
@@ -69,14 +70,14 @@ void mousePressed() {
 
 
         pager.isButtonClicked(mouseX, mouseY); // Vérifie si le bouton de la technologie Pager est cliqué
-        radio.isRadioClicked(mouseX, mouseY);
         
         //Si la souris est sur l'image de la télévision et que la souris est cliquée, faire jouer le son et la vidéo de fin
         if (tvs.isPointInHighResImage(mouseX, mouseY) && tvs.imageIndex == 10 && isWalkmanDone && isCdPlayerDone && isPagerDone && isPhoneDone && isRadioDone) {
             tvs.imageIndex = 11;
             sonTV3.play();
-            theEnd.play();
+            fin();
         }
+
     } else {
         if (menuImgIndex == 0) {
             menuImgIndex = 1;
@@ -86,10 +87,20 @@ void mousePressed() {
     }
 }
 
+void mouseReleased() {
+  mouseJustPressed = false;
+}
+
 //fin
 void fin() {
     isGameOn = false;
     menuImgIndex = 0;
-
+    isCdPlayerDone = false;
+    isPagerDone = false;
+    isPhoneDone = false;
+    isRadioDone = false;
+    isWalkmanDone = false;
+    isCDPickedUp = false;
+    tvs.imageIndex = 0;
     // tout ce que tu a reset
 }

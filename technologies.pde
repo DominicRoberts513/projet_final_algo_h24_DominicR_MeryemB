@@ -113,7 +113,7 @@ class Technologie {
         }
     
         for (Button button : buttonsPager) { 
-            if (button.isMouseInside(x, y)) { // si le point est à l'intérieur du bouton
+            if (button.isMouseInside(x, y) && !isPagerDone) { // si le point est à l'intérieur du bouton
                 if (button.order == buttonOrderPager[currentOrderPagerIndex]) { // si l'ordre du bouton est correct
                     currentOrderPagerIndex++; // incrémente l'index de l'ordre
                     if (currentOrderPagerIndex == buttonOrderPager.length) { // Si l'ordre complet a été complété
@@ -135,7 +135,7 @@ class Technologie {
     
     boolean isRadioClicked(int x, int y) { // vérifie si un bouton est cliqué
         for (Button button : buttonsRadio) { 
-            if (button.isMouseInside(x, y)) { // si le point est à l'intérieur du bouton
+            if (button.isMouseInside(x, y) && !isRadioDone) { // si le point est à l'intérieur du bouton
                 if (button.order == 5) {
                     imageIndex = 7;
                     sonRadio.play();

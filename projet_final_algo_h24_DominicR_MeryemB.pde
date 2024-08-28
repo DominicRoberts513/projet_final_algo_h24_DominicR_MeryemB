@@ -89,6 +89,9 @@ boolean rightKeyPressed = false;
 
 // interaction
 boolean spaceKeyPressed = false;
+boolean mouseJustPressed = false;
+
+
 
 // défilement
 boolean pTop = false;
@@ -386,13 +389,13 @@ void setup() {
 
                 // Générer une position aléatoire pour la technologie
                 randomX = int(random(50, width - 50));
-                randomY = int(random(jardinY, jardinY + jardinLength));
+                randomY = int(random(jardinY + 100, jardinY + jardinLength));
 
                 // Calculer la distance entre la technologie et les autres technologies
                 for (int j = 0; j < i; j++) {
                     float distance = dist(randomX, randomY, technologies[j].posX, technologies[j].posY);
 
-                    if (distance < 500) {  // Si la distance est inférieure à 500 pixels
+                    if (distance < 600) {  // Si la distance est inférieure à 500 pixels
                         isTooClose = true;
                         break;
                     }
@@ -415,12 +418,12 @@ void setup() {
             randomXCD = int(random(2 * width / 3 + 50, width - 100));
         }
 
-        randomYCD = int(random(jardinY, jardinY + jardinLength));
+        randomYCD = int(random(jardinY + 100, jardinY + jardinLength));
         
         // Vérifier la distance entre le CD et les autres technologies
         for (int i = 0; i < technologies.length - 1; i++) {
             float distance = dist(randomXCD, randomYCD, technologies[i].posX, technologies[i].posY);
-            if (distance < 500) {  // Si la distance est inférieure à 500 pixels
+            if (distance < 600) {  // Si la distance est inférieure à 500 pixels
                 isCDTooClose = true;
                 break;
             }
@@ -440,19 +443,30 @@ void draw() {
 
     if (isGameOn != false) {
 
-        println("if");
+        //println("if");
 
         fill(bleu);
         rect(technologies[5].highResPosX - width, technologies[5].highResPosY, width*2, height/1.88);
+        distanceToCD = dist(joueur.x, joueur.y, randomXCD, randomYCD);
+
 
         // jardin
         // // plantes
         jardin.display();
 
+    
+
         // Afficher les technologies
-        radio.isRadioClicked(mouseX, mouseY);
-       /* for (Technologie tech : technologies) {
+        for (Technologie tech : technologies) {
             tech.display(joueur, tech.posX, tech.posY);
+        }
+
+        if (distanceToCD < 100 && spaceKeyPressed) { // Si le joueur est en collision avec le CD
+            isCDPickedUp = true; // Ramasser le CD
+        }
+
+        if(!isRadioDone){
+            radio.isRadioClicked(mouseX, mouseY);
         }
 
         if (isCDPickedUp) {
@@ -465,51 +479,31 @@ void draw() {
             }
         }
 
-        if (walkman.isPointInHighResImage(mouseX, mouseY)) {
-            walkman.imageIndex = 1;  // Change l'image du Walkman à la deuxième image 
-            sonWalkman.play(); // Joue le son du Walkman
-            isWalkmanDone = true; // Le Walkman est terminé
+        if(isWalkmanDone && isCdPlayerDone && isPagerDone && isPhoneDone && isRadioDone){
+            sonArriere_01.stop();
+            sonVictoire.play();
+            tvs.imageIndex = 1;
         }
 
-        if (cdPlayer.isPointInHighResImage(mouseX, mouseY) && isCDPickedUp && cdPlayer.imageIndex != 3) { //Si le CD est ramassé et que l'image du Cdplayer n'est pas la 4e image et que la souris est sur l'image du Cdplayer
-            cdPlayer.imageIndex += 1;  // Change l'image du Cdplayer à la prochaine image si le CD est ramassé
-            if (cdPlayer.imageIndex == 1) {
-                cdPlayer.techImages[4] = null; // Enlève l'image du CD
-            }
-
-            if(cdPlayer.imageIndex == 3) {
-                sonCd.play(); // Joue le son du CD
-                isCdPlayerDone = true; // Le CdPlayer est terminé
-            }
+        if (tvs.highResPosY > -100 && tvs.imageIndex >= 1 && tvs.imageIndex < 9 && isWalkmanDone && isCdPlayerDone && isPagerDone && isPhoneDone && isRadioDone) {
+        //Si assez de temps est passé, changer l'image de la télévision 
+        if (millis() - tvsLastChange >= tvsChangeInterval) {
+            // Changer l'image de la télévision et réinitialiser le temps
+            tvs.imageIndex += 1;
+            tvsLastChange = millis();
+            sonTV1.play();
         }
-
-        if (phone.isPointInHighResImage(mouseX, mouseY) && phone.imageIndex != 12)  {
-            phone.imageIndex += 1;  // Change l'image du Phone à la prochaine image
-            if (phone.imageIndex == 12) {
-                isPhoneDone = true; // Le Phone est terminé
-                sonPhone.play(); // Joue le son du Phone
-            }
-        }
-
-        pager.isButtonClicked(mouseX, mouseY); // Vérifie si le bouton de la technologie Pager est cliqué
-        
-        //Si la souris est sur l'image de la télévision et que la souris est cliquée, faire jouer le son et la vidéo de fin
-        if (tvs.isPointInHighResImage(mouseX, mouseY) && tvs.imageIndex == 10 && isWalkmanDone && isCdPlayerDone && isPagerDone && isPhoneDone && isRadioDone) {
-            tvs.imageIndex = 11;
-            sonTV3.play();
-            theEnd.play();
-        }*/ 
+        } else if(tvs.imageIndex == 9 && mouseJustPressed) {
+            tvs.imageIndex = 10;
+            sonTV1.stop();
+            sonTV2.play();
+        }   
 
         joueur.display();
-    } else {
-        println("else");
-        image(menuBg[menuImgIndex], 0, 0);
-        
-    }
+
+        } else {
+            //println("else");
+            image(menuBg[menuImgIndex], 0, 0);
+        }
 }
 
-
- 
-
-        // Ca fait bugger mon interaction
-        /*if (walkman.isPointInHighResImage(mouseX, mouseY)) {
