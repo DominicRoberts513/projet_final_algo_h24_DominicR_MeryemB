@@ -469,7 +469,11 @@ void draw() {
     }
 
     if (isGameOn != false) {
-        if (walkman.isPointInHighResImage(mouseX, mouseY)) {
+        
+        radio.isRadioClicked(mouseX, mouseY);
+
+        // Ca fait bugger mon interaction
+        /*if (walkman.isPointInHighResImage(mouseX, mouseY)) {
             walkman.imageIndex = 1;  // Change l'image du Walkman à la deuxième image 
             sonWalkman.play(); // Joue le son du Walkman
             isWalkmanDone = true; // Le Walkman est terminé
@@ -487,7 +491,7 @@ void draw() {
             }
         }
 
-        if (phone.isPointInHighResImage(mouseX, mouseY) && phone.imageIndex != 12) {
+        if (phone.isPointInHighResImage(mouseX, mouseY) && phone.imageIndex != 12)  {
             phone.imageIndex += 1;  // Change l'image du Phone à la prochaine image
             if (phone.imageIndex == 12) {
                 isPhoneDone = true; // Le Phone est terminé
@@ -496,14 +500,13 @@ void draw() {
         }
 
         pager.isButtonClicked(mouseX, mouseY); // Vérifie si le bouton de la technologie Pager est cliqué
-        radio.isRadioClicked(mouseX, mouseY);
         
         //Si la souris est sur l'image de la télévision et que la souris est cliquée, faire jouer le son et la vidéo de fin
         if (tvs.isPointInHighResImage(mouseX, mouseY) && tvs.imageIndex == 10 && isWalkmanDone && isCdPlayerDone && isPagerDone && isPhoneDone && isRadioDone) {
             tvs.imageIndex = 11;
             sonTV3.play();
             theEnd.play();
-        }
+        }*/ 
 
         joueur.display();
     } else {
