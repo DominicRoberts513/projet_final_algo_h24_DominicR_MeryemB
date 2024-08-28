@@ -80,7 +80,17 @@ void mousePressed() {
 
     } else {
         if (menuImgIndex == 0) {
-            menuImgIndex = 1;
+            if (mouseX > width/2 - btnW/2 && mouseX < width/2 + btnW/2) {
+                // play
+                if (mouseY > height/2 - btnH/2 && mouseY < height/2 + btnH/2) {
+                    menuImgIndex = 1;
+                }
+
+                // quit
+                if (mouseY > ((height/3) * 2) - btnH/2 && mouseY < ((height/3) * 2) + btnH/2) {
+                    exit(); // ferme l'application
+                }
+            }
         } else if (menuImgIndex == 1) {
             isGameOn = true;
         }

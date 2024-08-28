@@ -65,6 +65,10 @@ String interactionSourisUi = "Utilisez la souris pour intéragir avec la technol
 
 // // menu
 int menuImgIndex = 0;
+int btnW = 300;
+int btnH = 150;
+int playBtnImgIndex = 0;
+int quitBtnImgIndex = 0;
 PImage menuBg[] = new PImage[2];
 PImage playBtn[] = new PImage[2];
 PImage quitBtn[] = new PImage[2]; 
@@ -90,8 +94,6 @@ boolean rightKeyPressed = false;
 // interaction
 boolean spaceKeyPressed = false;
 boolean mouseJustPressed = false;
-
-
 
 // défilement
 boolean pTop = false;
@@ -201,24 +203,17 @@ void setup() {
 
     background(noir);
 
-    // menu image
-    for ( int i = 1; i <= menuBg.length; i++) {
-        menuBg[i - 1] = loadImage( "img/ui/menu_0" + i + ".png");
-    }
-
     // ui
     // // objet
     ui = new Ui();
 
 
-    // ui
     // // move
     // // // up
     for ( int i = 1; i <= upKey.length; i++) {
         upKey[i - 1] = loadImage ( "img/ui/up_0" + i + ".png");
         upKey[i - 1].resize(resizer, resizer);
     }
-
 
     // // // down
     for ( int i = 1; i <= downKey.length; i++) {
@@ -242,7 +237,21 @@ void setup() {
     for ( int i = 1; i <= rightKey.length; i++) {
         spaceKey[i - 1] = loadImage ( "img/ui/space_0" + i + ".png");
         spaceKey[i - 1].resize(resizer * 3, resizer);
-    }       
+    }  
+
+    // // menu image
+    // // // arriere plan
+    for ( int i = 1; i <= menuBg.length; i++) {
+        menuBg[i - 1] = loadImage( "img/ui/menu_0" + i + ".png");
+    }
+
+    // // // boutons
+    for ( int i = 1; i <= playBtn.length; i++) {
+        playBtn[i - 1] = loadImage( "img/ui/play-button-0" + i + ".png");
+        playBtn[i - 1].resize(btnW, btnH);
+        quitBtn[i - 1] = loadImage( "img/ui/quit-button-0" + i + ".png");
+        quitBtn[i - 1].resize(btnW, btnH);
+    }  
 
     // jardin
     jardinLength = height * 2; // calcul la valeur pour la longueur du jardin
@@ -430,17 +439,16 @@ void setup() {
 
         }
     } while (isCDTooClose);
+
+    println("set up done");
 }
 
 // draw // 
 void draw() {
+    println("draw");
+
     // général
     background(noir);
-    
-    
-
-    
-
     if (isGameOn != false) {
 
         //println("if");
@@ -502,8 +510,7 @@ void draw() {
         joueur.display();
 
         } else {
-            //println("else");
-            image(menuBg[menuImgIndex], 0, 0);
+            ui.menuDisplay();
         }
 }
 

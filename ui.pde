@@ -68,26 +68,36 @@ class Ui {
     }
 
     void menuDisplay() {
-        
-        if (isGameOn != true) {
-            // menu arriere plan
-            image(menuBg[0], 0, 0);
+        // interaction
+        btnSurvol();
 
+        // menu arriere plan
+        image(menuBg[menuImgIndex], 0, 0);
+
+        if (menuImgIndex == 0) {
             // bouton joué
-            fill(blanc);
-            rect((width/6 * 3) - (width/6)/2, height/5 * 2 ,width/6 , height/6);
+            image(playBtn[playBtnImgIndex], width/2 - btnW/2, height/2 - btnH/2);
+            
+            // bouton quitté
+            image(quitBtn[quitBtnImgIndex], width/2 - btnW/2, ((height/3) * 2) - btnH/2);
+        } 
+    }
 
-            if (mouseX > (width/6 * 3) - (width/6)/2 && mouseX < ((width/6 * 3) - (width/6)/2) + (width/6)) {
-                if (mouseY > height/5 * 2 && mouseY < (height/5 * 2) + (height/6)) {
-                    println("survole");
-                    if (mousePressed) {
-                        println("click");
-                    } 
+    void btnSurvol() {
+        if (mouseX > width/2 - btnW/2 && mouseX < width/2 + btnW/2) {
+                // play
+                if (mouseY > height/2 - btnH/2 && mouseY < height/2 + btnH/2) {
+                    playBtnImgIndex = 1;
+                } else {
+                    playBtnImgIndex = 0;
+                }
+
+                // quit
+                if (mouseY > ((height/3) * 2) - btnH/2 && mouseY < ((height/3) * 2) + btnH/2) {
+                    quitBtnImgIndex = 1;
+                } else {
+                    quitBtnImgIndex = 0;
                 }
             }
-        
-
-            // bouton quitté
-        }
     }
 }
