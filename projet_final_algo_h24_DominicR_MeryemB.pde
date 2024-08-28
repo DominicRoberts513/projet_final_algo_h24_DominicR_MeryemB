@@ -479,11 +479,11 @@ void draw() {
             }
         }
 
-        if(isWalkmanDone && isCdPlayerDone && isPagerDone && isPhoneDone && isRadioDone){
+        /* if(isWalkmanDone && isCdPlayerDone && isPagerDone && isPhoneDone && isRadioDone){
             sonArriere_01.stop();
-            sonVictoire.play();
+            sonVictoire.play(); // Ca bug ca
             tvs.imageIndex = 1;
-        }
+        } CA BUG MAIS JE SAIS POURQUOI JARRANGERAIS LATER*/ 
 
         if (tvs.highResPosY > -100 && tvs.imageIndex >= 1 && tvs.imageIndex < 9 && isWalkmanDone && isCdPlayerDone && isPagerDone && isPhoneDone && isRadioDone) {
         //Si assez de temps est passé, changer l'image de la télévision 
