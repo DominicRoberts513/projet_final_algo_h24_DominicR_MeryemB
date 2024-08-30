@@ -72,8 +72,20 @@ class Ui {
         btnSurvol();
 
         // menu arriere plan
-        image(menuBg[menuImgIndex], 0, 0);
+        int menuX = 0;
+        int menuY = 0;
 
+        if (menuImgIndex == 1) {
+            menuX = 100;
+            menuY = 150;
+        } else {
+            menuX = 0;
+            menuY = 0;
+        }
+
+        image(menuBg[menuImgIndex], menuX, menuY);
+
+        // afficher les boutons
         if (menuImgIndex == 0) {
             // bouton joué
             image(playBtn[playBtnImgIndex], width/2 - btnW/2, height/2 - btnH/2);
