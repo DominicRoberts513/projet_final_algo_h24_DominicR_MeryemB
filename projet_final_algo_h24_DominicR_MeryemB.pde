@@ -114,8 +114,8 @@ boolean jardinDebugUi = false;
 // // jardin
 int jardinLength; // déclare une variable pour storer la longueur du jardin
 int jardinY; // déclare une variable pour enregistrer la coordonée y du jardin
-int jardinYSubDiv = 25; // 25 // sous division en y du jardin
-int jardinXSubDiv = 22; // 22 // sous division en x du jardin
+int jardinYSubDiv = 30; // 25 // sous division en y du jardin
+int jardinXSubDiv = 26; // 22 // sous division en x du jardin
 int[][] jardinPosXMatrix = new int[jardinXSubDiv][jardinYSubDiv];
 int[][] jardinPosYMatrix = new int[jardinXSubDiv][jardinYSubDiv];
 int[][] jardinImgMatrix = new int[jardinXSubDiv][jardinYSubDiv];
@@ -124,6 +124,7 @@ int[][] jardinPerspSize = new int[jardinXSubDiv][jardinYSubDiv];
 // // montagnes
 int mtnW;
 int mtnH;
+PImage mtnImg;
 
 // objet
 Jardin jardin; // déclare l'objet jardin
@@ -271,6 +272,8 @@ void setup() {
     // mtn
     mtnW = width/3;
     mtnH = 200;
+    mtnImg = loadImage("img/plantes/cliff-01.png");
+    mtnImg.resize(mtnW, mtnH);
 
     // plantes
     // // images
@@ -439,30 +442,21 @@ void setup() {
 
         }
     } while (isCDTooClose);
-
-    println("set up done");
 }
 
 // draw // 
 void draw() {
-    println("draw");
-
     // général
     background(noir);
     if (isGameOn != false) {
-
-        //println("if");
-
+        // général
         fill(bleu);
         rect(technologies[5].highResPosX - width, technologies[5].highResPosY, width*2, height/1.88);
         distanceToCD = dist(joueur.x, joueur.y, randomXCD, randomYCD);
 
-
         // jardin
         // // plantes
         jardin.display();
-
-    
 
         // Afficher les technologies
         for (Technologie tech : technologies) {

@@ -19,14 +19,12 @@ class Jardin {
         // boucles
         for (int k = 0; k < jardinXSubDiv; k++) {
             for (int j = 0; j < jardinYSubDiv; j++) {
-                
-
                 // plantes
                 // // masking
                 // // // limite au sommet de la montagne
                 if (jardinPosYMatrix[k][j] + jardinY >= jardinY) {
                     // // // limites pour le chemin
-                    if (jardinPosXMatrix[k][j] <= width/3 || jardinPosXMatrix[k][j] >= ((width/3)*2)) {
+                    if (jardinPosXMatrix[k][j] <= width/3 || jardinPosXMatrix[k][j] >= ((width/3)*2) - 20) {
                         // // // limites pour les falaises de la montagnes
                         if (jardinPosYMatrix[k][j] + jardinY >= jardinLength/3 + jardinY && jardinPosYMatrix[k][j] + jardinY <= jardinLength/3 + mtnH + jardinY) {
                         // fait rien  
@@ -102,7 +100,7 @@ class Jardin {
                     x = ((width/jardinXSubDiv)/2) * -1;
                 }
 
-                jardinPosXMatrix[k][j] = x + planteOffsetX;
+                jardinPosXMatrix[k][j] = (x + planteOffsetX) - 20;
 
                 x += (width/jardinXSubDiv) + int(random(planteOffsetX * -1, planteOffsetX));
                 
@@ -113,7 +111,7 @@ class Jardin {
                     y = jardinY;
                 }
 
-                jardinPosYMatrix[k][j] = y - planteOffsetY;
+                jardinPosYMatrix[k][j] = (y - planteOffsetY) - 20;
 
                 if (j == int(jardinYSubDiv/3) || j == int((jardinYSubDiv/3)*2)) {
                     y = (k * (jardinLength/jardinYSubDiv)) + int(random(planteOffsetY * -1, planteOffsetY)) + 100;
@@ -133,10 +131,7 @@ class Jardin {
 
     void displayMtn(int x, int y) {
         // montagnes
-        fill(jaune);
         // println("x : " + x + ", y : " + y);
-        rect(x, y + (2 * planteOffsetY), mtnW, mtnH);
-
-        // meryem! mettre l'image directement ici
+        image(mtnImg, x, y + 50);
     } 
 }
