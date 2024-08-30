@@ -27,6 +27,8 @@ color vert_foncee = color(68, 123, 28);
 color bleu = color(37, 89, 161);
 color bleu_pale = color(236, 248, 252);
 color blanc = color(255, 255, 255);
+color beigeLettrage = color(241, 166, 86);
+color brunLettrage = color(151, 60, 27);
 
 // sons //
 // arriere plan
@@ -72,6 +74,8 @@ int quitBtnImgIndex = 0;
 PImage menuBg[] = new PImage[2];
 PImage playBtn[] = new PImage[2];
 PImage quitBtn[] = new PImage[2]; 
+
+PFont coffeeMilk;
 
 // // bool
 boolean isGameOn = false; // pour détecter si le jeu est en mode menu ou jeu
@@ -205,6 +209,9 @@ void setup() {
     background(noir);
 
     // ui
+    // // font
+    coffeeMilk = createFont("Coffeemilk.otf", 128);
+
     // // objet
     ui = new Ui();
 
@@ -502,6 +509,8 @@ void draw() {
         }   
 
         joueur.display();
+
+        ui.display();
 
         } else {
             ui.menuDisplay();

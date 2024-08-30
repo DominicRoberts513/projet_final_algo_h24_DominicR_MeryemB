@@ -2,7 +2,7 @@ class Ui {
     // position
     int moveKeyX;
     int moveKeyY;
-    int txtSz = 30;
+    int txtSz = 36;
 
     // constructor
     Ui() { 
@@ -59,9 +59,12 @@ class Ui {
         // texte
         for (Technologie tech : technologies) {
             if (tech.highResDisplayed && tech != technologies[5]) {
-                textSize(txtSz);
-                fill(blanc);
+                
                 textAlign(CENTER);
+                textFont(coffeeMilk, txtSz);
+                fill(brunLettrage);
+                text(interactionSourisUi, width/2 + 2, height/8 + 2);
+                fill(beigeLettrage);
                 text(interactionSourisUi, width/2, height/8);
             }
         }
