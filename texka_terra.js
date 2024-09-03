@@ -6,14 +6,12 @@ let collisionRadius = 100;
 // Colors
 let noir, rouge, jaune, vert, vert_foncee, bleu, bleu_pale, blanc, beigeLettrage, brunLettrage;
 
-// Sound files
+let sonClicInteraction;
 let sonArriere_01, sonArriere_02, sonArriere_03;
 let sonCd, sonPager, sonPhone, sonRadio, sonWalkman;
-let sonVictoire, sonClicInteraction;
-let sonTV1, sonTV2, sonTV3;
-let isSonVictoire = false;
+let sonVictoire, sonTV1, sonTV2, sonTV3;
+let coffeeMilk;
 
-// UI images
 let upKey = [];
 let downKey = [];
 let leftKey = [];
@@ -22,7 +20,20 @@ let spaceKey = [];
 let menuBg = [];
 let playBtn = [];
 let quitBtn = [];
-let coffeeMilk;
+let plantesImage = [];
+
+let cdPlayerImages = [];
+let cdPlayerImagesHighRes = [];
+let pagerImages = [];
+let pagerImagesHighRes = [];
+let phoneImages = [];
+let phoneImagesHighRes = [];
+let radioImages = [];
+let radioImagesHighRes = [];
+let walkmanImages = [];
+let walkmanImagesHighRes = [];
+let tvsImages = [];
+let tvsImagesHighRes = [];
 
 // Booleans
 let isGameOn = false;
@@ -56,7 +67,7 @@ let planteOffsetX = 20;
 let planteOffsetY = 10;
 let offsetValueX, offsetValueY;
 let planteX, planteY;
-let plantesImage = [];
+
 
 // Technology variables
 let randomXCD, randomYCD, randomX, randomY;
@@ -65,8 +76,6 @@ let tvsChangeInterval = 1000;
 let isCdPlayerDone = false, isPagerDone = false, isPhoneDone = false, isRadioDone = false, isWalkmanDone = false;
 let isCDPickedUp = false, isTechZoom = false;
 let distanceToCD;
-let cdPlayerImages = [], pagerImages = [], phoneImages = [], radioImages = [], walkmanImages = [], tvsImages = [];
-let cdPlayerImagesHighRes = [], pagerImagesHighRes = [], phoneImagesHighRes = [], radioImagesHighRes = [], walkmanImagesHighRes = [], tvsImagesHighRes = [];
 
 // Video
 let theEnd;
@@ -349,124 +358,134 @@ class Joueur {
     }
   }
 
-  class Jardin {
-    constructor() {
-      this.layoutMatrix();
-    }
-  
-    display() {
-      this.scrolling();
-  
-      // Mountains
-      for (let j = 0; j < jardinYSubDiv; j++) {
-        if (j === jardinYSubDiv / 3) {
-          this.displayMtn(0, jardinLength / 3 + jardinY);                    
-          this.displayMtn(width - mtnW, jardinLength / 3 + jardinY);
-        } else if (j === (jardinYSubDiv / 3) * 2) {
-          this.displayMtn(0, ((jardinLength / 3) * 2) + jardinY);
-          this.displayMtn(width - mtnW, ((jardinLength / 3) * 2) + jardinY);
-        }
+ class Jardin {
+      constructor() {
+        this.jardinPosXMatrix = [];
+        this.jardinPosYMatrix = [];
+        this.jardinImgMatrix = [];
+        this.layoutMatrix();
       }
-  
-      // Loops
-      for (let k = 0; k < jardinXSubDiv; k++) {
+    
+      display() {
+        this.scrolling();
+    
+        // Mountains
         for (let j = 0; j < jardinYSubDiv; j++) {
-          // Plants
-          // Masking
-          // Limit to the top of the mountain
-          if (jardinPosYMatrix[k][j] + jardinY >= jardinY) {
-            // Limits for the path
-            if (jardinPosXMatrix[k][j] <= width / 3 || jardinPosXMatrix[k][j] >= ((width / 3) * 2) - 20) {
-              // Limits for the cliffs of the mountains
-              if (jardinPosYMatrix[k][j] + jardinY >= jardinLength / 3 + jardinY && jardinPosYMatrix[k][j] + jardinY <= jardinLength / 3 + mtnH + jardinY) {
-                // Do nothing
-              } else if (jardinPosYMatrix[k][j] + jardinY >= ((jardinLength / 3) * 2) + jardinY && jardinPosYMatrix[k][j] + jardinY <= ((jardinLength / 3) * 2) + mtnH + jardinY) {
-                // Hello
-              } else {
-                // Display plants
-                plantes.updateSize(jardinImgMatrix[k][j], 0);
-                plantes.display(jardinImgMatrix[k][j], jardinPosXMatrix[k][j], jardinPosYMatrix[k][j] + jardinY); // Call the display method of the plant objects
-  
-                // Debug UI
-                if (jardinDebugUi === true) {
-                  textSize(25);
-                  fill('white');
-                  text(`(${k}, ${j}, ${jardinImgMatrix[k][j]})`, jardinPosXMatrix[k][j], jardinPosYMatrix[k][j] + jardinY);
-                  text(`(${jardinPosXMatrix[k][j]}, ${jardinPosYMatrix[k][j]})`, jardinPosXMatrix[k][j], jardinPosYMatrix[k][j] + jardinY + 25);
+          if (j === jardinYSubDiv / 3) {
+            this.displayMtn(0, jardinLength / 3 + jardinY);                    
+            this.displayMtn(width - mtnW, jardinLength / 3 + jardinY);
+          } else if (j === (jardinYSubDiv / 3) * 2) {
+            this.displayMtn(0, ((jardinLength / 3) * 2) + jardinY);
+            this.displayMtn(width - mtnW, ((jardinLength / 3) * 2) + jardinY);
+          }
+        }
+    
+        // Loops
+        for (let k = 0; k < jardinXSubDiv; k++) {
+          for (let j = 0; j < jardinYSubDiv; j++) {
+            // Plants
+            // Masking
+            // Limit to the top of the mountain
+            if (this.jardinPosYMatrix[k][j] + jardinY >= jardinY) {
+              // Limits for the path
+              if (this.jardinPosXMatrix[k][j] <= width / 3 || this.jardinPosXMatrix[k][j] >= ((width / 3) * 2) - 20) {
+                // Limits for the cliffs of the mountains
+                if (this.jardinPosYMatrix[k][j] + jardinY >= jardinLength / 3 + jardinY && this.jardinPosYMatrix[k][j] + jardinY <= jardinLength / 3 + mtnH + jardinY) {
+                  // Do nothing
+                } else if (this.jardinPosYMatrix[k][j] + jardinY >= ((jardinLength / 3) * 2) + jardinY && this.jardinPosYMatrix[k][j] + jardinY <= ((jardinLength / 3) * 2) + mtnH + jardinY) {
+                  // Hello
+                } else {
+                  // Display plants
+                  plantes.updateSize(this.jardinImgMatrix[k][j], 0);
+                  plantes.display(this.jardinImgMatrix[k][j], this.jardinPosXMatrix[k][j], this.jardinPosYMatrix[k][j] + jardinY); // Call the display method of the plant objects
+    
+                  // Debug UI
+                  if (jardinDebugUi === true) {
+                    textSize(25);
+                    fill('white');
+                    text(`(${k}, ${j}, ${this.jardinImgMatrix[k][j]})`, this.jardinPosXMatrix[k][j], this.jardinPosYMatrix[k][j] + jardinY);
+                    text(`(${this.jardinPosXMatrix[k][j]}, ${this.jardinPosYMatrix[k][j]})`, this.jardinPosXMatrix[k][j], this.jardinPosYMatrix[k][j] + jardinY + 25);
+                  }
                 }
               }
             }
           }
         }
       }
-    }
-  
-    // Handles the scrolling of the garden
-    scrolling() {
-      if (jardinY <= height / 6 * 5) {
-        if (pTop === true && upKeyPressed === true) { 
-          jardinY += int(pS);
-          randomYCD += int(pS);
-          for (let tech of technologies) {
-            tech.move(0, int(pS)); // Move technologies down
-          }
-        } 
-      }
-      if (jardinY >= height * -1.1) {
-        if (pBot === true && downKeyPressed === true) {
-          jardinY -= int(pS);
-          randomYCD -= int(pS);
-          for (let tech of technologies) {
-            tech.move(0, -int(pS)); // Move technologies up
-          }
-        }
-      }
-    }
     
-    // Index for plant images
-    layoutMatrix() {
-      // Initialize the matrix
-      let x = ((width / jardinXSubDiv) / 2) * -1;
-      let y = jardinY;
-      let imageIndex;
-  
-      // Matrix
-      for (let k = 0; k < jardinXSubDiv; k++) {
-        for (let j = 0; j < jardinYSubDiv; j++) {
-          // X position
-          if (x >= width - (width / jardinXSubDiv) / 2) {
-            x = ((width / jardinXSubDiv) / 2) * -1;
+      // Handles the scrolling of the garden
+      scrolling() {
+        if (jardinY <= height / 6 * 5) {
+          if (pTop === true && upKeyPressed === true) { 
+            jardinY += int(pS);
+            randomYCD += int(pS);
+            for (let tech of technologies) {
+              tech.move(0, int(pS)); // Move technologies down
+            }
+          } 
+        }
+        if (jardinY >= height * -1.1) {
+          if (pBot === true && downKeyPressed === true) {
+            jardinY -= int(pS);
+            randomYCD -= int(pS);
+            for (let tech of technologies) {
+              tech.move(0, -int(pS)); // Move technologies up
+            }
           }
-  
-          jardinPosXMatrix[k][j] = (x + planteOffsetX) - 20;
-  
-          x += (width / jardinXSubDiv) + int(random(planteOffsetX * -1, planteOffsetX));
-          
-          // Y position
-          if (y > jardinLength) {
-            y = jardinY;
-          }
-  
-          jardinPosYMatrix[k][j] = (y - planteOffsetY) - 20;
-  
-          if (j === int(jardinYSubDiv / 3) || j === int((jardinYSubDiv / 3) * 2)) {
-            y = (k * (jardinLength / jardinYSubDiv)) + int(random(planteOffsetY * -1, planteOffsetY)) + 100;
-          } else {
-            y = (k * (jardinLength / jardinYSubDiv)) + int(random(planteOffsetY * -1, planteOffsetY));
-          }               
-  
-          // Image index
-          imageIndex = int(random(7));
-          jardinImgMatrix[k][j] = imageIndex; 
         }
       }
+      
+      // Index for plant images
+      layoutMatrix() {
+        // Initialize the matrix
+        let x = ((width / jardinXSubDiv) / 2) * -1;
+        let y = jardinY;
+        let imageIndex;
+    
+        // Initialize the 2D arrays
+        for (let k = 0; k < jardinXSubDiv; k++) {
+          this.jardinPosXMatrix[k] = [];
+          this.jardinPosYMatrix[k] = [];
+          this.jardinImgMatrix[k] = [];
+        }
+    
+        // Matrix
+        for (let k = 0; k < jardinXSubDiv; k++) {
+          for (let j = 0; j < jardinYSubDiv; j++) {
+            // X position
+            if (x >= width - (width / jardinXSubDiv) / 2) {
+              x = ((width / jardinXSubDiv) / 2) * -1;
+            }
+    
+            this.jardinPosXMatrix[k][j] = (x + planteOffsetX) - 20;
+    
+            x += (width / jardinXSubDiv) + int(random(planteOffsetX * -1, planteOffsetX));
+            
+            // Y position
+            if (y > jardinLength) {
+              y = jardinY;
+            }
+    
+            this.jardinPosYMatrix[k][j] = (y - planteOffsetY) - 20;
+    
+            if (j === int(jardinYSubDiv / 3) || j === int((jardinYSubDiv / 3) * 2)) {
+              y = (k * (jardinLength / jardinYSubDiv)) + int(random(planteOffsetY * -1, planteOffsetY)) + 100;
+            } else {
+              y = (k * (jardinLength / jardinYSubDiv)) + int(random(planteOffsetY * -1, planteOffsetY));
+            }               
+    
+            // Image index
+            imageIndex = int(random(7));
+            this.jardinImgMatrix[k][j] = imageIndex; 
+          }
+        }
+      }
+    
+      // Displays the mountains
+      displayMtn(x, y) {
+        image(mtnImg, x, y + 50);
+      } 
     }
-  
-    // Displays the mountains
-    displayMtn(x, y) {
-      image(mtnImg, x, y + 50);
-    } 
-  }
 
   class Ui {
     constructor() {
@@ -580,23 +599,24 @@ class Joueur {
 }
 
 function preload() {
-    // Load sounds
-    sonArriere_01 = loadSound("sons/bs_02.wav");
-    sonCd = loadSound("sons/cd_01.wav");
-    sonPager = loadSound("sons/pager_01.wav");
-    sonPhone = loadSound("sons/phone_01.wav");
-    sonRadio = loadSound("sons/radio_01.wav");
-    sonWalkman = loadSound("sons/walkman_01.wav");
-    sonVictoire = loadSound("sons/bs_fin.wav");
-    sonTV1 = loadSound("sons/tv_fin_01.wav");
-    sonTV2 = loadSound("sons/tv_fin_02.wav");
-    sonTV3 = loadSound("sons/tv_fin_03.wav");
-    
-    // Load fonts
-    coffeeMilk = loadFont("Coffeemilk.otf");
-    
-    // Load images for UI
-    for (let i = 1; i <= 2; i++) {
+  // Load sounds
+  sonClicInteraction = loadSound('sons/clic_interaction.wav');
+  sonArriere_01 = loadSound("sons/bs_02.wav");
+  sonCd = loadSound("sons/cd_01.wav");
+  sonPager = loadSound("sons/pager_01.wav");
+  sonPhone = loadSound("sons/phone_01.wav");
+  sonRadio = loadSound("sons/radio_01.wav");
+  sonWalkman = loadSound("sons/walkman_01.wav");
+  sonVictoire = loadSound("sons/bs_fin.wav");
+  sonTV1 = loadSound("sons/tv_fin_01.wav");
+  sonTV2 = loadSound("sons/tv_fin_02.wav");
+  sonTV3 = loadSound("sons/tv_fin_03.wav");
+  
+  // Load fonts
+  coffeeMilk = loadFont("data/Coffeemilk.otf");
+  
+  // Load images for UI
+  for (let i = 1; i <= 2; i++) {
       upKey.push(loadImage("img/ui/up_0" + i + ".png"));
       downKey.push(loadImage("img/ui/down_0" + i + ".png"));
       leftKey.push(loadImage("img/ui/left_0" + i + ".png"));
@@ -605,33 +625,48 @@ function preload() {
       menuBg.push(loadImage("img/ui/menu_0" + i + ".png"));
       playBtn.push(loadImage("img/ui/play-button-0" + i + ".png"));
       quitBtn.push(loadImage("img/ui/quit-button-0" + i + ".png"));
-    }
-    
-    // Load images for plants
-    for (let i = 1; i <= 7; i++) {
+  }
+  
+  // Load images for plants
+  for (let i = 1; i <= 7; i++) {
       plantesImage.push(loadImage("img/plantes/plante-0" + i + ".png"));
-    }
-    
-    // Load images for technologies
-    for (let i = 0; i < 5; i++) {
-      cdPlayerImages.push(loadImage("img/technologies/cdplayer/cdplayer-" + (i+1) + ".png"));
-      cdPlayerImagesHighRes.push(loadImage("img/technologies/cdplayer/cdplayer-" + (i+1) + ".png"));
-      
-      pagerImages.push(loadImage("img/technologies/pager/pager-" + (i+1) + ".png"));
-      pagerImagesHighRes.push(loadImage("img/technologies/pager/pager-" + (i+1) + ".png"));
-      
-      phoneImages.push(loadImage("img/technologies/phone/phone-" + (i+1) + ".png"));
-      phoneImagesHighRes.push(loadImage("img/technologies/phone/phone-" + (i+1) + ".png"));
-      
-      radioImages.push(loadImage("img/technologies/radio/radio-" + (i+1) + ".png"));
-      radioImagesHighRes.push(loadImage("img/technologies/radio/radio-" + (i+1) + ".png"));
-      
-      walkmanImages.push(loadImage("img/technologies/walkman/walkman-" + (i+1) + ".png"));
-      walkmanImagesHighRes.push(loadImage("img/technologies/walkman/walkman-" + (i+1) + ".png"));
-      
-      tvsImages.push(loadImage("img/technologies/tvs/tvs-" + (i+1) + ".png"));
-      tvsImagesHighRes.push(loadImage("img/technologies/tvs/tvs-" + (i+1) + ".png"));
-    }
+  }
+  
+  // Function to load images for a given technology
+  function loadTechnologyImages(basePath, count) {
+      let images = [];
+      let highResImages = [];
+      for (let i = 0; i < count; i++) {
+          images.push(loadImage(`${basePath}-${i + 1}.png`));
+          highResImages.push(loadImage(`${basePath}-${i + 1}.png`));
+      }
+      return { images, highResImages };
+  }
+  
+  // Load images for technologies
+  let cdPlayerImagesData = loadTechnologyImages("img/technologies/cdplayer/cdplayer", 5);
+  cdPlayerImages = cdPlayerImagesData.images;
+  cdPlayerImagesHighRes = cdPlayerImagesData.highResImages;
+  
+  let pagerImagesData = loadTechnologyImages("img/technologies/pager/pager", 5);
+  pagerImages = pagerImagesData.images;
+  pagerImagesHighRes = pagerImagesData.highResImages;
+  
+  let phoneImagesData = loadTechnologyImages("img/technologies/phone/phone", 5);
+  phoneImages = phoneImagesData.images;
+  phoneImagesHighRes = phoneImagesData.highResImages;
+  
+  let radioImagesData = loadTechnologyImages("img/technologies/radio/radio", 5);
+  radioImages = radioImagesData.images;
+  radioImagesHighRes = radioImagesData.highResImages;
+  
+  let walkmanImagesData = loadTechnologyImages("img/technologies/walkman/walkman", 2); // Only 2 images for walkman
+  walkmanImages = walkmanImagesData.images;
+  walkmanImagesHighRes = walkmanImagesData.highResImages;
+  
+  let tvsImagesData = loadTechnologyImages("img/technologies/tvs/tvs", 5);
+  tvsImages = tvsImagesData.images;
+  tvsImagesHighRes = tvsImagesData.highResImages;
 }
     
 
