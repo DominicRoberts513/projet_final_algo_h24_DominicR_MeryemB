@@ -279,7 +279,7 @@ void setup() {
     // mtn
     mtnW = width/3;
     mtnH = 200;
-    mtnImg = loadImage("img/plantes/cliff-01.png");
+    mtnImg = loadImage("img/plantes/cliff-02.png");
     mtnImg.resize(mtnW, mtnH);
 
     // plantes
