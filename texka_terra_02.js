@@ -143,9 +143,6 @@ class Technologie {
             new Button(610, 455, 15, 15, 5),
             new Button(638, 455, 15, 15, 6),
         ];
-
-        // Log the initial state of highResTechImages
-        console.log('Initial highResTechImages:', this.highResTechImages);
     }
 
     setPosition(x, y) {
@@ -180,13 +177,8 @@ class Technologie {
     }
 
     display(joueur, posX, posY) {
-        // Ensure the high-resolution image exists
-        const highResImage = this.highResTechImages[this.imageIndex];
-        if (!highResImage) {
-            console.error(`High-resolution image not found for index ${this.imageIndex}`);
-            console.log('Current highResTechImages array:', this.highResTechImages);
-            return;
-        }
+
+        let highResImage = this.highResTechImages[this.imageIndex];
     
         // Calculate the width and height of the high-resolution image
         let newWidth = highResImage.width;
@@ -241,8 +233,8 @@ class Technologie {
             // si l'image haute résolution n'est pas affichée
             return false; // retourne faux
         }
-        let newWidth = this.highResTechImages[this.imageIndex].width; // largeur de l'image haute résolution
-        let newHeight = this.highResTechImages[this.imageIndex].height; // hauteur de l'image haute résolution
+        let newWidth = this.highResImage.width; // largeur de l'image haute résolution
+        let newHeight = this.highResImage.height; // hauteur de l'image haute résolution
         let highResPosX = width / 2 - newWidth / 2; // position x de l'image haute résolution
         let highResPosY = height / 2 - newHeight / 2; // position y de l'image haute résolution
         return (
@@ -556,6 +548,7 @@ class Joueur {
             pBot = false;
         }
     }
+    
     interact() {
         /*
         ** si le joueur est proche dune technologie. un signal visuel et sonore? apparait
@@ -658,7 +651,12 @@ class Button {
     }
 }
 
-
+function keyPressed() {
+    // si une touche est pressée
+    if (keyCode === UP_ARROW) {
+        console.log('allo'); // la barre d'espacement est pressée
+    }
+}
 
 class Ui {
     // position
@@ -680,6 +678,7 @@ class Ui {
         // gere les touche de déplacement
         // up
         if (upKeyPressed == true) {
+            control.log("up");
             image(upKey[1], this.moveKeyX, this.moveKeyY - width / 12);
         } else {
             image(upKey[0], this.moveKeyX, this.moveKeyY - width / 12);
@@ -946,32 +945,35 @@ function setup() {
         pagerImagesHighRes[i].resize(resizerHighRes, resizerHighRes);
     }
     
-    technologies[1] = new Technologie(pagerImages, pagerImagesHighRes, 1);
+    technologies[1] = new Technologie(pagerImages, pagerImagesHighRes, 0);
     
     for (let i = 0; i < phoneImages.length; i++) {
         phoneImages[i].resize(resizer, resizer);
         phoneImagesHighRes[i].resize(resizerHighRes, resizerHighRes);
     }
-    technologies[2] = new Technologie(phoneImages, phoneImagesHighRes, 2);
+
+    technologies[2] = new Technologie(phoneImages, phoneImagesHighRes, 0);
     
     for (let i = 0; i < radioImages.length; i++) {
         radioImages[i].resize(resizer, resizer);
         radioImagesHighRes[i].resize(resizerHighRes, resizerHighRes);
     }
-    technologies[3] = new Technologie(radioImages, radioImagesHighRes, 3);
+
+    technologies[3] = new Technologie(radioImages, radioImagesHighRes, 0);
     
     for (let i = 0; i < walkmanImages.length; i++) {
         walkmanImages[i].resize(resizer, resizer);
         walkmanImagesHighRes[i].resize(resizerHighRes, resizerHighRes);
     }
-    technologies[4] = new Technologie(walkmanImages, walkmanImagesHighRes, 4);
+
+    technologies[4] = new Technologie(walkmanImages, walkmanImagesHighRes, 0);
     
     for (let i = 0; i < tvsImages.length; i++) {
         tvsImages[i].resize(resizer, resizer);
         tvsImagesHighRes[i].resize(resizerHighRes, resizerHighRes);
     }
     
-    technologies[5] = new Technologie(tvsImages, tvsImagesHighRes, 5);
+    technologies[5] = new Technologie(tvsImages, tvsImagesHighRes,  0);
     
     walkman = technologies[4]; // Déclare l'objet Walkman
     pager = technologies[1]; // Idem
@@ -1000,7 +1002,7 @@ function setup() {
                         technologies[j].posX,
                         technologies[j].posY
                     );
-                    if (distance < 600) {
+                    if (distance < 200) {
                         // Si la distance est inférieure à 500 pixels
                         isTooClose = true;
                         break;
@@ -1063,6 +1065,7 @@ function draw() {
         distanceToCD = dist(joueur.x, joueur.y, randomXCD, randomYCD); // jardin
         // // plantes
         jardin.display(); // Afficher les technologies
+
         for (let tech of technologies) {
             tech.display(joueur, tech.posX, tech.posY);
         }
