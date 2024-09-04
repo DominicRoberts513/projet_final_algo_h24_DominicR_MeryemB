@@ -124,7 +124,6 @@ class Technologie {
         this.techImages = techImages; // images des technologies
         this.highResTechImages = highResTechImages; // high-resolution images
         this.imageIndex = imageIndex; // index de l'image de la technologie
-        this.highResImage = this.highResTechImages[this.imageIndex];
         this.spacePressed = false; // true si la touche espace est pressée
         this.spaceWasPressed = false; // true si la touche espace était pressée
         this.highResDisplayed = false; // true si l'image haute résolution est affichée
@@ -183,8 +182,8 @@ class Technologie {
     display(joueur, posX, posY) {
     
         // Calculate the width and height of the high-resolution image
-        let newWidth = this.highResImage.width;
-        let newHeight = this.highResImage.height;
+        let newWidth = this.highResTechImages[this.imageIndex].width;
+        let newHeight = this.highResTechImages[this.imageIndex].height;
     
         // Calculate the position of the high-resolution image
         this.highResPosX = width / 2 - newWidth / 2;
@@ -207,7 +206,7 @@ class Technologie {
     
         if (this.highResDisplayed) {
             // Display the high-resolution image at the calculated position
-            image(this.highResImage, this.highResPosX, this.highResPosY, newWidth, newHeight);
+            image(this.highResTechImages[this.imageIndex], this.highResPosX, this.highResPosY, newWidth, newHeight);
         } else {
             // If the high-resolution image is not displayed, display the normal image at the technology's position
             image(this.techImages[this.imageIndex], posX, posY);
@@ -235,8 +234,8 @@ class Technologie {
             // si l'image haute résolution n'est pas affichée
             return false; // retourne faux
         }
-        let newWidth = this.highResImage.width; // largeur de l'image haute résolution
-        let newHeight = this.highResImage.height; // hauteur de l'image haute résolution
+        let newWidth = this.highResTechImages[this.imageIndex].width; // largeur de l'image haute résolution
+        let newHeight = this.highResTechImages[this.imageIndex].height; // hauteur de l'image haute résolution
         let highResPosX = width / 2 - newWidth / 2; // position x de l'image haute résolution
         let highResPosY = height / 2 - newHeight / 2; // position y de l'image haute résolution
         return (
@@ -405,7 +404,7 @@ class Jardin {
             if (pTop == true && upKeyPressed == true) {
                 jardinY = jardinY + int(pS);
                 randomYCD += int(pS);
-                for (tech of technologies) {
+                for (let tech of technologies) {
                     tech.move(0, int(pS)); // Bouge les technologies vers le bas
                 }
             }
@@ -414,7 +413,7 @@ class Jardin {
             if (pBot == true && downKeyPressed == true) {
                 jardinY = jardinY - int(pS);
                 randomYCD -= int(pS);
-                for (tech of technologies) {
+                for (let tech of technologies) {
                     tech.move(0, -int(pS)); // Bouge les technologies vers le haut
                 }
             }
@@ -687,7 +686,6 @@ class Ui {
         // gere les touche de déplacement
         // up
         if (upKeyPressed == true) {
-            console.log("up");
             image(upKey[1], this.moveKeyX, this.moveKeyY - width / 12);
         } else {
             image(upKey[0], this.moveKeyX, this.moveKeyY - width / 12);
@@ -949,7 +947,7 @@ function setup() {
     
     technologies[0] = new Technologie(cdPlayerImages, cdPlayerImagesHighRes, 0); // crée un objet technologie
     
-    for (let i = 1; i < pagerImages.length; i++) {
+    for (let i = 0; i < pagerImages.length; i++) {
         pagerImages[i].resize(resizer, resizer);
         pagerImagesHighRes[i].resize(resizerHighRes, resizerHighRes);
     }
@@ -1251,5 +1249,10 @@ function fin() {
     isRadioDone = false;
     isWalkmanDone = false;
     isCDPickedUp = false;
-    tvs.imageIndex = 0; // tout ce que tu a reset
+    tvs.imageIndex = 0; 
+    cdPlayer.imageIndex = 0;
+    pager.imageIndex = 0;
+    phone.imageIndex = 0;
+    radio.imageIndex = 0;
+    walkman.imageIndex = 0;// tout ce que tu a reset
 }
