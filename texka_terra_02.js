@@ -15,11 +15,14 @@ let resizer = 100 ; // déclare une variable pour le redimensionnement des image
 let resizerHighRes = 600 ; // déclare une variable pour le redimensionnement des images en haute résolution
 let collisionRadius = 100 ; // Rayon de collision
 
+
 // arriere plan
 let sonArriere_01 ; let sonArriere_02 ; let sonArriere_03 ; // technologies
 let sonCd ; let sonPager ; let sonPhone ; let sonRadio ; let sonWalkman ; // q sonore
 let sonVictoire ; let sonClicInteraction ; let isSonVictoire = false ; //son de la fin du jeu
 let sonTV1 ; let sonTV2 ; let sonTV3 ; // ui //
+let interactionSourisUi = 'Utilisez la souris pour intéragir avec la technologie!';
+
 // images
 // // move
 
@@ -37,7 +40,7 @@ let ui ; // déclare l'objet
 // position
 let pX ; // déclare une variable pour la position en x du joueur
 let pY ; // déclare une variable pour la position en y du joueur
-let pS = 10 ; // déclare une variable pour la vitesse de déplacement du joueur
+let pS = 20 ; // déclare une variable pour la vitesse de déplacement du joueur
 // mouvement
 let upKeyPressed = false ; let downKeyPressed = false ; let leftKeyPressed = false ; let rightKeyPressed = false ; // interaction
 let spaceKeyPressed = false ; let mouseJustPressed = false ; // défilement
@@ -121,6 +124,7 @@ class Technologie {
         this.techImages = techImages; // images des technologies
         this.highResTechImages = highResTechImages; // high-resolution images
         this.imageIndex = imageIndex; // index de l'image de la technologie
+        this.highResImage = this.highResTechImages[this.imageIndex];
         this.spacePressed = false; // true si la touche espace est pressée
         this.spaceWasPressed = false; // true si la touche espace était pressée
         this.highResDisplayed = false; // true si l'image haute résolution est affichée
@@ -177,12 +181,10 @@ class Technologie {
     }
 
     display(joueur, posX, posY) {
-
-        let highResImage = this.highResTechImages[this.imageIndex];
     
         // Calculate the width and height of the high-resolution image
-        let newWidth = highResImage.width;
-        let newHeight = highResImage.height;
+        let newWidth = this.highResImage.width;
+        let newHeight = this.highResImage.height;
     
         // Calculate the position of the high-resolution image
         this.highResPosX = width / 2 - newWidth / 2;
@@ -205,7 +207,7 @@ class Technologie {
     
         if (this.highResDisplayed) {
             // Display the high-resolution image at the calculated position
-            image(highResImage, this.highResPosX, this.highResPosY, newWidth, newHeight);
+            image(this.highResImage, this.highResPosX, this.highResPosY, newWidth, newHeight);
         } else {
             // If the high-resolution image is not displayed, display the normal image at the technology's position
             image(this.techImages[this.imageIndex], posX, posY);
@@ -499,44 +501,47 @@ class Joueur {
         noStroke();
         circle(this.x, this.y, this.radius);
     }
+
     move() {
-        //sert à faire bouger le joueur
+        // sert à faire bouger le joueur
         // fait bouger le joueur
-        if (keyPressed == true) {
-            if (key == CODED) {
-                if (keyCode == UP_ARROW) {
+        if (keyIsPressed) {
+                if (keyCode === UP_ARROW) {
                     // fait bouger le joueur par en haut
                     if (this.y > height / 5) {
                         this.y = this.y - this.ySpeed;
                     }
                     upKeyPressed = true;
                 }
-                if (keyCode == DOWN_ARROW) {
+                if (keyCode === DOWN_ARROW) {
                     // fait bouger le joueur par en bas
                     if (this.y < (height / 5) * 4) {
                         this.y = this.y + this.ySpeed;
                     }
                     downKeyPressed = true;
                 }
-                if (keyCode == LEFT_ARROW) {
+                if (keyCode === LEFT_ARROW) {
                     // fait bouger le joueur à gauche
-                    // if (x > width/3) { //mis en commentaire pour tester les technologies
-                    this.x = this.x - this.xSpeed; // }
+                    if (this.x > width / 10) { // Uncommented for bounds checking
+                        this.x = this.x - this.xSpeed;
+                    }
                     leftKeyPressed = true;
                 }
-                if (keyCode == RIGHT_ARROW) {
+                if (keyCode === RIGHT_ARROW) {
                     // fait bouger le joueur à droite
-                    //if (x < width/3 * 2) { //idem
-                    this.x = this.x + this.xSpeed; //}
+                    if (this.x < (width / 10) * 9) { // Uncommented for bounds checking
+                        this.x = this.x + this.xSpeed;
+                    }
                     rightKeyPressed = true;
                 }
-            }
         } else {
             upKeyPressed = false;
             downKeyPressed = false;
             leftKeyPressed = false;
             rightKeyPressed = false;
-        } // intéragit avec le défilement
+        }
+
+        // intéragit avec le défilement
         if (this.y <= height / 5) {
             pTop = true;
         } else {
@@ -548,7 +553,7 @@ class Joueur {
             pBot = false;
         }
     }
-    
+
     interact() {
         /*
         ** si le joueur est proche dune technologie. un signal visuel et sonore? apparait
@@ -568,7 +573,7 @@ class Joueur {
             if (this.distTechJoueur < 80) {
                 // si le joueur est a moins de 200px
                 this.isTechClose = true; //
-                if (keyPressed == true) {
+                if (keyIsPressed) {
                     if (key == " ") {
                         spaceKeyPressed = true;
                     }
@@ -656,6 +661,10 @@ function keyPressed() {
     if (keyCode === UP_ARROW) {
         console.log('allo'); // la barre d'espacement est pressée
     }
+
+    if (keyCode === UP_ARROW) {
+        console.log('allo'); // la barre d'espacement est pressée
+    }
 }
 
 class Ui {
@@ -678,7 +687,7 @@ class Ui {
         // gere les touche de déplacement
         // up
         if (upKeyPressed == true) {
-            control.log("up");
+            console.log("up");
             image(upKey[1], this.moveKeyX, this.moveKeyY - width / 12);
         } else {
             image(upKey[0], this.moveKeyX, this.moveKeyY - width / 12);
@@ -1129,6 +1138,7 @@ function draw() {
 
 function keyPressed() {
     if (key == " ") {
+
         // Si la touche espace est pressée
         for (let tech of technologies) {
             // Pour chaque technologie
@@ -1139,18 +1149,14 @@ function keyPressed() {
             isCDPickedUp = true; // Ramasser le CD
         }
         if (
-            technologies[5].highResPosY > -100 &&
-            isWalkmanDone &&
-            isCdPlayerDone &&
-            isPagerDone &&
-            isPhoneDone &&
-            isRadioDone
-        ) {
+            technologies[5].highResPosY > -100 && isWalkmanDone && isCdPlayerDone && isPagerDone && isPhoneDone && isRadioDone) 
+            {
             sonTV1.play();
             tvs.imageIndex = 1;
             sonVictoire.stop();
         }
     }
+
 }
 
 function keyReleased() {
@@ -1170,11 +1176,7 @@ function mousePressed() {
             sonWalkman.play(); // Joue le son du Walkman
             isWalkmanDone = true; // Le Walkman est terminé
         }
-        if (
-            cdPlayer.isPointInHighResImage(mouseX, mouseY) &&
-            isCDPickedUp &&
-            cdPlayer.imageIndex != 3
-        ) {
+        if (cdPlayer.isPointInHighResImage(mouseX, mouseY) &&isCDPickedUp && cdPlayer.imageIndex != 3) {
             //Si le CD est ramassé et que l'image du Cdplayer n'est pas la 4e image et que la souris est sur l'image du Cdplayer
             cdPlayer.imageIndex += 1; // Change l'image du Cdplayer à la prochaine image si le CD est ramassé
             if (cdPlayer.imageIndex == 1) {
