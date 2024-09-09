@@ -1,4 +1,15 @@
- /*
+ sous division en y du jardin
+let jardinXSubDiv = 26 ; // 22 // sous division en x du jardin
+let jardinPosXMatrix = Array.from(new Array(jardinXSubDiv), ()=>new Array(jardinYSubDiv)); let jardinPosYMatrix = Array.from(new Array(jardinXSubDiv), ()=>new Array(jardinYSubDiv)); let jardinImgMatrix = Array.from(new Array(jardinXSubDiv), ()=>new Array(jardinYSubDiv)); let jardinPerspSize = Array.from(new Array(jardinXSubDiv), ()=>new Array(jardinYSubDiv)); // // montagnes
+let mtnW ; let mtnH ; let mtnImg ; // objet
+let jardin ; // déclare l'objet jardin
+// plantes //
+// quantité
+let planteOffsetX = 20 ; // 50
+let planteOffsetY = 10 ; // 20
+let offsetValueX ; let offsetValueY ; // position
+let planteX ; // déclare une variable pour la position en x de la plante
+let planteY ; // déclare une vari /*
 **
  ** Travail_02
  ** par : Dominic & Meryem
@@ -56,18 +67,7 @@ let jardinDebugUi = false ; // position & formatage
 // // jardin
 let jardinLength ; // déclare une variable pour storer la longueur du jardin
 let jardinY ; // déclare une variable pour enregistrer la coordonée y du jardin
-let jardinYSubDiv = 30 ; // 25 // sous division en y du jardin
-let jardinXSubDiv = 26 ; // 22 // sous division en x du jardin
-let jardinPosXMatrix = Array.from(new Array(jardinXSubDiv), ()=>new Array(jardinYSubDiv)); let jardinPosYMatrix = Array.from(new Array(jardinXSubDiv), ()=>new Array(jardinYSubDiv)); let jardinImgMatrix = Array.from(new Array(jardinXSubDiv), ()=>new Array(jardinYSubDiv)); let jardinPerspSize = Array.from(new Array(jardinXSubDiv), ()=>new Array(jardinYSubDiv)); // // montagnes
-let mtnW ; let mtnH ; let mtnImg ; // objet
-let jardin ; // déclare l'objet jardin
-// plantes //
-// quantité
-let planteOffsetX = 20 ; // 50
-let planteOffsetY = 10 ; // 20
-let offsetValueX ; let offsetValueY ; // position
-let planteX ; // déclare une variable pour la position en x de la plante
-let planteY ; // déclare une variable pour la position en y de la plante
+let jardinYSubDiv = 30 ; // 25 //able pour la position en y de la plante
 // images
 // technologies //
 //position des technologies
@@ -292,8 +292,6 @@ class Technologie {
                     return true;
                 }
                 this.imageIndex = button.order; // Change à l'image du boutton cliqué
-                console.log(button.order);
-                console.log(this.imageIndex);
                 return true;
             }
         }
@@ -655,17 +653,6 @@ class Button {
     }
 }
 
-function keyPressed() {
-    // si une touche est pressée
-    if (keyCode === UP_ARROW) {
-        console.log('allo'); // la barre d'espacement est pressée
-    }
-
-    if (keyCode === UP_ARROW) {
-        console.log('allo'); // la barre d'espacement est pressée
-    }
-}
-
 class Ui {
     // position
     moveKeyX;
@@ -896,7 +883,7 @@ function setup() {
         spaceKey[i - 1].resize(resizer * 3, resizer);
     } // // menu image
     // // // arriere plan
-    for (let i = 1; i <= menuBg.length; i++) {} // // // boutons
+    //for (let i = 1; i <= menuBg.length; i++) {} // // // boutons
     for (let i = 1; i <= playBtn.length; i++) {
         playBtn[i - 1].resize(btnW, btnH);
         quitBtn[i - 1].resize(btnW, btnH);
@@ -933,17 +920,9 @@ function setup() {
     //Mettre les images dans des tableaux afin de choisir les images selon l'interaction
     
        for (let i = 0; i < cdPlayerImages.length; i++) {
-        if (cdPlayerImages[i]) {
             cdPlayerImages[i].resize(resizer, resizer);
-        } else {
-            console.error("cdPlayerImages[" + i + "] is not loaded");
-        }
-        if (cdPlayerImagesHighRes[i]) {
             cdPlayerImagesHighRes[i].resize(resizerHighRes, resizerHighRes);
-        } else {
-            console.error("cdPlayerImagesHighRes[" + i + "] is not loaded");
         }
-    }
     
     technologies[0] = new Technologie(cdPlayerImages, cdPlayerImagesHighRes, 0); // crée un objet technologie
     
@@ -997,7 +976,7 @@ function setup() {
             do {
                 isTooClose = false; // Générer une position aléatoire pour la technologie
                 randomX = int(random(50, width - 50));
-                randomY = int(random(jardinY + 100, jardinY + jardinLength)); // Calculer la distance entre la technologie et les autres technologies
+                randomY = min(int(random(jardinY + 100, jardinY + jardinLength)), 550); // Calculer la distance entre la technologie et les autres technologies
                 for (let j = 0; j < i; j++) {
                     if (typeof technologies[j].posX === 'undefined' || typeof technologies[j].posY === 'undefined') {
                         console.error(`technologies[${j}].posX or technologies[${j}].posY is not defined`);
@@ -1009,7 +988,7 @@ function setup() {
                         technologies[j].posX,
                         technologies[j].posY
                     );
-                    if (distance < 200) {
+                    if (distance < 500) {
                         // Si la distance est inférieure à 500 pixels
                         isTooClose = true;
                         break;
@@ -1021,18 +1000,25 @@ function setup() {
         }
     }
 
-    let isCDTooClose; // Vérifier si le CD est trop proche des autres technologies
+    
 
-    do {
+    if (random(1) < 0.5) {
+        // 50% de chance de choisir le tiers gauche de l'écran
+        randomXCD = int(random(100, width / 3 - 100));
+    } else {
+        // 50% de chance de choisir le tiers droit de l'écran
+        randomXCD = int(random((2 * width) / 3 + 50, width - 100));
+    }
+
+    randomYCD = min(int(random(jardinY + 100, jardinY + jardinLength)), 550);
+
+    /*
+        let isCDTooClose; // Vérifier si le CD est trop proche des autres technologies
+
+        do {
+    
         isCDTooClose = false; // Initialiser la variable à faux
-        if (random(1) < 0.5) {
-            // 50% de chance de choisir le tiers gauche de l'écran
-            randomXCD = int(random(100, width / 3 - 100));
-        } else {
-            // 50% de chance de choisir le tiers droit de l'écran
-            randomXCD = int(random((2 * width) / 3 + 50, width - 100));
-        }
-        randomYCD = int(random(jardinY + 100, jardinY + jardinLength)); // Vérifier la distance entre le CD et les autres technologies
+        
         
         for (let i = 0; i < technologies.length - 1; i++) {
             if (typeof technologies[i].posX === 'undefined' || typeof technologies[i].posY === 'undefined') {
@@ -1051,7 +1037,7 @@ function setup() {
                 break;
             }
         }
-    } while (isCDTooClose);
+    } while (isCDTooClose);*/
 }
 
 
@@ -1070,6 +1056,7 @@ function draw() {
         );
 
         distanceToCD = dist(joueur.x, joueur.y, randomXCD, randomYCD); // jardin
+
         // // plantes
         jardin.display(); // Afficher les technologies
 
@@ -1094,14 +1081,7 @@ function draw() {
             if (cdPlayer.techImages[4] != null) {
                 image(cdPlayer.techImages[4], randomXCD, randomYCD); // Afficher le CD
             }
-        } 
-        
-        /* if(isWalkmanDone && isCdPlayerDone && isPagerDone && isPhoneDone && isRadioDone){
-     sonArriere_01.stop();
-     sonVictoire.play(); // Ca bug ca
-     tvs.imageIndex = 1;
-     } CA BUG MAIS JE SAIS POURQUOI JARRANGERAIS LATER*/
-
+        }
 
         if (
             tvs.highResPosY > -100 &&
@@ -1113,7 +1093,7 @@ function draw() {
             isPhoneDone &&
             isRadioDone
         ) {
-            //Si assez de temps est passé, changer l'image de la télévision
+            // Si assez de temps est passé, changer l'image de la télévision
             if (millis() - tvsLastChange >= tvsChangeInterval) {
                 // Changer l'image de la télévision et réinitialiser le temps
                 tvs.imageIndex += 1;
@@ -1125,6 +1105,7 @@ function draw() {
             sonTV1.stop();
             sonTV2.play();
         }
+
         joueur.display();
         ui.display();
     } else {
@@ -1249,6 +1230,7 @@ function fin() {
     isRadioDone = false;
     isWalkmanDone = false;
     isCDPickedUp = false;
+    cdPlayer.techImages[4] = cdPlayerImages[4];
     tvs.imageIndex = 0; 
     cdPlayer.imageIndex = 0;
     pager.imageIndex = 0;
