@@ -1,15 +1,4 @@
- sous division en y du jardin
-let jardinXSubDiv = 26 ; // 22 // sous division en x du jardin
-let jardinPosXMatrix = Array.from(new Array(jardinXSubDiv), ()=>new Array(jardinYSubDiv)); let jardinPosYMatrix = Array.from(new Array(jardinXSubDiv), ()=>new Array(jardinYSubDiv)); let jardinImgMatrix = Array.from(new Array(jardinXSubDiv), ()=>new Array(jardinYSubDiv)); let jardinPerspSize = Array.from(new Array(jardinXSubDiv), ()=>new Array(jardinYSubDiv)); // // montagnes
-let mtnW ; let mtnH ; let mtnImg ; // objet
-let jardin ; // déclare l'objet jardin
-// plantes //
-// quantité
-let planteOffsetX = 20 ; // 50
-let planteOffsetY = 10 ; // 20
-let offsetValueX ; let offsetValueY ; // position
-let planteX ; // déclare une variable pour la position en x de la plante
-let planteY ; // déclare une vari /*
+ /*
 **
  ** Travail_02
  ** par : Dominic & Meryem
@@ -67,7 +56,18 @@ let jardinDebugUi = false ; // position & formatage
 // // jardin
 let jardinLength ; // déclare une variable pour storer la longueur du jardin
 let jardinY ; // déclare une variable pour enregistrer la coordonée y du jardin
-let jardinYSubDiv = 30 ; // 25 //able pour la position en y de la plante
+let jardinYSubDiv = 30 ; // 25 // sous division en y du jardin
+let jardinXSubDiv = 26 ; // 22 // sous division en x du jardin
+let jardinPosXMatrix = Array.from(new Array(jardinXSubDiv), ()=>new Array(jardinYSubDiv)); let jardinPosYMatrix = Array.from(new Array(jardinXSubDiv), ()=>new Array(jardinYSubDiv)); let jardinImgMatrix = Array.from(new Array(jardinXSubDiv), ()=>new Array(jardinYSubDiv)); let jardinPerspSize = Array.from(new Array(jardinXSubDiv), ()=>new Array(jardinYSubDiv)); // // montagnes
+let mtnW ; let mtnH ; let mtnImg ; // objet
+let jardin ; // déclare l'objet jardin
+// plantes //
+// quantité
+let planteOffsetX = 20 ; // 50
+let planteOffsetY = 10 ; // 20
+let offsetValueX ; let offsetValueY ; // position
+let planteX ; // déclare une variable pour la position en x de la plante
+let planteY ; // déclare une variable pour la position en y de la plante
 // images
 // technologies //
 //position des technologies
